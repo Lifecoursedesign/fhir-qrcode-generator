@@ -4,12 +4,12 @@
     "license": "MIT",
     "type": "library",
     "require": {
-        "phpseclib/phpseclib": "^3.0",
-        "php": "^8.1"
+        "php": "^8.1",
+        "sop/jwx": "^0.11.1"
     },
     "autoload": {
         "psr-4": {
-          "fhir-qr-generator": "src/"
+          "fhir-qr-generator\\": "src/"
         }
     }
 }

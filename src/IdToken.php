@@ -1,25 +1,49 @@
 <?php
+/**
+ * Compose JWT claims and produce a token signed with HMAC using SHA-256.
+ *
+ * php jws-create.php
+ */
 
-require './JOSE/JWT.php';
+declare(strict_types = 1);
+
+use Sop\JWX\JWS\Algorithm\HS256Algorithm;
+use Sop\JWX\JWT\Claim\AudienceClaim;
+use Sop\JWX\JWT\Claim\Claim;
+use Sop\JWX\JWT\Claim\ExpirationTimeClaim;
+use Sop\JWX\JWT\Claim\IssuedAtClaim;
+use Sop\JWX\JWT\Claim\IssuerClaim;
+use Sop\JWX\JWT\Claim\JWTIDClaim;
+use Sop\JWX\JWT\Claim\NotBeforeClaim;
+use Sop\JWX\JWT\Claim\SubjectClaim;
+use Sop\JWX\JWT\Claims;
+use Sop\JWX\JWT\JWT;
+use Sop\JWX\Util\UUIDv4;
+
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 class IdToken {
-  var $jwt;
+  var $signedJWT;
 
-  function __construct($claims = array()) {
-      $this->jwt = new JOSE_JWT($claims);
+  function __construct(Claims $claims) {
+    $this->signedJWT = JWT::signedFromClaims($claims, new HS256Algorithm('secret'));
   }
 
-  function toString() {
-    return $this->jwt->toString();
+  function getSignedJWT() {
+    return $this->signedJWT;
   }
+
 }
 
-$id_token = new IdToken(array(
-  'iss' => 'https://gree.net',
-  'aud' => 'greeapp_12345',
-  'sub' => 'greeuser_12345',
-  'iat' => time(),
-  'exp' => time() + 1 * 60 * 60
-));
+$claims = new Claims(
+  new IssuerClaim('John Doe'),
+  new SubjectClaim('Jane Doe'),
+  new AudienceClaim('acme-client'),
+  IssuedAtClaim::now(),
+  NotBeforeClaim::now(),
+  ExpirationTimeClaim::fromString('now + 30 minutes'),
+  new JWTIDClaim(UUIDv4::createRandom()->canonical()),
+  new Claim('custom claim', ['any', 'values']));
+$token_instance = new IdToken($claims);
 
-echo $id_token->toString();
+echo $token_instance->getSignedJWT() . "\n";
