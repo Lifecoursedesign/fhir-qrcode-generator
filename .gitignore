@@ -1,0 +1,12 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/vendor
+/.pnp
+.pnp.js
+
+# misc
+.DS_Store
+.env
+.env.local
+".gitignore" 24L, 315B
