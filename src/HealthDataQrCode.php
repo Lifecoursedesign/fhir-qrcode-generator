@@ -12,7 +12,7 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 class HealthDataQrCode {
 
-  private function get_base_10_format($id) {
+  private function _getBase10format($id) {
     $value = "";
     foreach(str_split($id) as $letter) {
       $difference = ord($letter)-45;
@@ -25,7 +25,7 @@ class HealthDataQrCode {
     return $value;
   }
   
-  private function revert_text($text){
+  private function _revertText($text){
     $base64text = "";
     for ($x = 0; $x < strlen($text); $x = $x + 2){
      $ascii =$text[$x] . $text[$x+1];
@@ -34,23 +34,23 @@ class HealthDataQrCode {
    return $base64text;
   }
   
-  public function convert_SHCS_to_token($base64arr) {
-    $len = count($base64arr);
+  public function convertSHCSToToken($base_64_arr) {
+    $len = count($base_64_arr);
     $decryptedText = "";
     for($x = 0; $x < $len; $x++){
-      $base10text = explode("shcs://",$base64arr[$x])[1];
+      $base10text = explode("shcs://",$base_64_arr[$x])[1];
       if ($len > 1){
-        $base10text = preg_split("shcs:\/\/\d\/\d\/",$base64arr[$x])[1];
+        $base10text = preg_split("shcs:\/\/\d\/\d\/",$base_64_arr[$x])[1];
       }
   
-      $decryptedText = $decryptedText. $this->revert_text($base10text);
+      $decryptedText = $decryptedText. $this->_revertText($base10text);
     }
      return $decryptedText;
   }
   
-  public function convert_token_to_decimal_array($id) {
+  public function convertTokenToDecimalArray($id) {
     $divider = 1194;
-    $base10 = $this->get_base_10_format($id);
+    $base10 = $this->_getBase10format($id);
     $max = ceil(strlen($base10) / $divider);
     
     $arr = [];
@@ -64,6 +64,10 @@ class HealthDataQrCode {
       }
     }
     return $arr;
+  }
+
+  public function generatePrivateKeyQr() {
+    return null;
   }
 
 }

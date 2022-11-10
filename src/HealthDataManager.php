@@ -16,7 +16,7 @@ class HealthDataManager {
     $this->storagePath = $dir_path;
   }
 
-  public function generate_jws_key_pair() {
+  public function generateJWSKeyPair() {
     # Generate a new private (and public) key pair.
     $config = array(
       "private_key_bits" => 2048,
@@ -41,8 +41,8 @@ class HealthDataManager {
 
 }
 
-$instance = new HealthDataManager(1);
+$manager = new HealthDataManager(1);
 
-$instance->generate_jws_key_pair();
+$manager->generateJWSKeyPair();
 
 
