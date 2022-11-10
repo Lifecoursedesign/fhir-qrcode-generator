@@ -1,5 +1,7 @@
 <?php
 
+require_once './HealthDataQrCode.php';
+
 class HealthDataManager {
 
   var $storagePath;
@@ -39,7 +41,7 @@ class HealthDataManager {
 
 }
 
-$instance = new HealthDataManager(2);
+$instance = new HealthDataManager(1);
 
 $instance->generate_jws_key_pair();
 
