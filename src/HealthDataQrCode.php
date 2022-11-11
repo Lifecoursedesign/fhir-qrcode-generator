@@ -66,8 +66,18 @@ class HealthDataQrCode {
     return $arr;
   }
 
-  public function generatePrivateKeyQr() {
-    return null;
+  public function generateQrCode($data, $file_path) {
+    $writer = new PngWriter();
+    $qrCode = QrCode::create($data)
+        ->setEncoding(new Encoding('UTF-8'))
+        ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+        ->setSize(300)
+        ->setForegroundColor(new Color(0, 0, 0))
+        ->setBackgroundColor(new Color(255, 255, 255));
+    $result = $writer->write($qrCode);
+    header('Content-Type: '.$result->getMimeType());
+    $result->saveToFile($file_path);
+    return;
   }
 
 }
