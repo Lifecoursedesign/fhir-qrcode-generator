@@ -1,5 +1,4 @@
 <?php
-declare(strict_types = 1);
 
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
