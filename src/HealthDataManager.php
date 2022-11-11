@@ -56,7 +56,7 @@ class HealthDataManager {
     );
   }
 
-  public function generateRequiredKeyPairs($patient_id) {
+  public function generateJWSandJWEKeyPairs($patient_id) {
     $valid_id = (is_int($patient_id) || ctype_digit($patient_id)) && (int)$patient_id > 0;
     if(!$valid_id) {
       throw new Exception('Invalid patient id');
@@ -85,6 +85,6 @@ class HealthDataManager {
 
 $manager = new HealthDataManager();
 
-$manager->generateRequiredKeyPairs(1);
+$manager->generateJWSandJWEKeyPairs(1);
 
 
