@@ -15,6 +15,7 @@ require "Validator.php";
 require "config/index.php";
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ServerException;
 
 
 class HealthDataManager {
@@ -84,27 +85,50 @@ class HealthDataManager {
   }
 
   public function createEncKeyPair($user_id) {
+    try {
+      if(!$this->validator_instance->isValidUserID($user_id)) {
+        throw new Exception('Invalid patient id');
+      }
+  
+      // Generate Encryption Key Pairs
+      $keys = $this->_generateJWEKeys();
+  
+      $request = $this->client->request('POST', $this->endpoint . "/qr-library/key-pair", [
+        'form_params' => [
+            'emr_patient_id' => $user_id,
+            'pem_list' => $keys,
+            'jose_type' => 'JWE',
+            'institution_id' => $this->institution
+        ]
+      ]);
+      return; 
+    } catch (ServerException $e) {
+      throw new Exception('Error Saving Encryption Key Pair');
+    } 
+  } 
+
+  public function generateEncPrivateKeyQr($user_id) {
     if(!$this->validator_instance->isValidUserID($user_id)) {
       throw new Exception('Invalid patient id');
     }
-
-    // Generate Encryption Key Pairs
-    $keys = $this->_generateJWEKeys();
-
-    $request = $this->client->request('POST', $this->endpoint . "/qr-library/key-pair", [
-      'form_params' => [
-          'emr_patient_id' => $user_id,
-          'pem_list' => $keys,
-          'jose_type' => 'JWE',
-          'institution_id' => $this->institution
-      ]
-    ]);
-    return; 
-  } 
+    try {
+      $request = $this->client->request('POST', $this->endpoint . "/qr-library/get-key-pair", [
+        'form_params' => [
+            'emr_patient_id' => $user_id,
+            'jose_type' => 'JWE',
+            'institution_id' => $this->institution
+        ]
+      ]);
+      $response = $request->getBody();
+      } catch (ServerException $e) {
+        throw new Exception('Keys not found');
+      } 
+   
+  }
 }
 
 $manager = new HealthDataManager($env, HOSPITALS["SAITAMA"]);
 
-$manager->createEncKeyPair("EMR-101");
+$manager->generateEncPrivateKeyQr("EMR-101");
 
 
