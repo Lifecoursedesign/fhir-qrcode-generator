@@ -73,7 +73,7 @@ class HealthDataManager {
     $this->storage_path = $dir_path;
   }
 
-  public function generateEncPrivateKeyQr($user_id) {
+  public function createEncKeyPair($user_id) {
     if(!$this->validator_instance->isValidUserID($user_id)) {
       throw new Exception('Invalid patient id');
     }
@@ -82,7 +82,8 @@ class HealthDataManager {
     $this->_setStorageDirectory($user_id);
   
     // Generate Pair and Convert Private Key to QR Code
-    return $this->_generateJWEKeys();
+    $this->_generateJWEKeys();
+    return; 
   } 
 }
 
