@@ -1,9 +1,21 @@
 <?php
 
+define("HOSPITALS", array(
+  "SAITAMA" => 1,
+  "AIWA" => 2,
+  "KEIAI" => 3,
+  "SETO" => 4,
+));
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
 require "HealthDataToken.php";
 require "HealthDataQrCode.php";
 require "Validator.php";
 require "config/index.php";
+
+use GuzzleHttp\Client;
+
 
 class HealthDataManager {
 
@@ -11,11 +23,22 @@ class HealthDataManager {
   private $token_instance;
   private $qrcode_instance;
   private $validator_instance;
+  private $client;
+  private $endpoint; 
+  private $institution;
 
-  public function __construct() {
-    $this->token_instance = new HealthDataToken();
-    $this->qrcode_instance = new HealthDataQrCode();
-    $this->validator_instance = new Validator();
+  public function __construct($config, $selected_institution) {
+    if(((1 <= $selected_institution) && ($selected_institution <= 4))) {
+      $this->token_instance = new HealthDataToken();
+      $this->qrcode_instance = new HealthDataQrCode();
+      $this->validator_instance = new Validator();
+      $this->client = new Client();
+      $this->endpoint = $config["API_URL"];
+      $this->institution = $selected_institution;
+    } else {
+      throw new Exception('Invalid hospital id');
+    }
+   
   }
 
   private function _generateJWSKeys() {
@@ -28,12 +51,11 @@ class HealthDataManager {
 
       # Store Patient Private Key.
       openssl_pkey_export($keys, $private_key);
-      file_put_contents($this->storage_path . '/jws-private-key.pem', $private_key);
     
       # Store Patient Public Key.
       $public_key_detail = openssl_pkey_get_details($keys);
       $public_key = $public_key_detail["key"];
-      file_put_contents($this->storage_path . '/jws-public-key.pem', $public_key);
+
       return array(
         'private_key' => $private_key,
         'public_key' => $public_key
@@ -50,12 +72,10 @@ class HealthDataManager {
 
      # Store Patient Private Key.
     openssl_pkey_export($keys, $private_key);
-    file_put_contents($this->storage_path . '/jwe-private-key.pem', $private_key);
 
     # Store Patient Public Key.
     $public_key_detail = openssl_pkey_get_details($keys);
     $public_key = $public_key_detail["key"];
-    file_put_contents($this->storage_path . '/jwe-public-key.pem', $public_key);
 
     return array(
       'private_key' => $private_key,
@@ -63,32 +83,28 @@ class HealthDataManager {
     );
   }
 
-  private function _setStorageDirectory($user_id) {
-    // NOTE: STILL IN CONFIRMATION. DEVS ARE STILL SUGGESTING TO USE DATABASE INSTEAD OF DIRECTORY.
-    $dir_path = dirname(__FILE__).'/patient_keys'."/".$user_id;
-    $folder_not_exists = !file_exists($dir_path);
-    if ($folder_not_exists) {
-      mkdir($dir_path, 0777, true);
-    }
-    $this->storage_path = $dir_path;
-  }
-
   public function createEncKeyPair($user_id) {
     if(!$this->validator_instance->isValidUserID($user_id)) {
       throw new Exception('Invalid patient id');
     }
 
-    // Create Patient Cert Directory
-    $this->_setStorageDirectory($user_id);
-  
-    // Generate Pair and Convert Private Key to QR Code
-    $this->_generateJWEKeys();
+    // Generate Encryption Key Pairs
+    $keys = $this->_generateJWEKeys();
+
+    $request = $this->client->request('POST', $this->endpoint . "/qr-library/key-pair", [
+      'form_params' => [
+          'emr_patient_id' => $user_id,
+          'pem_list' => $keys,
+          'jose_type' => 'JWE',
+          'institution_id' => $this->institution
+      ]
+    ]);
     return; 
   } 
 }
 
-// $manager = new HealthDataManager();
+$manager = new HealthDataManager($env, HOSPITALS["SAITAMA"]);
 
-// $manager->generateEncPrivateKeyQr("1");
+$manager->createEncKeyPair("EMR-101");
 
-print_r($env);
+

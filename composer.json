@@ -6,7 +6,8 @@
     "require": {
         "php": "^8.1",
         "sop/jwx": "^0.11.1",
-        "endroid/qr-code": "^4.6"
+        "endroid/qr-code": "^4.6",
+        "guzzlehttp/guzzle": "^7.0"
     },
     "autoload": {
         "psr-4": {
