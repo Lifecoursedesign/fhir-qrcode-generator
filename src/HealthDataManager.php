@@ -3,6 +3,7 @@
 require "HealthDataToken.php";
 require "HealthDataQrCode.php";
 require "Validator.php";
+require "config/index.php";
 
 class HealthDataManager {
 
@@ -85,8 +86,8 @@ class HealthDataManager {
   } 
 }
 
-$manager = new HealthDataManager();
+// $manager = new HealthDataManager();
 
-$manager->generateEncPrivateKeyQr("1");
+// $manager->generateEncPrivateKeyQr("1");
 
-
+print_r($env);
