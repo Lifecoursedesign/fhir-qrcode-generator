@@ -120,9 +120,17 @@ class HealthDataManager {
         ]
       ]);
       $response = $request->getBody();
-      } catch (ServerException $e) {
+      $result = json_decode($response);
+      if($result->statusCode != 200) {
         throw new Exception('Keys not found');
-      } 
+      }
+      $data = $result->data;
+      $private_key = $data->pem_list[0]->private_key;
+      
+      
+    } catch (ServerException $e) {
+      throw new Exception('Keys not found');
+    } 
    
   }
 }
