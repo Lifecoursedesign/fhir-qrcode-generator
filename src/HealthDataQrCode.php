@@ -51,7 +51,6 @@ class HealthDataQrCode {
     return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
   }
 
-  
   public function convertTokenToDecimalArray($id) {
     $divider = 1194;
     $base10 = $this->_getBase10format($id);
@@ -81,12 +80,7 @@ class HealthDataQrCode {
         ->setForegroundColor(new Color(0, 0, 0))
         ->setBackgroundColor(new Color(255, 255, 255));
     $result = $writer->write($qrCode);
-    header('Content-Type: '.$result->getMimeType());
     $result->saveToFile($file_path);
     return;
-  }
-
-  public function generatePrivateQrCode($data) { 
-    $this->convertTokenToDecimalArray($data, "pem:/");
   }
 }
