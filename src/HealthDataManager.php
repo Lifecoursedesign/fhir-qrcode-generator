@@ -93,9 +93,8 @@ class HealthDataManager {
     $this->storage_path = $dir_path;
   }
 
-  private function _fetchJWEKeys($user_id) {
+  private function _fetchJWEKeys($user_id, $request_type) {
     try {
-      $this->_setStorageDirectory($user_id);
       $request = $this->client->request('POST', $this->endpoint . "/qr-library/get-key-pair", [
         'form_params' => [
             'emr_patient_id' => $user_id,
@@ -105,12 +104,22 @@ class HealthDataManager {
       ]);
       $response = $request->getBody();
       $result = json_decode($response);
-      if($result->statusCode != 200) {
-        throw new Exception('Keys not found');
-      }
-      return $result->data;
+      return $result->data->pem_list;
     } catch (ServerException $e) {
-      throw new Exception('Keys not found');
+      $response = $e->getResponse();
+      $jsonBody = (string) $response->getBody();
+      $parseError = json_decode($jsonBody);
+      $not_exists = str_contains(strtolower($parseError->message), 'row not found');
+      if($not_exists && $request_type !=='generatePrivateKey') {
+        return [];
+      } else {
+        if($not_exists) {
+          throw new Exception('Keys not found');
+        } else {
+          # Throw other internal server error message
+          throw new Exception($parseError->message);
+        }
+      }
     }
   }
 
@@ -142,20 +151,22 @@ class HealthDataManager {
       throw new Exception('Invalid patient id');
     }
     try {
-      $data = $this->_fetchJWEKeys($user_id);
-      $private_key = $data->pem_list[0]->private_key;
+      $data = $this->_fetchJWEKeys($user_id, 'generatePrivateKey');
+      $private_key = $data[0]->private_key;
       $data = json_encode(array(
         "key" => $private_key,
         "emp_patient_id" => $user_id
       ));
 
+      $this->_setStorageDirectory($user_id);
       $compressed_pk_data = gzdeflate($data);
       $base64URLPK = $this->qrcode_instance->base64UrlEncode($compressed_pk_data);
       $file_path = $this->storage_path.'/private-key.png';
       $result = $this->qrcode_instance->generateQrCode($base64URLPK, $file_path);
       return [$file_path];
-    } catch (ServerException $e) {
-      throw new Exception('Keys not found');
+    } catch (Exception $e) {
+      throw new Exception($e->getMessage());
+      
     } 
   }
 
@@ -163,18 +174,19 @@ class HealthDataManager {
     if(!$this->validator_instance->isValidUserID($user_id)) {
       throw new Exception('Invalid patient id');
     }
-
     try {
-      $data = $this->_fetchJWEKeys($user_id);
-      $private_key = $data->pem_list[0]->private_key;
-      $public_key = $data->pem_list[1]->public_key;
-      return array(
-        "private_key" => $private_key,
-        "public_key" => $public_key
-      );
-      return [$file_path];
-    } catch (ServerException $e) {
-      throw new Exception('Keys not found');
+      $data = $this->_fetchJWEKeys($user_id, 'getEncKeyPair');
+      if(count($data) > 0) {
+        $private_key = $data[0]->private_key;
+        $public_key = $data[1]->public_key;
+        return array(
+          "private_key" => $private_key,
+          "public_key" => $public_key
+        );
+      }
+      return [];
+    } catch (Exception $e) {
+      throw new Exception($e->getMessage());
     } 
   }
 }
