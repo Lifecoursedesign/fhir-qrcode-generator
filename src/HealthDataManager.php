@@ -85,7 +85,6 @@ class HealthDataManager {
   }
 
   private function _setStorageDirectory($user_id) {
-    // NOTE: STILL IN CONFIRMATION. DEVS ARE STILL SUGGESTING TO USE DATABASE INSTEAD OF DIRECTORY.
     $dir_path = dirname(__FILE__).'/patient_qr'."/".$this->institution."/".$user_id;
     $folder_not_exists = !file_exists($dir_path);
     if ($folder_not_exists) {
@@ -94,6 +93,26 @@ class HealthDataManager {
     $this->storage_path = $dir_path;
   }
 
+  private function _fetchJWEKeys($user_id) {
+    try {
+      $this->_setStorageDirectory($user_id);
+      $request = $this->client->request('POST', $this->endpoint . "/qr-library/get-key-pair", [
+        'form_params' => [
+            'emr_patient_id' => $user_id,
+            'jose_type' => 'JWE',
+            'institution_id' => $this->institution
+        ]
+      ]);
+      $response = $request->getBody();
+      $result = json_decode($response);
+      if($result->statusCode != 200) {
+        throw new Exception('Keys not found');
+      }
+      return $result->data;
+    } catch (ServerException $e) {
+      throw new Exception('Keys not found');
+    }
+  }
 
   public function createEncKeyPair($user_id) {
     try {
@@ -123,27 +142,14 @@ class HealthDataManager {
       throw new Exception('Invalid patient id');
     }
     try {
-      $this->_setStorageDirectory($user_id);
-      $request = $this->client->request('POST', $this->endpoint . "/qr-library/get-key-pair", [
-        'form_params' => [
-            'emr_patient_id' => $user_id,
-            'jose_type' => 'JWE',
-            'institution_id' => $this->institution
-        ]
-      ]);
-      $response = $request->getBody();
-      $result = json_decode($response);
-      if($result->statusCode != 200) {
-        throw new Exception('Keys not found');
-      }
-      $data = $result->data;
+      $data = $this->_fetchJWEKeys($user_id);
       $private_key = $data->pem_list[0]->private_key;
       $data = json_encode(array(
         "key" => $private_key,
         "emp_patient_id" => $user_id
       ));
 
-      $compressed_pk_data = gzdeflate($data, 9);
+      $compressed_pk_data = gzdeflate($data);
       $base64URLPK = $this->qrcode_instance->base64UrlEncode($compressed_pk_data);
       $file_path = $this->storage_path.'/private-key.png';
       $result = $this->qrcode_instance->generateQrCode($base64URLPK, $file_path);
@@ -152,9 +158,29 @@ class HealthDataManager {
       throw new Exception('Keys not found');
     } 
   }
+
+  public function getEncKeyPair($user_id) {
+    if(!$this->validator_instance->isValidUserID($user_id)) {
+      throw new Exception('Invalid patient id');
+    }
+
+    try {
+      $data = $this->_fetchJWEKeys($user_id);
+      $private_key = $data->pem_list[0]->private_key;
+      $public_key = $data->pem_list[1]->public_key;
+      return array(
+        "private_key" => $private_key,
+        "public_key" => $public_key
+      );
+      return [$file_path];
+    } catch (ServerException $e) {
+      throw new Exception('Keys not found');
+    } 
+  }
 }
 
 $manager = new HealthDataManager($env, HOSPITALS["SAITAMA"]);
-$path = $manager->generateEncPrivateKeyQr("EMR-101");
+$keys = $manager->getEncKeyPair("EMR-101");
+print_r($keys);
 
 
