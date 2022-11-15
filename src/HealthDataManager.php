@@ -126,8 +126,10 @@ class HealthDataManager {
       }
       $data = $result->data;
       $private_key = $data->pem_list[0]->private_key;
+      $compressed_private_key = gzdeflate($private_key);
+      $base64URLPK = $this->qrcode_instance->base64UrlEncode($compressed_private_key);
       
-      
+      $this->qrcode_instance->generateQrCode($base64URLPK, "./private-key.png");
     } catch (ServerException $e) {
       throw new Exception('Keys not found');
     } 

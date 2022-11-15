@@ -25,8 +25,8 @@ class HealthDataToken {
       IssuedAtClaim::now(),
       NotBeforeClaim::now(),
       new JWTIDClaim(UUIDv4::createRandom()->canonical()),
-      new Claim('key', $data));
-      $jwt = JWT::signedFromClaims($claims, new HS256Algorithm('saitama-secret'), new Header(new JWTParameter('zip', 'DEF')));
+      new Claim('data', $data));
+      $jwt = JWT::signedFromClaims($claims, new HS256Algorithm('secret'), new Header(new JWTParameter('zip', 'DEF')));
       return $jwt;
   }
 }

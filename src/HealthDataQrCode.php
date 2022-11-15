@@ -46,6 +46,11 @@ class HealthDataQrCode {
     }
      return $decryptedText;
   }
+
+  function base64UrlEncode($data) {
+    return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+  }
+
   
   public function convertTokenToDecimalArray($id) {
     $divider = 1194;
@@ -70,7 +75,9 @@ class HealthDataQrCode {
     $qrCode = QrCode::create($data)
         ->setEncoding(new Encoding('UTF-8'))
         ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
-        ->setSize(300)
+        ->setSize(200)
+        ->setMargin(0)
+        ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
         ->setForegroundColor(new Color(0, 0, 0))
         ->setBackgroundColor(new Color(255, 255, 255));
     $result = $writer->write($qrCode);
@@ -79,4 +86,7 @@ class HealthDataQrCode {
     return;
   }
 
+  public function generatePrivateQrCode($data) { 
+    $this->convertTokenToDecimalArray($data, "pem:/");
+  }
 }
