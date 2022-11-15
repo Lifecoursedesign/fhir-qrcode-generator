@@ -189,10 +189,29 @@ class HealthDataManager {
       throw new Exception($e->getMessage());
     } 
   }
+
+  public function deleteEncKeyPair($user_id) {
+    try {
+
+      $request = $this->client->request('POST', $this->endpoint . "/qr-library/del-key-pair", [
+        'form_params' => [
+            'emr_patient_id' => $user_id,
+            'jose_type' => 'JWE',
+            'institution_id' => $this->institution
+        ]
+      ]);
+      return; 
+    } catch (Exception $e) {
+      $response = $e->getResponse();
+      $jsonBody = (string) $response->getBody();
+      $parseError = json_decode($jsonBody);
+      throw new Exception($parseError->message);
+    } 
+  }
 }
 
 $manager = new HealthDataManager($env, HOSPITALS["SAITAMA"]);
-$keys = $manager->getEncKeyPair("EMR-101");
+$keys = $manager->deleteEncKeyPair("EMR-102");
 print_r($keys);
 
 
