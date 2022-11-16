@@ -3,4 +3,4 @@ require_once "development.php";
 require_once "production.php";
 require_once "testing.php";
 
-$env = $testing;
+$fhir_qr_config = $development;

@@ -28,13 +28,14 @@ class HealthDataManager {
   private $endpoint; 
   private $institution;
 
-  public function __construct($config, $selected_institution) {
+  public function __construct( $selected_institution) {
+    global $fhir_qr_config;
     if(((1 <= $selected_institution) && ($selected_institution <= 4))) {
       $this->token_instance = new HealthDataToken();
       $this->qrcode_instance = new HealthDataQrCode();
       $this->validator_instance = new Validator();
       $this->client = new Client();
-      $this->endpoint = $config["API_URL"];
+      $this->endpoint = $fhir_qr_config["API_URL"];
       $this->institution = $selected_institution;
     } else {
       throw new Exception('Invalid hospital id');
@@ -207,10 +208,5 @@ class HealthDataManager {
     } 
   }
 }
-
-// $manager = new HealthDataManager($env, HOSPITALS["SAITAMA"]);
-// $keys = $manager->createEncKeyPair("EMR-101");
-// print_r($keys);
-
-
-
+// $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
+// $manager->deleteEncKeyPair("EMR-102");
