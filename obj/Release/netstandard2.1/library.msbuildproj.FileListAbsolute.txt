@@ -1,0 +1,9 @@
+/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/bin/Release/netstandard2.1/library.deps.json
+/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/bin/Release/netstandard2.1/library.dll
+/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/bin/Release/netstandard2.1/library.pdb
+/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/bin/Release/netstandard2.1/library.xml
+/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/obj/Release/netstandard2.1/library.msbuildproj.AssemblyReference.cache
+/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/obj/Release/netstandard2.1/library.msbuildproj.CoreCompileInputs.cache
+/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/obj/Release/netstandard2.1/library.dll
+/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/obj/Release/netstandard2.1/library.xml
+/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/obj/Release/netstandard2.1/library.pdb

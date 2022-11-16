@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>saitama.fhir-qr-generator</id>
+    <version>1.0.0</version>
+    <authors>library</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <description>A QR Code Generator.</description>
+    <dependencies>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="Peachpie.App" version="1.0.6" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/bin/Release/netstandard2.1/library.dll" target="lib/netstandard2.1/library.dll" />
+    <file src="/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/bin/Release/netstandard2.1/library.xml" target="lib/netstandard2.1/library.xml" />
+  </files>
+</package>
