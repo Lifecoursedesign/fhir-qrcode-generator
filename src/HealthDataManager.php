@@ -161,9 +161,8 @@ class HealthDataManager {
       $this->_setStorageDirectory($user_id);
       $compressed_pk_data = gzdeflate($data);
       $base64URLPK = $this->qrcode_instance->base64UrlEncode($compressed_pk_data);
-      $file_path = $this->storage_path.'/private-key.png';
-      $result = $this->qrcode_instance->generateQrCode($base64URLPK, $file_path);
-      return [$file_path];
+      $result = $this->qrcode_instance->generatePrivateKeyQRCode($base64URLPK, $this->storage_path);
+      return $result;
     } catch (Exception $e) {
       throw new Exception($e->getMessage());
       
@@ -192,7 +191,6 @@ class HealthDataManager {
 
   public function deleteEncKeyPair($user_id) {
     try {
-
       $request = $this->client->request('POST', $this->endpoint . "/qr-library/del-key-pair", [
         'form_params' => [
             'emr_patient_id' => $user_id,
@@ -210,8 +208,8 @@ class HealthDataManager {
   }
 }
 
-$manager = new HealthDataManager($env, HOSPITALS["SAITAMA"]);
-$keys = $manager->deleteEncKeyPair("EMR-102");
-print_r($keys);
+// $manager = new HealthDataManager($env, HOSPITALS["SAITAMA"]);
+// $manager->createEncKeyPair("EMR-101");
+
 
 

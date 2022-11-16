@@ -83,4 +83,30 @@ class HealthDataQrCode {
     $result->saveToFile($file_path);
     return;
   }
+
+  public function generatePrivateKeyQRCode($data, $file_path) {
+    $divider = 2000;
+    $base10 = $this->_getBase10format($data);
+    $max = ceil(strlen($base10) / $divider);
+    
+    $pem_base_10 = [];
+    $file_paths = [];
+    array_push($pem_base_10,"pem:/".$base10);
+    if ($max > 1){
+      $pem_base_10 = [];
+      for($x = 0; $x <  $max; $x++){
+        $start = $x == 0 ? $x * $divider : ($x * $divider) + 1;
+        $end = (($x+1) * $divider) > strlen($base10) ?  strlen($base10) :  (($x+1) * $divider);
+        array_push($pem_base_10,"pem:/".($x+1)."/".$max."/".substr($base10,$start,$end));
+      }
+    }
+
+    for($x = 0; $x < count($pem_base_10); $x++){
+      $qr_path = $file_path.'/private-key-'.$x.'.png';
+      array_push($file_paths, $qr_path);
+      $this->generateQrCode($pem_base_10[$x], $qr_path);
+    }
+    
+    return $file_paths;
+  }
 }
