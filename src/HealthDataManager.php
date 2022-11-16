@@ -209,4 +209,4 @@ class HealthDataManager {
   }
 }
 // $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-// $manager->deleteEncKeyPair("EMR-102");
+// $manager->createEncKeyPair("EMR-101");
