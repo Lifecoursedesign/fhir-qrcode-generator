@@ -17,16 +17,25 @@ use Sop\JWX\Util\UUIDv4;
 
 class HealthDataToken {
 
+  /**
+   * It creates a JWT token with the data provided and the user_id provided
+   * 
+   * @param data The data to be encrypted
+   * @param user_id The user's ID in the database.
+   * 
+   * @return A JWT token
+   */
   public function createPEMToken($data, $user_id) {
     $claims = new Claims(
       new IssuerClaim('Saitama QR Code Generator'),
       new SubjectClaim('Private Key'),
-      new AudienceClaim('Patient:'.$user_id),
+      new AudienceClaim('Patient:' . $user_id),
       IssuedAtClaim::now(),
       NotBeforeClaim::now(),
       new JWTIDClaim(UUIDv4::createRandom()->canonical()),
-      new Claim('data', $data));
-      $jwt = JWT::signedFromClaims($claims, new HS256Algorithm('secret'), new Header(new JWTParameter('zip', 'DEF')));
-      return $jwt;
+      new Claim('data', $data)
+    );
+    $jwt = JWT::signedFromClaims($claims, new HS256Algorithm('secret'), new Header(new JWTParameter('zip', 'DEF')));
+    return $jwt;
   }
 }
