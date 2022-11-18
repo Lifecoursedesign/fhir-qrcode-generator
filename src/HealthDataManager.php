@@ -172,9 +172,9 @@ class HealthDataManager {
     *   format at https://irrte.ch/jwt-js-decode/pem2jwk.html.
     *   Then copy and paste the JWK into the verify signature box. 
     */
-    // $jws_token = $this->token_instance->createJwsToken($keys["private_key"], json_encode(array("data"=>"test")));
+    // $jws_token = $this->token_instance->createJWSToken($keys["private_key"], json_encode(array("data"=>"test")));
     // echo $jws_token;
-    
+
     return $keys;
   }
 
@@ -384,11 +384,7 @@ class HealthDataManager {
       throw new Exception($parseError->message);
     }
   }
-
-
-
-
 }
 
-$manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-$keys = $manager->simulateJWSKeys();
+// $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
+// $keys = $manager->simulateJWSKeys();

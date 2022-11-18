@@ -56,14 +56,14 @@ class HealthDataToken {
   }
 
   /**
-   * It creates a JWT token with the data provided and the user_id provided
+   * It creates a JWS token with the data provided and its private key for signature
    * 
    * @param private_key The private key to sign the token.
    * @param content The token payload or custom claims.
    * 
    * @return A JWS token
    */
-  function createJwsToken($private_key, $content) {
+  function createJWSToken($private_key, $content) {
     
     # Compressed Payload
     $compressed = gzdeflate($content);
@@ -88,7 +88,15 @@ class HealthDataToken {
     return $token;
   }
 
-  function createJweToken($public_key, $content) {
+  /**
+   * It creates a JWE token with the data provided and its public key for encryption.
+   * 
+   * @param public_key The public key to encrypt the token.
+   * @param content The token payload or custom claims.
+   * 
+   * @return A JWE token
+   */
+  function createJWEToken($public_key, $content) {
     $claims = new Claims(
       IssuedAtClaim::now(),
       NotBeforeClaim::now(),
