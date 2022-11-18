@@ -163,9 +163,18 @@ class HealthDataManager {
     $keys = $this->_generateJWSKeys();
     file_put_contents($this->storage_path . '/test-private-key.pem', $keys["private_key"]);
     file_put_contents($this->storage_path . '/test-public-key.pem', $keys["public_key"]);
-
-    $token = $this->token_instance->createJwsToken($keys["private_key"], json_encode(array("data"=>"test")));
-    echo $token;
+     
+   /**
+    * Test JWS Token at https://jwt.io/.
+    * 
+    * • Select RSA Algorithm from the site and paste the JWS token.
+    * • Verify the signature by converting the public key to JWK 
+    *   format at https://irrte.ch/jwt-js-decode/pem2jwk.html.
+    *   Then copy and paste the JWK into the verify signature box. 
+    */
+    // $jws_token = $this->token_instance->createJwsToken($keys["private_key"], json_encode(array("data"=>"test")));
+    // echo $jws_token;
+    
     return $keys;
   }
 

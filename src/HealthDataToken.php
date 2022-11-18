@@ -2,6 +2,11 @@
 
 use Gamegos\JWS\Algorithm\RSA_SSA_PKCSv15;
 
+use Sop\CryptoEncoding\PEM;
+use Sop\JWX\JWK\RSA\RSAPublicKeyJWK;
+use Sop\JWX\JWE\KeyAlgorithm\RSAESOAEPAlgorithm;
+use Sop\JWX\JWE\EncryptionAlgorithm\A128CBCHS256Algorithm;
+
 use Sop\JWX\JWS\Algorithm\HS256Algorithm;
 use Sop\JWX\JWT\Claim\AudienceClaim;
 use Sop\JWX\JWT\Claim\Claim;
@@ -50,7 +55,6 @@ class HealthDataToken {
     return $jwt;
   }
 
-
   /**
    * It creates a JWT token with the data provided and the user_id provided
    * 
@@ -82,5 +86,25 @@ class HealthDataToken {
     // Generate JWS Token
     $token = $header_payload_part . '.' . $sig_part;
     return $token;
+  }
+
+  function createJweToken($public_key, $content) {
+    $claims = new Claims(
+      IssuedAtClaim::now(),
+      NotBeforeClaim::now(),
+      new JWTIDClaim(UUIDv4::createRandom()->canonical()),
+      new Claim('data', $content)
+    );
+
+    # Load RSA public key
+    // $jwk = RSAPublicKeyJWK::fromPEM($public_key);
+    $jwk = RSAPublicKeyJWK::fromPEM(
+      PEM::fromString($public_key));
+    $key_algo = RSAESOAEPAlgorithm::fromPublicKey($jwk);
+    $enc_algo = new A128CBCHS256Algorithm();
+
+    # Create an encrypted JWT token
+    $jwt = JWT::encryptedFromClaims($claims, $key_algo, $enc_algo);
+    return $jwt->token();
   }
 }
