@@ -103,10 +103,10 @@ class HealthDataManager {
   /**
   * It creates a directory for the user if it doesn't exist
   * 
-  * @param user_id The user's id in your database.
+  * @param path The path to create.
   */
-  private function _setStorageDirectory($user_id) {
-    $dir_path = dirname(__FILE__) . '/patient_qr' . "/" . $this->institution . "/" . $user_id;
+  private function _setStorageDirectory($path) {
+    $dir_path = $path;
     $folder_not_exists = !file_exists($dir_path);
     if ($folder_not_exists) {
       mkdir($dir_path, 0777, true);
@@ -159,7 +159,14 @@ class HealthDataManager {
   * @return An array of the private and public keys.
   */
   public function simulateJWSKeys() {
-    return $this->_generateJWSKeys();
+    $this->_setStorageDirectory(dirname(__FILE__) . '/test_jws' . "/" . $this->institution);
+    $keys = $this->_generateJWSKeys();
+    file_put_contents($this->storage_path . '/test-private-key.pem', $keys["private_key"]);
+    file_put_contents($this->storage_path . '/test-public-key.pem', $keys["public_key"]);
+
+    $token = $this->token_instance->createJwsToken($keys["private_key"], json_encode(array("data"=>"test")));
+    echo $token;
+    return $keys;
   }
 
   /**
@@ -307,7 +314,7 @@ class HealthDataManager {
         "emp_patient_id" => $user_id
       ));
 
-      $this->_setStorageDirectory($user_id);
+      $this->_setStorageDirectory(dirname(__FILE__) . '/patient_qr' . "/" . $this->institution . "/" . $user_id);
       $compressed_pk_data = gzdeflate($data);
       $base64URLPK = $this->qrcode_instance->base64UrlEncode($compressed_pk_data);
       $result = $this->qrcode_instance->generatePrivateKeyQRCode($base64URLPK, $this->storage_path);
@@ -368,7 +375,11 @@ class HealthDataManager {
       throw new Exception($parseError->message);
     }
   }
+
+
+
+
 }
 
-// $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-// $keys = $manager->deleteEncKeyPair("EMR-101");
+$manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
+$keys = $manager->simulateJWSKeys();
