@@ -48,10 +48,11 @@ class HealthDataManager {
   }
 
   /**
-   * > Generate a new JWS private (and public) key pair
-   * 
-   * @return An array with the private and public keys.
-   */
+  * > Generate a new JWS private (and public) key pair
+  * 
+  * @return An array with the private and public keys.
+  * 'simulateJWSKeys'
+  */
   private function _generateJWSKeys() {
     # Generate a new JWS private (and public) key pair.
     $config = array(
@@ -74,10 +75,10 @@ class HealthDataManager {
   }
 
   /**
-   * It generates a new RSA key pair, and returns the private and public keys
-   * 
-   * @return An array of the private and public keys.
-   */
+  * It generates a new RSA key pair, and returns the private and public keys
+  * 
+  * @return An array of the private and public keys.
+  */
   private function _generateJWEKeys() {
     # Generate a new JWE private (and public) key pair.
     $config = array(
@@ -100,12 +101,12 @@ class HealthDataManager {
   }
 
   /**
-   * It creates a directory for the user if it doesn't exist
-   * 
-   * @param user_id The user's id in your database.
-   */
-  private function _setStorageDirectory($user_id) {
-    $dir_path = dirname(__FILE__) . '/patient_qr' . "/" . $this->institution . "/" . $user_id;
+  * It creates a directory for the user if it doesn't exist
+  * 
+  * @param path The path to create.
+  */
+  private function _setStorageDirectory($path) {
+    $dir_path = $path;
     $folder_not_exists = !file_exists($dir_path);
     if ($folder_not_exists) {
       mkdir($dir_path, 0777, true);
@@ -114,14 +115,14 @@ class HealthDataManager {
   }
 
   /**
-   * It fetches the public and private keys from the server
-   * 
-   * @param user_id The user's ID
-   * @param request_type This is the type of request you are making. It can be either
-   * 'generatePrivateKey' or 'getPublicKey'.
-   * 
-   * @return an array of keys.
-   */
+  * It fetches the public and private keys from the server
+  * 
+  * @param user_id The user's ID
+  * @param request_type This is the type of request you are making. It can be either
+  * 'generatePrivateKey' or 'getPublicKey'.
+  * 
+  * @return an array of keys.
+  */
   private function _fetchJWEKeys($user_id, $request_type) {
     try {
       $request = $this->client->request('POST', $this->endpoint . "/qr-library/get-key-pair", [
@@ -151,6 +152,126 @@ class HealthDataManager {
       }
     }
   }
+ 
+  /**
+  * Generate a dummy JWS private (and public) key pair for testing purpose only to replicate prod behavior.
+  * 
+  * @return An array of the private and public keys.
+  */
+  public function simulateJWSKeys() {
+    $this->_setStorageDirectory(dirname(__FILE__) . '/test_jws' . "/" . $this->institution);
+    $keys = $this->_generateJWSKeys();
+    file_put_contents($this->storage_path . '/test-private-key.pem', $keys["private_key"]);
+    file_put_contents($this->storage_path . '/test-public-key.pem', $keys["public_key"]);
+     
+   /**
+    * Test JWS Token at https://jwt.io/.
+    * 
+    * • Select RSA Algorithm from the site and paste the JWS token.
+    * • Verify the signature by converting the public key to JWK 
+    *   format at https://irrte.ch/jwt-js-decode/pem2jwk.html.
+    *   Then copy and paste the JWK into the verify signature box. 
+    */
+    // $jws_token = $this->token_instance->createJWSToken($keys["private_key"], json_encode(array("data"=>"test")));
+    // echo $jws_token;
+
+    return $keys;
+  }
+
+  /**
+   * It sets the private keys issued by the CA.
+   * 
+   * @param kid Key ID of the key pair for signature
+   * @param private_pem Private Key for Signature（PEM format）
+   * 
+   * @return Nothing.
+   */
+  public function setSigPrivateKey($kid, $private_pem) {
+    try {
+      $validKid = $this->validator_instance->isValidKID($kid);
+      $validPem = $this->validator_instance->isValidPEM($private_pem);
+      if(!$validKid) {
+        throw new Exception('Invalid kid argument');
+      }
+      if(!$validPem) {
+        throw new Exception('Invalid private pem argument');
+      }
+
+      $request = $this->client->request('POST', $this->endpoint . "/qr-library/sig-private-key", [
+        'form_params' => [
+            'kid' => $kid,
+            'private_key' =>  $private_pem
+        ]
+      ]);
+      $response = $request->getBody();
+      $result = json_decode($response);
+      return;
+    } catch(ServerException $error) {
+      $response = $error->getResponse();
+      $jsonBody = (string) $response->getBody();
+      $parseError = json_decode($jsonBody);
+      throw new Exception($parseError->message);
+    }
+  }
+
+  /**
+   * Get signature private key that was set in setSigPrivateKey.
+   * 
+   * @param kid Key ID of the key pair for signature
+   * 
+   * @return An array of the kid and private key.
+   */
+  public function getSigPrivateKey($kid) {
+    try {
+      $validKid = $this->validator_instance->isValidKID($kid);
+      if(!$validKid) {
+        throw new Exception('Invalid kid argument');
+      }
+      $request = $this->client->request('POST', $this->endpoint . "/qr-library/get-private-key", [
+        'form_params' => [
+            'kid' => $kid
+        ]
+      ]);
+      $response = $request->getBody();
+      $pair_list = json_decode($response)->data;
+      return count($pair_list) > 0 ? array(
+        "kid"=>$pair_list[0],
+        "private_key"=>$pair_list[1]
+      ):[];
+    } catch(ServerException $error) {
+      $response = $error->getResponse();
+      $jsonBody = (string) $response->getBody();
+      $parseError = json_decode($jsonBody);
+      throw new Exception($parseError->message);
+    }
+  } 
+
+  /**
+   * This function deletes the signature private key.
+   * 
+   * @param kid  Key ID of the key pair for signature
+   * 
+   * @return Nothing.
+   */
+  public function deleteSigPrivateKey($kid) {
+    try {
+      $validKid = $this->validator_instance->isValidKID($kid);
+      if(!$validKid) {
+        throw new Exception('Invalid kid argument');
+      }
+      $request = $this->client->request('POST', $this->endpoint . "/qr-library/del-private-key", [
+        'form_params' => [
+            'kid' => $kid
+        ]
+      ]);
+      return;
+    } catch(ServerException $error) {
+      $response = $error->getResponse();
+      $jsonBody = (string) $response->getBody();
+      $parseError = json_decode($jsonBody);
+      throw new Exception($parseError->message);
+    }
+  } 
 
   /**
    * This function creates a new encryption key pair for a user
@@ -202,7 +323,7 @@ class HealthDataManager {
         "emp_patient_id" => $user_id
       ));
 
-      $this->_setStorageDirectory($user_id);
+      $this->_setStorageDirectory(dirname(__FILE__) . '/patient_qr' . "/" . $this->institution . "/" . $user_id);
       $compressed_pk_data = gzdeflate($data);
       $base64URLPK = $this->qrcode_instance->base64UrlEncode($compressed_pk_data);
       $result = $this->qrcode_instance->generatePrivateKeyQRCode($base64URLPK, $this->storage_path);
@@ -264,5 +385,6 @@ class HealthDataManager {
     }
   }
 }
+
 // $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-// $manager->createEncKeyPair("EMR-101");
+// $keys = $manager->simulateJWSKeys();
