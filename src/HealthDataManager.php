@@ -388,3 +388,5 @@ class HealthDataManager {
 
 // $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
 // $keys = $manager->simulateJWSKeys();
+// $data = $manager->setSigPrivateKey("1234", $keys["private_key"]);
+// print_r($data);

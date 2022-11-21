@@ -4,14 +4,39 @@
 <members>
 <member name="T:HealthDataManager">
 </member>
+<member name="M:HealthDataManager.#ctor(Pchp.Core.PhpValue)">
+<summary>
+The constructor function initializes the class variables and creates instances of the other classes
+</summary>
+</member>
 <member name="M:HealthDataManager.#ctor(Pchp.Core.Context,Pchp.Core.DummyFieldsOnlyCtor)">
 <summary>
 Initializes the class without calling its '__construct' method.
 </summary>
 </member>
+<member name="M:HealthDataManager.#ctor(Pchp.Core.Context,Pchp.Core.PhpValue)">
+<summary>
+The constructor function initializes the class variables and creates instances of the other classes
+</summary>
+</member>
 <member name="T:HealthDataQrCode">
 </member>
 <member name="T:HealthDataToken">
+</member>
+<member name="M:HealthDataToken.#ctor">
+<summary>
+The constructor function initializes the class variables and creates instances of the other classes
+</summary>
+</member>
+<member name="M:HealthDataToken.#ctor(Pchp.Core.Context,Pchp.Core.DummyFieldsOnlyCtor)">
+<summary>
+Initializes the class without calling its '__construct' method.
+</summary>
+</member>
+<member name="M:HealthDataToken.#ctor(Pchp.Core.Context)">
+<summary>
+The constructor function initializes the class variables and creates instances of the other classes
+</summary>
 </member>
 <member name="T:Validator">
 </member>
@@ -1234,6 +1259,51 @@ Initializes the class without calling its '__construct' method.
 <member name="T:Endroid.QrCode.Writer.ValidatingWriterInterface">
 </member>
 <member name="T:Endroid.QrCode.Writer.WriterInterface">
+</member>
+<member name="T:Gamegos.JWS.Algorithm.AlgorithmInterface">
+</member>
+<member name="T:Gamegos.JWS.Algorithm.HMACAlgorithm">
+</member>
+<member name="M:Gamegos.JWS.Algorithm.HMACAlgorithm.#ctor(Pchp.Core.Context,Pchp.Core.DummyFieldsOnlyCtor)">
+<summary>
+Initializes the class without calling its '__construct' method.
+</summary>
+</member>
+<member name="T:Gamegos.JWS.Algorithm.NoneAlgorithm">
+</member>
+<member name="T:Gamegos.JWS.Algorithm.RSA_SSA_PKCSv15">
+</member>
+<member name="M:Gamegos.JWS.Algorithm.RSA_SSA_PKCSv15.#ctor(Pchp.Core.Context,Pchp.Core.DummyFieldsOnlyCtor)">
+<summary>
+Initializes the class without calling its '__construct' method.
+</summary>
+</member>
+<member name="T:Gamegos.JWS.Exception.InvalidSignatureException">
+</member>
+<member name="T:Gamegos.JWS.Exception.JWSException">
+</member>
+<member name="T:Gamegos.JWS.Exception.MalformedSignatureException">
+</member>
+<member name="T:Gamegos.JWS.Exception.UnspecifiedAlgorithmException">
+</member>
+<member name="T:Gamegos.JWS.Exception.UnsupportedAlgorithmException">
+</member>
+<member name="T:Gamegos.JWS.JWS">
+</member>
+<member name="M:Gamegos.JWS.JWS.#ctor(Pchp.Core.PhpValue)">
+<param name="algorithms" type="AlgorithmInterface[]"></param>
+</member>
+<member name="M:Gamegos.JWS.JWS.#ctor(Pchp.Core.Context,Pchp.Core.DummyFieldsOnlyCtor)">
+<summary>
+Initializes the class without calling its '__construct' method.
+</summary>
+</member>
+<member name="M:Gamegos.JWS.JWS.#ctor(Pchp.Core.Context,Pchp.Core.PhpValue)">
+<param name="algorithms" type="AlgorithmInterface[]"></param>
+</member>
+<member name="T:Gamegos.JWS.Util.Base64Url">
+</member>
+<member name="T:Gamegos.JWS.Util.Json">
 </member>
 <member name="T:GuzzleHttp.BodySummarizer">
 </member>
@@ -9354,6 +9424,170 @@ Triggers a silenced deprecation notice.
 <param name="version" type="string">The version of the package that introduced the deprecation</param>
 <param name="message" type="string">The message of the deprecation</param>
 </member>
+<member name="M:HealthDataManager.__construct(Pchp.Core.PhpValue)">
+<summary>
+The constructor function initializes the class variables and creates instances of the other classes
+</summary>
+</member>
+<member name="M:HealthDataManager._generateJWSKeys">
+<summary>
+&gt; Generate a new JWS private (and public) key pair
+</summary>
+<returns>array with the private and public keys.
+'simulateJWSKeys'</returns>
+</member>
+<member name="M:HealthDataManager._generateJWEKeys">
+<summary>
+It generates a new RSA key pair, and returns the private and public keys
+</summary>
+<returns>array of the private and public keys.</returns>
+</member>
+<member name="M:HealthDataManager._setStorageDirectory(Pchp.Core.PhpValue)">
+<summary>
+It creates a directory for the user if it doesn't exist
+</summary>
+</member>
+<member name="M:HealthDataManager._fetchJWEKeys(Pchp.Core.PhpValue,Pchp.Core.PhpValue)">
+<summary>
+It fetches the public and private keys from the server
+</summary>
+<returns>array of keys.</returns>
+</member>
+<member name="M:HealthDataManager.simulateJWSKeys">
+<summary>
+Generate a dummy JWS private (and public) key pair for testing purpose only to replicate prod behavior.
+</summary>
+<returns>array of the private and public keys.</returns>
+</member>
+<member name="M:HealthDataManager.setSigPrivateKey(Pchp.Core.PhpValue,Pchp.Core.PhpValue)">
+<summary>
+It sets the private keys issued by the CA.
+</summary>
+<returns>Nothing.</returns>
+</member>
+<member name="M:HealthDataManager.getSigPrivateKey(Pchp.Core.PhpValue)">
+<summary>
+Get signature private key that was set in setSigPrivateKey.
+</summary>
+<returns>array of the kid and private key.</returns>
+</member>
+<member name="M:HealthDataManager.deleteSigPrivateKey(Pchp.Core.PhpValue)">
+<summary>
+This function deletes the signature private key.
+</summary>
+<returns>Nothing.</returns>
+</member>
+<member name="M:HealthDataManager.createEncKeyPair(Pchp.Core.PhpValue)">
+<summary>
+This function creates a new encryption key pair for a user
+</summary>
+<returns>Nothing.</returns>
+</member>
+<member name="M:HealthDataManager.generateEncPrivateKeyQr(Pchp.Core.PhpValue)">
+<summary>
+It takes a user id, fetches the private key from the database, compresses it, encodes it, and then
+generates a QR code
+</summary>
+<returns>path of the generated QR code.</returns>
+</member>
+<member name="M:HealthDataManager.getEncKeyPair(Pchp.Core.PhpValue)">
+<summary>
+It fetches the private and public keys for a user from the database and returns them as an array
+</summary>
+<returns>array of the private and public keys.</returns>
+</member>
+<member name="M:HealthDataManager.deleteEncKeyPair(Pchp.Core.PhpValue)">
+<summary>
+This function deletes the encryption key pair for a user
+</summary>
+<returns>Nothing.</returns>
+</member>
+<member name="M:HealthDataQrCode._getBase10format(Pchp.Core.PhpValue)">
+<summary>
+It takes a string and converts it to a base 10 number
+</summary>
+<returns>base 10 format of the id.</returns>
+</member>
+<member name="M:HealthDataQrCode._revertText(Pchp.Core.PhpValue)">
+<summary>
+It takes a string of numbers, converts them to ASCII, and then adds 45 to each ASCII value
+</summary>
+<returns>base64 encoded text.</returns>
+</member>
+<member name="M:HealthDataQrCode.convertSHCSToToken(Pchp.Core.PhpValue)">
+<summary>
+It converts the base64 string to a token.
+</summary>
+<returns>decrypted text is being returned.</returns>
+</member>
+<member name="M:HealthDataQrCode.base64UrlEncode(Pchp.Core.PhpValue)">
+<summary>
+It takes a string and returns a base64 encoded string with the + and / characters replaced with -
+and _ respectively
+</summary>
+<returns>base64UrlEncode function is returning the base64 encoded string of the data passed in.</returns>
+</member>
+<member name="M:HealthDataQrCode.convertTokenToDecimalArray(Pchp.Core.PhpValue)">
+<summary>
+It takes a base 10 number and converts it to a base 62 number
+</summary>
+<returns>array of strings.</returns>
+</member>
+<member name="M:HealthDataQrCode.generateQrCode(Pchp.Core.PhpValue,Pchp.Core.PhpValue)">
+<summary>
+It generates a QR code from the given data and saves it to the given file path
+</summary>
+<returns>Nothing.</returns>
+</member>
+<member name="M:HealthDataQrCode.generatePrivateKeyQRCode(Pchp.Core.PhpValue,Pchp.Core.PhpValue)">
+<summary>
+It takes a private key and converts it to base 10, then splits it into chunks of 2000 characters
+and generates a QR code for each chunk
+</summary>
+<returns>array of file paths to the generated QR codes.</returns>
+</member>
+<member name="M:HealthDataToken.__construct">
+<summary>
+The constructor function initializes the class variables and creates instances of the other classes
+</summary>
+</member>
+<member name="M:HealthDataToken.createPEMToken(Pchp.Core.PhpValue,Pchp.Core.PhpValue)">
+<summary>
+It creates a JWT token with the data provided and the user_id provided
+</summary>
+<returns>JWT token</returns>
+</member>
+<member name="M:HealthDataToken.createJWSToken(Pchp.Core.PhpValue,Pchp.Core.PhpValue)">
+<summary>
+It creates a JWS token with the data provided and its private key for signature
+</summary>
+<returns>JWS token</returns>
+</member>
+<member name="M:HealthDataToken.createJWEToken(Pchp.Core.PhpValue,Pchp.Core.PhpValue)">
+<summary>
+It creates a JWE token with the data provided and its public key for encryption.
+</summary>
+<returns>JWE token</returns>
+</member>
+<member name="M:Validator.isValidUserID(Pchp.Core.PhpValue)">
+<summary>
+&gt; This function returns true if the user_id is a string that is less than or equal to 255 characters
+and greater than 0 characters
+</summary>
+<returns>boolean value.</returns>
+</member>
+<member name="M:Validator.isValidKID(Pchp.Core.PhpValue)">
+<summary>
+&gt; This function returns true if the kid is a string that is greater than 0 characters.
+</summary>
+<returns>boolean value.</returns>
+</member>
+<member name="M:Validator.isValidPEM(Pchp.Core.PhpValue)">
+<summary>
+&gt; This function returns true if the pem_file is a string and in a valid pem file format.
+</summary>
+<returns>boolean value.</returns>
+</member>
 <member name="M:BaconQrCode.Common.BitArray.__construct(System.Int64)">
 <summary>
 Creates a new bit array with a given size.
@@ -10706,6 +10940,72 @@ Forbid unserializing enums.
 </member>
 <member name="M:Endroid.QrCode.Writer.WriterInterface.write(Endroid.QrCode.QrCodeInterface,Endroid.QrCode.Logo.LogoInterface,Endroid.QrCode.Label.LabelInterface,Pchp.Core.PhpArray)">
 <param name="options" type="array&lt;mixed&gt;"></param>
+</member>
+<member name="M:Gamegos.JWS.Algorithm.AlgorithmInterface.sign(Pchp.Core.PhpValue,Pchp.Core.PhpValue)">
+<param name="key" type="mixed"></param>
+<param name="data" type="string"></param>
+</member>
+<member name="M:Gamegos.JWS.Algorithm.AlgorithmInterface.verify(Pchp.Core.PhpValue,Pchp.Core.PhpValue,Pchp.Core.PhpValue)">
+<param name="key" type="mixed"></param>
+<param name="data" type="string"></param>
+<param name="signature" type="mixed"></param>
+</member>
+<member name="M:Gamegos.JWS.Algorithm.RSA_SSA_PKCSv15.sign(Pchp.Core.PhpValue,Pchp.Core.PhpValue)">
+<param name="key" type="string">PEM encoded private key</param>
+<param name="data" type="mixed"></param>
+</member>
+<member name="M:Gamegos.JWS.Algorithm.RSA_SSA_PKCSv15.verify(Pchp.Core.PhpValue,Pchp.Core.PhpValue,Pchp.Core.PhpValue)">
+<param name="key" type="string">PEM encoded public key</param>
+<param name="data" type="mixed"></param>
+<param name="signature" type="mixed"></param>
+</member>
+<member name="M:Gamegos.JWS.JWS.__construct(Pchp.Core.PhpValue)">
+<param name="algorithms" type="AlgorithmInterface[]"></param>
+</member>
+<member name="M:Gamegos.JWS.JWS.registerAlgorithms(Pchp.Core.PhpArray)">
+<param name="algorithms" type="AlgorithmInterface[]"></param>
+</member>
+<member name="M:Gamegos.JWS.JWS.registerAlgorithm(Pchp.Core.PhpValue,Gamegos.JWS.Algorithm.AlgorithmInterface)">
+<param name="name" type="string"></param>
+<param name="algorithm" type="AlgorithmInterface"></param>
+</member>
+<member name="M:Gamegos.JWS.JWS.supportedAlgorithms">
+</member>
+<member name="M:Gamegos.JWS.JWS._getAlgorithm(Pchp.Core.PhpValue)">
+</member>
+<member name="M:Gamegos.JWS.JWS.encode(Pchp.Core.PhpArray,Pchp.Core.PhpValue,Pchp.Core.PhpValue)">
+<param name="headers" type="array"></param>
+<param name="payload" type="mixed"></param>
+</member>
+<member name="M:Gamegos.JWS.JWS.decode(Pchp.Core.PhpValue)">
+<summary>
+Only decodes jws string and returns headers and payload. To verify signature use verify method.
+</summary>
+<returns>array(
+'headers' =&gt; array(),
+'payload' =&gt; payload data
+)</returns>
+</member>
+<member name="M:Gamegos.JWS.JWS.verify(Pchp.Core.PhpValue,Pchp.Core.PhpValue)">
+<returns>array(
+'headers' =&gt; array(),
+'payload' =&gt; mixed payload data
+)</returns>
+</member>
+<member name="M:Gamegos.JWS.Util.Base64Url.encode(Pchp.Core.Context,Pchp.Core.PhpValue)">
+<summary>
+from: http://www.php.net/manual/en/function.base64-encode.php#103849
+</summary>
+</member>
+<member name="M:Gamegos.JWS.Util.Base64Url.decode(Pchp.Core.Context,Pchp.Core.PhpValue)">
+<summary>
+from: http://www.php.net/manual/en/function.base64-encode.php#103849
+</summary>
+</member>
+<member name="M:Gamegos.JWS.Util.Json.transformJsonError(Pchp.Core.Context)">
+<summary>
+borrowed from Symfony\Component\HttpFoundation\JsonResponse class
+</summary>
 </member>
 <member name="M:GuzzleHttp.BodySummarizer.summarize(Psr.Http.Message.MessageInterface)">
 <summary>
