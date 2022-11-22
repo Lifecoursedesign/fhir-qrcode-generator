@@ -3,6 +3,13 @@
   <PropertyGroup>
     <OutputType>library</OutputType>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <Version>1.0.4</Version>
+    <AssemblyVersion>1.0.4</AssemblyVersion>
+    <FileVersion>1.0.4</FileVersion>
+    <Company>Lanex Corporation</Company>
+    <Authors>Lanex Corporation</Authors>
+    <Product>Mlink_QR_Generator</Product>
+    <Copyright>Saitama Copyright © 2022</Copyright>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
