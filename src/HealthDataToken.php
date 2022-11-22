@@ -1,4 +1,5 @@
 <?php
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 use Gamegos\JWS\Algorithm\RSA_SSA_PKCSv15;
 
