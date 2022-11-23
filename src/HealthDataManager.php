@@ -229,15 +229,11 @@ class HealthDataManager {
       if (!$validKid) {
         throw new Exception('Invalid kid argument');
       }
-      // $request = $this->_libraryGetRequest("/get-private-key");
-      // $pair_list = json_decode($request)->data;
-      $request = $this->client->request('POST', $this->endpoint . "/qr-library/get-private-key", [
-        'form_params' => [
-          'kid' => $kid
-        ]
-      ]);
-      $response = $request->getBody();
-      $pair_list = json_decode($response)->data;
+      $postParameter = array(
+        'kid' => $kid
+      );
+      $request = $this->_libraryPostRequest("/get-private-key", $postParameter);
+      $pair_list = json_decode($request)->data;
       return count($pair_list) > 0 ? array(
         "kid" => $pair_list[0],
         "private_key" => $pair_list[1]
@@ -263,11 +259,10 @@ class HealthDataManager {
       if (!$validKid) {
         throw new Exception('Invalid kid argument');
       }
-      $request = $this->client->request('POST', $this->endpoint . "/qr-library/del-private-key", [
-        'form_params' => [
-          'kid' => $kid
-        ]
-      ]);
+      $postParameter = array(
+        'kid' => $kid
+      );
+      $request = $this->_libraryPostRequest("/del-private-key", $postParameter);
       return;
     } catch (ServerException $error) {
       $response = $error->getResponse();
@@ -383,7 +378,7 @@ class HealthDataManager {
   }
 }
 
-$manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
+// $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
 // $res = $manager->simulateJWSKeys();
-$res = $manager->getSigPrivateKey("kid-1");
-print_r($res);
+// $res = $manager->deleteSigPrivateKey("kid-1");
+// print_r($res);
