@@ -1,5 +1,9 @@
 <?php
+
 require dirname(__DIR__) . '/vendor/autoload.php';
+
+require "HealthDataQrCode.php";
+require "Validator.php";
 
 use Gamegos\JWS\Algorithm\RSA_SSA_PKCSv15;
 
@@ -65,7 +69,7 @@ class HealthDataToken {
    * @return A JWS token
    */
   function createJWSToken($private_key, $content) {
-    
+
     # Compressed Payload
     $compressed = gzdeflate($content);
     $payload_part = $this->qrcode_instance->base64UrlEncode($compressed);
@@ -108,7 +112,8 @@ class HealthDataToken {
     # Load RSA public key
     // $jwk = RSAPublicKeyJWK::fromPEM($public_key);
     $jwk = RSAPublicKeyJWK::fromPEM(
-      PEM::fromString($public_key));
+      PEM::fromString($public_key)
+    );
     $key_algo = RSAESOAEPAlgorithm::fromPublicKey($jwk);
     $enc_algo = new A128CBCHS256Algorithm();
 
