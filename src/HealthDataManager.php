@@ -104,10 +104,17 @@ class HealthDataManager {
    * @return An array of the private and public keys.
    */
   public function simulateJWSKeys() {
+    $request = $this->client->request('GET', $this->endpoint . "/qr-library/gen-keys");
+    $response = $request->getBody();
+    $keys = json_decode($response)->data;
+    $res= array(
+      "private_key" => $keys->privateKey,
+      "public_key" => $keys->publicKey
+    );
+
     $this->_setStorageDirectory(dirname(__FILE__) . '/test_jws' . "/" . $this->institution);
-    $keys = $this->_generateJWSKeys();
-    file_put_contents($this->storage_path . '/test-private-key.pem', $keys["private_key"]);
-    file_put_contents($this->storage_path . '/test-public-key.pem', $keys["public_key"]);
+    file_put_contents($this->storage_path . '/test-private-key.pem', $res["private_key"]);
+    file_put_contents($this->storage_path . '/test-public-key.pem', $res["public_key"]);
 
     /**
      * Test JWS Token at https://jwt.io/.
@@ -120,7 +127,7 @@ class HealthDataManager {
     // $jws_token = $this->token_instance->createJWSToken($keys["private_key"], json_encode(array("data"=>"test")));
     // echo $jws_token;
 
-    return $keys;
+    return $res;
   }
 
   /**
@@ -328,7 +335,5 @@ class HealthDataManager {
 }
 
 // $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-// $keys = $manager->deleteEncKeyPair("emp-101");
-// print_r($keys);
-// $data = $manager->setSigPrivateKey("kid-012", $keys["private_key"]);
-// print_r($data);
+// $res = $manager->createEncKeyPair("EMR-102");
+// print_r($res);
