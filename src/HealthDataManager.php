@@ -37,7 +37,11 @@ class HealthDataManager {
       $this->token_instance = new HealthDataToken();
       $this->qrcode_instance = new HealthDataQrCode();
       $this->validator_instance = new Validator();
-      $this->client = new Client();
+      // $this->client = new Client();
+      $this->client = new Client([
+        'base_uri' => $fhir_qr_config["API_URL"]
+      ]);
+      // $this->client = new Client(array('curl' => array( "CURLOPT_SSL_VERIFYPEER" => false, )));
       $this->endpoint = $fhir_qr_config["API_URL"];
       $this->institution = $selected_institution;
     } else {
@@ -238,13 +242,25 @@ class HealthDataManager {
         throw new Exception('Invalid patient id');
       }
 
-      $request = $this->client->request('POST', $this->endpoint . "/qr-library/key-pair", [
-        'form_params' => [
+      $postParameter = array(
           'emr_patient_id' => $user_id,
           'jose_type' => 'JWE',
           'institution_id' => $this->institution
-        ]
-      ]);
+      );
+    
+      $curlHandle = curl_init($this->endpoint . "/qr-library/key-pair");
+      curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $postParameter);
+      curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+      
+      $curlResponse = curl_exec($curlHandle);
+      curl_close($curlHandle);
+      // $request = $this->client->createRequest('POST', $this->endpoint . "/qr-library/key-pair", [
+      //   'form_params' => [
+      //     'emr_patient_id' => $user_id,
+      //     'jose_type' => 'JWE',
+      //     'institution_id' => $this->institution
+      //   ]
+      // ]);
       return;
     } catch (ServerException $e) {
       throw new Exception('Error Saving Encryption Key Pair');
@@ -334,6 +350,6 @@ class HealthDataManager {
   }
 }
 
-// $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-// $res = $manager->createEncKeyPair("EMR-102");
+$manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
+$res = $manager->createEncKeyPair("LS-101");
 // print_r($res);
