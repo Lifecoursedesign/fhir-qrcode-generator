@@ -12,17 +12,12 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 require "HealthDataToken.php";
 require "config/index.php";
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ServerException;
-
-
 class HealthDataManager {
 
   private $storage_path;
   private $token_instance;
   private $qrcode_instance;
   private $validator_instance;
-  private $client;
   private $endpoint;
   private $institution;
 
@@ -37,9 +32,6 @@ class HealthDataManager {
       $this->token_instance = new HealthDataToken();
       $this->qrcode_instance = new HealthDataQrCode();
       $this->validator_instance = new Validator();
-      $this->client = new Client([
-        'base_uri' => $fhir_qr_config["API_URL"]
-      ]);
       $this->endpoint = $fhir_qr_config["API_URL"];
       $this->institution = $selected_institution;
     } else {
@@ -134,22 +126,23 @@ class HealthDataManager {
       );
       $request = $this->_libraryPostRequest("/get-key-pair", $postParameter);
       $result = json_decode($request);
-      return $result->data->pem_list;
-    } catch (ServerException $e) {
-      $response = $e->getResponse();
-      $jsonBody = (string) $response->getBody();
-      $parseError = json_decode($jsonBody);
-      $not_exists = str_contains(strtolower($parseError->message), 'row not found');
-      if ($not_exists && $request_type !== 'generatePrivateKey') {
-        return [];
+      $not_exists = str_contains(strtolower($result->message), 'row not found');
+      if($result->statusCode == 200) {
+        return $result->data->pem_list;
       } else {
-        if ($not_exists) {
-          throw new Exception('Keys not found');
+        if($not_exists && $request_type !== 'generatePrivateKey') {
+          return [];
         } else {
-          # Throw other internal server error message
-          throw new Exception($parseError->message);
+          if ($not_exists) {
+            throw new Exception('Keys not found');
+          } else {
+            # Throw other internal server error message
+            throw new Exception($parseError->message);
+          }
         }
       }
+    } catch (Exeption $e) {
+      throw new Exception('Something went wrong when fetching keys.');
     }
   }
 
@@ -206,13 +199,14 @@ class HealthDataManager {
         'kid' => $kid,
         'private_key' =>  $private_pem
       );
-      $this->_libraryPostRequest("/sig-private-key", $postParameter);
+      $result = $this->_libraryPostRequest("/sig-private-key", $postParameter);
+      $resp =  json_decode($result);
+      if($resp->statusCode != 200) {
+        throw new Exception($resp->message);
+      }
       return;
-    } catch (ServerException $error) {
-      $response = $error->getResponse();
-      $jsonBody = (string) $response->getBody();
-      $parseError = json_decode($jsonBody);
-      throw new Exception($parseError->message);
+    } catch (Exception $error) {
+      throw new Exception($error->getMessage());
     }
   }
 
@@ -233,16 +227,18 @@ class HealthDataManager {
         'kid' => $kid
       );
       $request = $this->_libraryPostRequest("/get-private-key", $postParameter);
-      $pair_list = json_decode($request)->data;
-      return count($pair_list) > 0 ? array(
-        "kid" => $pair_list[0],
-        "private_key" => $pair_list[1]
-      ) : [];
-    } catch (ServerException $error) {
-      $response = $error->getResponse();
-      $jsonBody = (string) $response->getBody();
-      $parseError = json_decode($jsonBody);
-      throw new Exception($parseError->message);
+      $resp = json_decode($request);
+      if($resp->statusCode == 200) {
+        $pair_list = $resp->data;
+
+        return count($pair_list) > 0 ? array(
+          "kid" => $pair_list[0],
+          "private_key" => $pair_list[1]
+        ) : [];
+      }
+      return [];
+    } catch (Exception $error) {
+      throw new Exception($error->getMessage());
     }
   }
 
@@ -264,11 +260,8 @@ class HealthDataManager {
       );
       $request = $this->_libraryPostRequest("/del-private-key", $postParameter);
       return;
-    } catch (ServerException $error) {
-      $response = $error->getResponse();
-      $jsonBody = (string) $response->getBody();
-      $parseError = json_decode($jsonBody);
-      throw new Exception($parseError->message);
+    } catch (Exception $error) {
+      throw new Exception($error->getMessage());
     }
   }
 
@@ -291,7 +284,7 @@ class HealthDataManager {
       );
       $this->_libraryPostRequest("/key-pair", $postParameter);
       return;
-    } catch (ServerException $e) {
+    } catch (Exception $e) {
       throw new Exception('Error Saving Encryption Key Pair');
     }
   }
@@ -378,7 +371,7 @@ class HealthDataManager {
   }
 }
 
-// $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-// $res = $manager->simulateJWSKeys();
-// $res = $manager->deleteSigPrivateKey("kid-1");
-// print_r($res);
+$manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
+$res = $manager->simulateJWSKeys();
+$res = $manager->deleteSigPrivateKey("kid-12");
+print_r($res);
