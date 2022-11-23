@@ -48,7 +48,7 @@ class HealthDataManager {
   }
 
   /**
-   * The function that calls post requests.
+   * The function that calls the post requests.
    * 
    * @param path The path to request.
    * @param postParams Array of post request.
@@ -64,6 +64,31 @@ class HealthDataManager {
       curl_setopt($curlHandle,CURLOPT_POST, true);
     }
     
+
+    $curlResponse = curl_exec($curlHandle);
+
+    if($curlResponse=== false){
+        throw new Exception('Curl error: ' . curl_error($curlHandle));
+        echo 'Curl error: ' . curl_error($curlHandle);
+    } else {
+        echo "Success";
+    }
+    curl_close($curlHandle);
+    return $curlResponse;
+  }
+
+  /**
+   * The function that calls the get requests.
+   * 
+   * @param path The path to request.
+   */
+
+  private function _libraryGetRequest($path) {
+    $curlHandle = curl_init();
+    curl_setopt($curlHandle, CURLOPT_URL, $this->endpoint."/qr-library".$path);
+    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
+    curl_setopt($curlHandle, CURLOPT_HTTPGET, true);  
 
     $curlResponse = curl_exec($curlHandle);
 
@@ -134,9 +159,8 @@ class HealthDataManager {
    * @return An array of the private and public keys.
    */
   public function simulateJWSKeys() {
-    $request = $this->client->request('GET', $this->endpoint . "/qr-library/gen-keys");
-    $response = $request->getBody();
-    $keys = json_decode($response)->data;
+    $request = $this->_libraryGetRequest("/gen-keys");
+    $keys = json_decode($request)->data;
     $res= array(
       "private_key" => $keys->privateKey,
       "public_key" => $keys->publicKey
@@ -178,15 +202,11 @@ class HealthDataManager {
       if (!$validPem) {
         throw new Exception('Invalid private pem argument');
       }
-
-      $request = $this->client->request('POST', $this->endpoint . "/qr-library/sig-private-key", [
-        'form_params' => [
-          'kid' => $kid,
-          'private_key' =>  $private_pem
-        ]
-      ]);
-      $response = $request->getBody();
-      $result = json_decode($response);
+      $postParameter = array(
+        'kid' => $kid,
+        'private_key' =>  $private_pem
+      );
+      $this->_libraryPostRequest("/sig-private-key", $postParameter);
       return;
     } catch (ServerException $error) {
       $response = $error->getResponse();
@@ -209,6 +229,8 @@ class HealthDataManager {
       if (!$validKid) {
         throw new Exception('Invalid kid argument');
       }
+      // $request = $this->_libraryGetRequest("/get-private-key");
+      // $pair_list = json_decode($request)->data;
       $request = $this->client->request('POST', $this->endpoint . "/qr-library/get-private-key", [
         'form_params' => [
           'kid' => $kid
@@ -362,5 +384,6 @@ class HealthDataManager {
 }
 
 $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-$res = $manager->generateEncPrivateKeyQr("LS-106");
+// $res = $manager->simulateJWSKeys();
+$res = $manager->getSigPrivateKey("kid-1");
 print_r($res);
