@@ -37,16 +37,44 @@ class HealthDataManager {
       $this->token_instance = new HealthDataToken();
       $this->qrcode_instance = new HealthDataQrCode();
       $this->validator_instance = new Validator();
-      // $this->client = new Client();
       $this->client = new Client([
         'base_uri' => $fhir_qr_config["API_URL"]
       ]);
-      // $this->client = new Client(array('curl' => array( "CURLOPT_SSL_VERIFYPEER" => false, )));
       $this->endpoint = $fhir_qr_config["API_URL"];
       $this->institution = $selected_institution;
     } else {
       throw new Exception('Invalid hospital id');
     }
+  }
+
+  /**
+   * The function that calls post requests.
+   * 
+   * @param path The path to request.
+   * @param postParams Array of post request.
+   */
+  private function _libraryPostRequest($path, $postParams) {
+    $curlHandle = curl_init();
+    curl_setopt($curlHandle, CURLOPT_URL, $this->endpoint."/qr-library".$path);
+    curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $postParams);
+    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
+    # Add on windows to treat request as POST
+    if(stripos(PHP_OS, 'win') === 0) {
+      curl_setopt($curlHandle,CURLOPT_POST, true);
+    }
+    
+
+    $curlResponse = curl_exec($curlHandle);
+
+    if($curlResponse=== false){
+        throw new Exception('Curl error: ' . curl_error($curlHandle));
+        echo 'Curl error: ' . curl_error($curlHandle);
+    } else {
+        echo "Success";
+    }
+    curl_close($curlHandle);
+    return $curlResponse;
   }
 
   /**
@@ -74,15 +102,13 @@ class HealthDataManager {
    */
   private function _fetchJWEKeys($user_id, $request_type) {
     try {
-      $request = $this->client->request('POST', $this->endpoint . "/qr-library/get-key-pair", [
-        'form_params' => [
-          'emr_patient_id' => $user_id,
-          'jose_type' => 'JWE',
-          'institution_id' => $this->institution
-        ]
-      ]);
-      $response = $request->getBody();
-      $result = json_decode($response);
+      $postParameter = array(
+        'emr_patient_id' => $user_id,
+        'jose_type' => 'JWE',
+        'institution_id' => $this->institution
+      );
+      $request = $this->_libraryPostRequest("/get-key-pair", $postParameter);
+      $result = json_decode($request);
       return $result->data->pem_list;
     } catch (ServerException $e) {
       $response = $e->getResponse();
@@ -241,45 +267,13 @@ class HealthDataManager {
       if (!$this->validator_instance->isValidUserID($user_id)) {
         throw new Exception('Invalid patient id');
       }
-
       $postParameter = array(
-          'emr_patient_id' => $user_id,
-          'jose_type' => 'JWE',
-          'institution_id' => $this->institution
+        'emr_patient_id' => $user_id,
+        'jose_type' => 'JWE',
+        'institution_id' => $this->institution
       );
-    
-      // $curlHandle = curl_init("https://api.linkgdm.lanex.co.jp/api/v1/qr-library/key-pair");
-      
-      $curlHandle = curl_init();
-      curl_setopt($curlHandle, CURLOPT_URL, "https://api.linkgdm.lanex.co.jp/api/v1/qr-library/key-pair");
-      curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $postParameter);
-      curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-      // curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, 0);
-      curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
-      curl_setopt($curlHandle,CURLOPT_POST,true);
-      $curlResponse = curl_exec($curlHandle);
-      if($curlResponse=== false)
-      {
-          throw new Exception('Curl error: ' . curl_error($curlHandle));
-          echo 'Curl error: ' . curl_error($curlHandle);
-      }
-      else
-      {
-        throw new Exception('Operation completed without any errors');
-          // echo print_r($curlResponse);
-          // echo "\n".'Operation completed without any errors';
-      }
-
-      // $curlResponse = curl_exec($curlHandle);
-      curl_close($curlHandle);
-      // $request = $this->client->createRequest('POST', $this->endpoint . "/qr-library/key-pair", [
-      //   'form_params' => [
-      //     'emr_patient_id' => $user_id,
-      //     'jose_type' => 'JWE',
-      //     'institution_id' => $this->institution
-      //   ]
-      // ]);
-      // return;
+      $this->_libraryPostRequest("/key-pair", $postParameter);
+      return;
     } catch (ServerException $e) {
       throw new Exception('Error Saving Encryption Key Pair');
     }
@@ -351,13 +345,12 @@ class HealthDataManager {
    */
   public function deleteEncKeyPair($user_id) {
     try {
-      $request = $this->client->request('POST', $this->endpoint . "/qr-library/del-key-pair", [
-        'form_params' => [
-          'emr_patient_id' => $user_id,
-          'jose_type' => 'JWE',
-          'institution_id' => $this->institution
-        ]
-      ]);
+      $postParameter = array(
+        'emr_patient_id' => $user_id,
+        'jose_type' => 'JWE',
+        'institution_id' => $this->institution
+      );
+      $this->_libraryPostRequest("/del-key-pair", $postParameter);
       return;
     } catch (Exception $e) {
       $response = $e->getResponse();
@@ -368,6 +361,6 @@ class HealthDataManager {
   }
 }
 
-// $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-// $res = $manager->createEncKeyPair("LS-105");
-// print_r($res);
+$manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
+$res = $manager->generateEncPrivateKeyQr("LS-106");
+print_r($res);
