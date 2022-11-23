@@ -10,8 +10,6 @@ define("HOSPITALS", array(
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 require "HealthDataToken.php";
-require "HealthDataQrCode.php";
-require "Validator.php";
 require "config/index.php";
 
 use GuzzleHttp\Client;
@@ -45,59 +43,6 @@ class HealthDataManager {
     } else {
       throw new Exception('Invalid hospital id');
     }
-  }
-
-  /**
-   * > Generate a new JWS private (and public) key pair
-   * 
-   * @return An array with the private and public keys.
-   * 'simulateJWSKeys'
-   */
-  private function _generateJWSKeys() {
-    # Generate a new JWS private (and public) key pair.
-    $config = array(
-      "private_key_bits" => 2048,
-      "private_key_type" => OPENSSL_KEYTYPE_RSA
-    );
-    $keys = openssl_pkey_new($config);
-
-    # Store Patient Private Key.
-    openssl_pkey_export($keys, $private_key);
-
-    # Store Patient Public Key.
-    $public_key_detail = openssl_pkey_get_details($keys);
-    $public_key = $public_key_detail["key"];
-
-    return array(
-      'private_key' => $private_key,
-      'public_key' => $public_key
-    );
-  }
-
-  /**
-   * It generates a new RSA key pair, and returns the private and public keys
-   * 
-   * @return An array of the private and public keys.
-   */
-  private function _generateJWEKeys() {
-    # Generate a new JWE private (and public) key pair.
-    $config = array(
-      "private_key_bits" => 2048,
-      "private_key_type" => OPENSSL_KEYTYPE_RSA
-    );
-    $keys = openssl_pkey_new($config);
-
-    # Store Patient Private Key.
-    openssl_pkey_export($keys, $private_key);
-
-    # Store Patient Public Key.
-    $public_key_detail = openssl_pkey_get_details($keys);
-    $public_key = $public_key_detail["key"];
-
-    return array(
-      'private_key' => $private_key,
-      'public_key' => $public_key
-    );
   }
 
   /**
@@ -286,13 +231,9 @@ class HealthDataManager {
         throw new Exception('Invalid patient id');
       }
 
-      // Generate Encryption Key Pairs
-      $keys = $this->_generateJWEKeys();
-
       $request = $this->client->request('POST', $this->endpoint . "/qr-library/key-pair", [
         'form_params' => [
           'emr_patient_id' => $user_id,
-          'pem_list' => $keys,
           'jose_type' => 'JWE',
           'institution_id' => $this->institution
         ]
@@ -387,6 +328,7 @@ class HealthDataManager {
 }
 
 // $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-// $keys = $manager->simulateJWSKeys();
+// $keys = $manager->deleteEncKeyPair("emp-101");
+// print_r($keys);
 // $data = $manager->setSigPrivateKey("kid-012", $keys["private_key"]);
 // print_r($data);
