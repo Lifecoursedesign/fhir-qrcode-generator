@@ -248,11 +248,29 @@ class HealthDataManager {
           'institution_id' => $this->institution
       );
     
-      $curlHandle = curl_init($this->endpoint . "/qr-library/key-pair");
+      // $curlHandle = curl_init("https://api.linkgdm.lanex.co.jp/api/v1/qr-library/key-pair");
+      
+      $curlHandle = curl_init();
+      curl_setopt($curlHandle, CURLOPT_URL, "https://api.linkgdm.lanex.co.jp/api/v1/qr-library/key-pair");
       curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $postParameter);
       curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-      
+      // curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, 0);
+      curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
+      curl_setopt($curlHandle,CURLOPT_POST,true);
       $curlResponse = curl_exec($curlHandle);
+      if($curlResponse=== false)
+      {
+          throw new Exception('Curl error: ' . curl_error($curlHandle));
+          echo 'Curl error: ' . curl_error($curlHandle);
+      }
+      else
+      {
+        throw new Exception('Operation completed without any errors');
+          // echo print_r($curlResponse);
+          // echo "\n".'Operation completed without any errors';
+      }
+
+      // $curlResponse = curl_exec($curlHandle);
       curl_close($curlHandle);
       // $request = $this->client->createRequest('POST', $this->endpoint . "/qr-library/key-pair", [
       //   'form_params' => [
@@ -261,7 +279,7 @@ class HealthDataManager {
       //     'institution_id' => $this->institution
       //   ]
       // ]);
-      return;
+      // return;
     } catch (ServerException $e) {
       throw new Exception('Error Saving Encryption Key Pair');
     }
@@ -350,6 +368,6 @@ class HealthDataManager {
   }
 }
 
-$manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-$res = $manager->createEncKeyPair("LS-101");
+// $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
+// $res = $manager->createEncKeyPair("LS-105");
 // print_r($res);
