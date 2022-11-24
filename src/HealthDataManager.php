@@ -10,7 +10,7 @@ define("HOSPITALS", array(
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 require "HealthDataToken.php";
-require "config/index.php";
+require "Config.php";
 
 class HealthDataManager {
 
@@ -28,11 +28,13 @@ class HealthDataManager {
    */
   public function __construct($selected_institution) {
     if (((1 <= $selected_institution) && ($selected_institution <= 4))) {
+      $config  = new Config();
       $this->token_instance = new HealthDataToken();
       $this->qrcode_instance = new HealthDataQrCode();
       $this->validator_instance = new Validator();
-      $this->endpoint = Config::getConfig();
+      $this->endpoint = $config->getConfig();
       $this->institution = $selected_institution;
+      echo $this->endpoint;
     } else {
       throw new Exception('Invalid hospital id');
     }

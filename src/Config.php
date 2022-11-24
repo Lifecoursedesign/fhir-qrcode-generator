@@ -6,7 +6,7 @@ class Config {
    * 
    * @return a String or URL.
   */
-  static public function getConfig() {
+  public function getConfig() {
     $development = "http://localhost:3333/api/v1";
     $production = "https://mlink-api.lcd.or.jp/api/v1";
     $testing = "https://api.linkgdm.lanex.co.jp/api/v1";
