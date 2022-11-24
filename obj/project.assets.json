@@ -7759,11 +7759,11 @@
     "/Users/louiejohnseno/.nuget/packages/": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "1.0.4",
     "restore": {
-      "projectUniqueName": "/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/library.msbuildproj",
+      "projectUniqueName": "/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/mlink_qr.msbuildproj",
       "projectName": "saitama.fhir-qr-generator",
-      "projectPath": "/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/library.msbuildproj",
+      "projectPath": "/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/mlink_qr.msbuildproj",
       "packagesPath": "/Users/louiejohnseno/.nuget/packages/",
       "outputPath": "/Users/louiejohnseno/Development/work_projects/fhir-qr-generator/obj/",
       "projectStyle": "PackageReference",

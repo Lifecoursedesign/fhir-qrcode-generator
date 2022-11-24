@@ -1,8 +1,15 @@
 <Project Sdk="Peachpie.NET.Sdk/1.0.6">
 
   <PropertyGroup>
+  <!-- exe start -->
+    <!-- <OutputType>exe</OutputType> -->
+    <!-- <TargetFramework>netcoreapp3.1</TargetFramework> -->
+    <!-- <StartupObject>src/HealthDataManager.php</StartupObject> -->
+  <!--  exe end-->
+  <!--  library start -->
     <OutputType>library</OutputType>
     <TargetFramework>netstandard2.1</TargetFramework>
+  <!-- lbirary end -->
     <Version>1.0.4</Version>
     <AssemblyVersion>1.0.4</AssemblyVersion>
     <FileVersion>1.0.4</FileVersion>
@@ -12,6 +19,7 @@
     <Copyright>Saitama Copyright © 2022</Copyright>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <NoWarn>PHP5012, PHP5018</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

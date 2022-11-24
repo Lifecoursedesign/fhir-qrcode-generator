@@ -10,13 +10,7 @@ define("HOSPITALS", array(
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 require "HealthDataToken.php";
-require "HealthDataQrCode.php";
-require "Validator.php";
-require "config/index.php";
-
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ServerException;
-
+require "Config.php";
 
 class HealthDataManager {
 
@@ -24,7 +18,6 @@ class HealthDataManager {
   private $token_instance;
   private $qrcode_instance;
   private $validator_instance;
-  private $client;
   private $endpoint;
   private $institution;
 
@@ -34,70 +27,72 @@ class HealthDataManager {
    * @param selected_institution The hospital id of the hospital you want to use.
    */
   public function __construct($selected_institution) {
-    global $fhir_qr_config;
     if (((1 <= $selected_institution) && ($selected_institution <= 4))) {
+      $config  = new Config();
       $this->token_instance = new HealthDataToken();
       $this->qrcode_instance = new HealthDataQrCode();
       $this->validator_instance = new Validator();
-      $this->client = new Client();
-      $this->endpoint = $fhir_qr_config["API_URL"];
+      $this->endpoint = $config->getConfig();
       $this->institution = $selected_institution;
+      echo $this->endpoint;
     } else {
       throw new Exception('Invalid hospital id');
     }
   }
 
   /**
-   * > Generate a new JWS private (and public) key pair
+   * The function that calls the post requests.
    * 
-   * @return An array with the private and public keys.
-   * 'simulateJWSKeys'
+   * @param path The path to request.
+   * @param postParams Array of post request.
    */
-  private function _generateJWSKeys() {
-    # Generate a new JWS private (and public) key pair.
-    $config = array(
-      "private_key_bits" => 2048,
-      "private_key_type" => OPENSSL_KEYTYPE_RSA
-    );
-    $keys = openssl_pkey_new($config);
+  private function _libraryPostRequest($path, $postParams) {
+    $curlHandle = curl_init();
+    curl_setopt($curlHandle, CURLOPT_URL, $this->endpoint."/qr-library".$path);
+    curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $postParams);
+    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
+    # Add on windows to treat request as POST
+    if(stripos(PHP_OS, 'win') === 0) {
+      curl_setopt($curlHandle,CURLOPT_POST, true);
+    }
+    
 
-    # Store Patient Private Key.
-    openssl_pkey_export($keys, $private_key);
+    $curlResponse = curl_exec($curlHandle);
 
-    # Store Patient Public Key.
-    $public_key_detail = openssl_pkey_get_details($keys);
-    $public_key = $public_key_detail["key"];
-
-    return array(
-      'private_key' => $private_key,
-      'public_key' => $public_key
-    );
+    if($curlResponse=== false){
+        throw new Exception('Curl error: ' . curl_error($curlHandle));
+        echo 'Curl error: ' . curl_error($curlHandle);
+    } else {
+        echo "Success";
+    }
+    curl_close($curlHandle);
+    return $curlResponse;
   }
 
   /**
-   * It generates a new RSA key pair, and returns the private and public keys
+   * The function that calls the get requests.
    * 
-   * @return An array of the private and public keys.
+   * @param path The path to request.
    */
-  private function _generateJWEKeys() {
-    # Generate a new JWE private (and public) key pair.
-    $config = array(
-      "private_key_bits" => 2048,
-      "private_key_type" => OPENSSL_KEYTYPE_RSA
-    );
-    $keys = openssl_pkey_new($config);
 
-    # Store Patient Private Key.
-    openssl_pkey_export($keys, $private_key);
+  private function _libraryGetRequest($path) {
+    $curlHandle = curl_init();
+    curl_setopt($curlHandle, CURLOPT_URL, $this->endpoint."/qr-library".$path);
+    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
+    curl_setopt($curlHandle, CURLOPT_HTTPGET, true);  
 
-    # Store Patient Public Key.
-    $public_key_detail = openssl_pkey_get_details($keys);
-    $public_key = $public_key_detail["key"];
+    $curlResponse = curl_exec($curlHandle);
 
-    return array(
-      'private_key' => $private_key,
-      'public_key' => $public_key
-    );
+    if($curlResponse=== false){
+        throw new Exception('Curl error: ' . curl_error($curlHandle));
+        echo 'Curl error: ' . curl_error($curlHandle);
+    } else {
+        echo "Success";
+    }
+    curl_close($curlHandle);
+    return $curlResponse;
   }
 
   /**
@@ -125,31 +120,30 @@ class HealthDataManager {
    */
   private function _fetchJWEKeys($user_id, $request_type) {
     try {
-      $request = $this->client->request('POST', $this->endpoint . "/qr-library/get-key-pair", [
-        'form_params' => [
-          'emr_patient_id' => $user_id,
-          'jose_type' => 'JWE',
-          'institution_id' => $this->institution
-        ]
-      ]);
-      $response = $request->getBody();
-      $result = json_decode($response);
-      return $result->data->pem_list;
-    } catch (ServerException $e) {
-      $response = $e->getResponse();
-      $jsonBody = (string) $response->getBody();
-      $parseError = json_decode($jsonBody);
-      $not_exists = str_contains(strtolower($parseError->message), 'row not found');
-      if ($not_exists && $request_type !== 'generatePrivateKey') {
-        return [];
+      $postParameter = array(
+        'emr_patient_id' => $user_id,
+        'jose_type' => 'JWE',
+        'institution_id' => $this->institution
+      );
+      $request = $this->_libraryPostRequest("/get-key-pair", $postParameter);
+      $result = json_decode($request);
+      $not_exists = str_contains(strtolower($result->message), 'row not found');
+      if($result->statusCode == 200) {
+        return $result->data->pem_list;
       } else {
-        if ($not_exists) {
-          throw new Exception('Keys not found');
+        if($not_exists && $request_type !== 'generatePrivateKey') {
+          return [];
         } else {
-          # Throw other internal server error message
-          throw new Exception($parseError->message);
+          if ($not_exists) {
+            throw new Exception('Keys not found');
+          } else {
+            # Throw other internal server error message
+            throw new Exception($parseError->message);
+          }
         }
       }
+    } catch (Exeption $e) {
+      throw new Exception('Something went wrong when fetching keys.');
     }
   }
 
@@ -159,10 +153,16 @@ class HealthDataManager {
    * @return An array of the private and public keys.
    */
   public function simulateJWSKeys() {
+    $request = $this->_libraryGetRequest("/gen-keys");
+    $keys = json_decode($request)->data;
+    $res= array(
+      "private_key" => $keys->privateKey,
+      "public_key" => $keys->publicKey
+    );
+
     $this->_setStorageDirectory(dirname(__FILE__) . '/test_jws' . "/" . $this->institution);
-    $keys = $this->_generateJWSKeys();
-    file_put_contents($this->storage_path . '/test-private-key.pem', $keys["private_key"]);
-    file_put_contents($this->storage_path . '/test-public-key.pem', $keys["public_key"]);
+    file_put_contents($this->storage_path . '/test-private-key.pem', $res["private_key"]);
+    file_put_contents($this->storage_path . '/test-public-key.pem', $res["public_key"]);
 
     /**
      * Test JWS Token at https://jwt.io/.
@@ -175,7 +175,7 @@ class HealthDataManager {
     // $jws_token = $this->token_instance->createJWSToken($keys["private_key"], json_encode(array("data"=>"test")));
     // echo $jws_token;
 
-    return $keys;
+    return $res;
   }
 
   /**
@@ -196,21 +196,18 @@ class HealthDataManager {
       if (!$validPem) {
         throw new Exception('Invalid private pem argument');
       }
-
-      $request = $this->client->request('POST', $this->endpoint . "/qr-library/sig-private-key", [
-        'form_params' => [
-          'kid' => $kid,
-          'private_key' =>  $private_pem
-        ]
-      ]);
-      $response = $request->getBody();
-      $result = json_decode($response);
+      $postParameter = array(
+        'kid' => $kid,
+        'private_key' =>  $private_pem
+      );
+      $result = $this->_libraryPostRequest("/sig-private-key", $postParameter);
+      $resp =  json_decode($result);
+      if($resp->statusCode != 200) {
+        throw new Exception($resp->message);
+      }
       return;
-    } catch (ServerException $error) {
-      $response = $error->getResponse();
-      $jsonBody = (string) $response->getBody();
-      $parseError = json_decode($jsonBody);
-      throw new Exception($parseError->message);
+    } catch (Exception $error) {
+      throw new Exception($error->getMessage());
     }
   }
 
@@ -227,22 +224,22 @@ class HealthDataManager {
       if (!$validKid) {
         throw new Exception('Invalid kid argument');
       }
-      $request = $this->client->request('POST', $this->endpoint . "/qr-library/get-private-key", [
-        'form_params' => [
-          'kid' => $kid
-        ]
-      ]);
-      $response = $request->getBody();
-      $pair_list = json_decode($response)->data;
-      return count($pair_list) > 0 ? array(
-        "kid" => $pair_list[0],
-        "private_key" => $pair_list[1]
-      ) : [];
-    } catch (ServerException $error) {
-      $response = $error->getResponse();
-      $jsonBody = (string) $response->getBody();
-      $parseError = json_decode($jsonBody);
-      throw new Exception($parseError->message);
+      $postParameter = array(
+        'kid' => $kid
+      );
+      $request = $this->_libraryPostRequest("/get-private-key", $postParameter);
+      $resp = json_decode($request);
+      if($resp->statusCode == 200) {
+        $pair_list = $resp->data;
+
+        return count($pair_list) > 0 ? array(
+          "kid" => $pair_list[0],
+          "private_key" => $pair_list[1]
+        ) : [];
+      }
+      return [];
+    } catch (Exception $error) {
+      throw new Exception($error->getMessage());
     }
   }
 
@@ -259,17 +256,13 @@ class HealthDataManager {
       if (!$validKid) {
         throw new Exception('Invalid kid argument');
       }
-      $request = $this->client->request('POST', $this->endpoint . "/qr-library/del-private-key", [
-        'form_params' => [
-          'kid' => $kid
-        ]
-      ]);
+      $postParameter = array(
+        'kid' => $kid
+      );
+      $request = $this->_libraryPostRequest("/del-private-key", $postParameter);
       return;
-    } catch (ServerException $error) {
-      $response = $error->getResponse();
-      $jsonBody = (string) $response->getBody();
-      $parseError = json_decode($jsonBody);
-      throw new Exception($parseError->message);
+    } catch (Exception $error) {
+      throw new Exception($error->getMessage());
     }
   }
 
@@ -285,20 +278,14 @@ class HealthDataManager {
       if (!$this->validator_instance->isValidUserID($user_id)) {
         throw new Exception('Invalid patient id');
       }
-
-      // Generate Encryption Key Pairs
-      $keys = $this->_generateJWEKeys();
-
-      $request = $this->client->request('POST', $this->endpoint . "/qr-library/key-pair", [
-        'form_params' => [
-          'emr_patient_id' => $user_id,
-          'pem_list' => $keys,
-          'jose_type' => 'JWE',
-          'institution_id' => $this->institution
-        ]
-      ]);
+      $postParameter = array(
+        'emr_patient_id' => $user_id,
+        'jose_type' => 'JWE',
+        'institution_id' => $this->institution
+      );
+      $this->_libraryPostRequest("/key-pair", $postParameter);
       return;
-    } catch (ServerException $e) {
+    } catch (Exception $e) {
       throw new Exception('Error Saving Encryption Key Pair');
     }
   }
@@ -369,13 +356,12 @@ class HealthDataManager {
    */
   public function deleteEncKeyPair($user_id) {
     try {
-      $request = $this->client->request('POST', $this->endpoint . "/qr-library/del-key-pair", [
-        'form_params' => [
-          'emr_patient_id' => $user_id,
-          'jose_type' => 'JWE',
-          'institution_id' => $this->institution
-        ]
-      ]);
+      $postParameter = array(
+        'emr_patient_id' => $user_id,
+        'jose_type' => 'JWE',
+        'institution_id' => $this->institution
+      );
+      $this->_libraryPostRequest("/del-key-pair", $postParameter);
       return;
     } catch (Exception $e) {
       $response = $e->getResponse();
@@ -387,6 +373,6 @@ class HealthDataManager {
 }
 
 // $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-// $keys = $manager->simulateJWSKeys();
-// $data = $manager->setSigPrivateKey("kid-012", $keys["private_key"]);
-// print_r($data);
+// $res = $manager->simulateJWSKeys();
+// $res = $manager->deleteSigPrivateKey("kid-12");
+// print_r($res);
