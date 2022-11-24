@@ -2,7 +2,7 @@
 
 class Config {
   /**
-   * A static function that returns the endpoint for our backend.  
+   * A function that returns the endpoint for our backend.  
    * 
    * @return a String or URL.
   */
