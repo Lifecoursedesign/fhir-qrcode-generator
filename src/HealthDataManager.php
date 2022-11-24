@@ -27,12 +27,11 @@ class HealthDataManager {
    * @param selected_institution The hospital id of the hospital you want to use.
    */
   public function __construct($selected_institution) {
-    global $fhir_qr_config;
     if (((1 <= $selected_institution) && ($selected_institution <= 4))) {
       $this->token_instance = new HealthDataToken();
       $this->qrcode_instance = new HealthDataQrCode();
       $this->validator_instance = new Validator();
-      $this->endpoint = $fhir_qr_config["API_URL"];
+      $this->endpoint = Config::getConfig();
       $this->institution = $selected_institution;
     } else {
       throw new Exception('Invalid hospital id');
@@ -371,7 +370,7 @@ class HealthDataManager {
   }
 }
 
-$manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-$res = $manager->simulateJWSKeys();
-$res = $manager->deleteSigPrivateKey("kid-12");
-print_r($res);
+// $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
+// $res = $manager->simulateJWSKeys();
+// $res = $manager->deleteSigPrivateKey("kid-12");
+// print_r($res);
