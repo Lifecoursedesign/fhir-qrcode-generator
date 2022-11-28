@@ -1292,7 +1292,7 @@
         private $level;
         
         //----------------------------------------------------------------------
-        public function __construct($version = 0, $level = QR_ECLEVEL_L)
+        public function __construct($version = 22, $level = QR_ECLEVEL_L)
         {
             if ($version < 0 || $version > QRSPEC_VERSION_MAX || $level > QR_ECLEVEL_H) {
                 throw new Exception('Invalid version no');
@@ -3206,7 +3206,7 @@
         public $casesensitive = true;
         public $eightbit = false;
         
-        public $version = 0;
+        public $version = 22;
         public $size = 3;
         public $margin = 4;
         

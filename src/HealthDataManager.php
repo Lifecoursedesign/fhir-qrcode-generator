@@ -305,15 +305,16 @@ class HealthDataManager {
     try {
       $data = $this->_fetchJWEKeys($user_id, 'generatePrivateKey');
       $private_key = $data[0]->private_key;
-      $data = json_encode(array(
-        "key" => $private_key,
-        "emp_patient_id" => $user_id
-      ));
+      $data = $private_key;
+      // $data = json_encode(array(
+      //   "key" => $private_key,
+      //   "emp_patient_id" => $user_id
+      // ));
 
       $this->_setStorageDirectory(dirname(__FILE__) . '/patient_qr' . "/" . $this->institution . "/" . $user_id);
       $compressed_pk_data = gzdeflate($data);
       $base64URLPK = $this->qrcode_instance->base64UrlEncode($compressed_pk_data);
-      $result = $this->qrcode_instance->generatePrivateKeyQRCode($base64URLPK, $this->storage_path);
+      $result = $this->qrcode_instance->generatePrivateKeyQRCode($compressed_pk_data, $this->storage_path);
       return $result;
     } catch (Exception $e) {
       throw new Exception($e->getMessage());

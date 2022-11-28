@@ -141,13 +141,14 @@ class HealthDataQrCode {
    * @return An array of file paths to the generated QR codes.
    */
   public function generatePrivateKeyQRCode($data, $file_path) {
-    $divider = 2000;
+    $divider = 1460;
     $base10 = $this->_getBase10format($data);
     $max = ceil(strlen($base10) / $divider);
 
     $pem_base_10 = [];
     $file_paths = [];
     array_push($pem_base_10, "pem:/" . $base10);
+    print_r($pem_base_10);
     if ($max > 1) {
       $pem_base_10 = [];
       for ($x = 0; $x <  $max; $x++) {
