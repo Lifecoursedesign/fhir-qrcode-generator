@@ -2,12 +2,14 @@
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-use Endroid\QrCode\Color\Color;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
-use Endroid\QrCode\Writer\PngWriter;
+// use Endroid\QrCode\Color\Color;
+// use Endroid\QrCode\Encoding\Encoding;
+// use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+// use Endroid\QrCode\QrCode;
+// use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+// use Endroid\QrCode\Writer\PngWriter;
+
+include('phpqrcode/qrlib.php');
 
 class HealthDataQrCode {
 
@@ -114,17 +116,18 @@ class HealthDataQrCode {
    * @return Nothing.
    */
   public function generateQrCode($data, $file_path) {
-    $writer = new PngWriter();
-    $qrCode = QrCode::create($data)
-      ->setEncoding(new Encoding('UTF-8'))
-      ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
-      ->setSize(200)
-      ->setMargin(0)
-      ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
-      ->setForegroundColor(new Color(0, 0, 0))
-      ->setBackgroundColor(new Color(255, 255, 255));
-    $result = $writer->write($qrCode);
-    $result->saveToFile($file_path);
+    QRcode::png($data, $file_path);
+    // $writer = new PngWriter();
+    // $qrCode = QrCode::create($data)
+    //   ->setEncoding(new Encoding('UTF-8'))
+    //   ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+    //   ->setSize(200)
+    //   ->setMargin(0)
+    //   ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
+    //   ->setForegroundColor(new Color(0, 0, 0))
+    //   ->setBackgroundColor(new Color(255, 255, 255));
+    // $result = $writer->write($qrCode);
+    // $result->saveToFile($file_path);
     return;
   }
 

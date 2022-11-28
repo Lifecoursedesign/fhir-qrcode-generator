@@ -372,7 +372,8 @@ class HealthDataManager {
   }
 }
 
-// $manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
+$manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
+$manager->generateEncPrivateKeyQr("LS-106");
 // $res = $manager->simulateJWSKeys();
 // $res = $manager->deleteSigPrivateKey("kid-12");
 // print_r($res);
