@@ -26,18 +26,22 @@ class HealthDataManager {
    * 
    * @param selected_institution The hospital id of the hospital you want to use.
    */
-  public function __construct($selected_institution) {
-    if (((1 <= $selected_institution) && ($selected_institution <= 4))) {
-      $config  = new Config();
-      $this->token_instance = new HealthDataToken();
-      $this->qrcode_instance = new HealthDataQrCode();
-      $this->validator_instance = new Validator();
-      $this->endpoint = $config->getConfig();
-      $this->institution = $selected_institution;
-      echo $this->endpoint;
-    } else {
-      throw new Exception('Invalid hospital id');
+  public function __construct($storage) {
+    if (!is_object($storage)) {
+      throw new Exception('Invalid specified storage');
     }
+    if(!property_exists($storage, 'path')) {
+      throw new Exception('Storage path is required');
+    }
+    $this->token_instance = new HealthDataToken();
+    $this->qrcode_instance = new HealthDataQrCode();
+    $this->validator_instance = new Validator();
+    $path = $storage->path;
+    $folder_not_exists = !file_exists($path);
+    if ($folder_not_exists) {
+      mkdir($path, 0777, true);
+    }
+    $this->storage_path = $path;
   }
 
   /**
@@ -372,9 +376,14 @@ class HealthDataManager {
     }
   }
 }
+# For testing purposes in PHP, you can change the path to your current environment.
+$storage=new stdClass;
+$storage->path="/Users/louiejohnseno/Desktop/qr_lib";
 
-$manager = new HealthDataManager(HOSPITALS["SAITAMA"]);
-$manager->generateEncPrivateKeyQr("LS-106");
+$manager = new HealthDataManager($storage);
+
+
+// $manager->generateEncPrivateKeyQr("LS-106");
 // $res = $manager->simulateJWSKeys();
 // $res = $manager->deleteSigPrivateKey("kid-12");
 // print_r($res);
