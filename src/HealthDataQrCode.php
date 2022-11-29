@@ -148,7 +148,6 @@ class HealthDataQrCode {
     $pem_base_10 = [];
     $file_paths = [];
     array_push($pem_base_10, "pem:/" . $base10);
-    print_r($pem_base_10);
     if ($max > 1) {
       $pem_base_10 = [];
       for ($x = 0; $x <  $max; $x++) {

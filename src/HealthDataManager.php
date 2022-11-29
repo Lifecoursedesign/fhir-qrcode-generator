@@ -1,12 +1,5 @@
 <?php
 
-define("HOSPITALS", array(
-  "SAITAMA" => 1,
-  "AIWA" => 2,
-  "KEIAI" => 3,
-  "SETO" => 4,
-));
-
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 require "HealthDataToken.php";
@@ -44,8 +37,8 @@ class HealthDataManager {
 
     $folder_not_exists = !is_dir($path);
     if ($folder_not_exists) {
-      mkdir($this->enc_path, 0777, true);
-      mkdir($this->qr_path, 0777, true);
+      mkdir($this->enc_path, 0755, true);
+      mkdir($this->qr_path, 0755, true);
     }
   }
 
@@ -102,54 +95,6 @@ class HealthDataManager {
     }
     curl_close($curlHandle);
     return $curlResponse;
-  }
-
-  /**
-   * It creates a directory for the user if it doesn't exist
-   * 
-   * @param path The path to create.
-   */
-  private function _setStorageDirectory($path) {
-    $dir_path = $path;
-    $folder_not_exists = !file_exists($dir_path);
-    if ($folder_not_exists) {
-      mkdir($dir_path, 0777, true);
-    }
-    $this->storage_path = $dir_path;
-  }
-
-  /**
-   * It fetches the public and private keys from the server
-   * 
-   * @param user_id The user's ID
-   * @param request_type This is the type of request you are making. It can be either
-   * 'generatePrivateKey' or 'getPublicKey'.
-   * 
-   * @return an array of keys.
-   */
-  private function _fetchJWEKeys($user_id, $request_type) {
-    try {
-
-      // $request = $this->_libraryPostRequest("/get-key-pair", $postParameter);
-      // $result = json_decode($request);
-      // $not_exists = str_contains(strtolower($result->message), 'row not found');
-      // if($result->statusCode == 200) {
-      //   return $result->data->pem_list;
-      // } else {
-      //   if($not_exists && $request_type !== 'generatePrivateKey') {
-      //     return [];
-      //   } else {
-      //     if ($not_exists) {
-      //       throw new Exception('Keys not found');
-      //     } else {
-      //       # Throw other internal server error message
-      //       throw new Exception($parseError->message);
-      //     }
-      //   }
-      // }
-    } catch (Exeption $e) {
-      throw new Exception('Something went wrong when fetching keys.');
-    }
   }
 
   /**
@@ -284,7 +229,7 @@ class HealthDataManager {
       }
       $user_path = $this->enc_path."/".$user_id;
       if(!is_dir($user_path)) {
-        mkdir($user_path);
+        mkdir($user_path, 0755, true);
       }
       $private_key_file = $user_path."/private_key.pem";
       $public_key_file = $user_path."/public_key.pem";
@@ -309,17 +254,25 @@ class HealthDataManager {
       throw new Exception('Invalid patient id');
     }
     try {
-      $data = $this->_fetchJWEKeys($user_id, 'generatePrivateKey');
-      $private_key = $data[0]->private_key;
-      $data = $private_key;
-      // $data = json_encode(array(
-      //   "key" => $private_key,
-      //   "emp_patient_id" => $user_id
-      // ));
-
+      # Get Private Key
+      $enc_user_path = $this->enc_path."/".$user_id;
+      $pk_path = $enc_user_path."/private_key.pem";
+      if(!is_dir($enc_user_path)){
+        throw new Exception("No key pairs found for this user.");
+      } 
+      if(!file_exists($pk_path)){
+        throw new Exception("No private key found for this user.");
+      }
+      $data = file_get_contents($pk_path, true);
       $compressed_pk_data = gzdeflate($data);
       $base64URLPK = $this->qrcode_instance->base64UrlEncode($compressed_pk_data);
-      $result = $this->qrcode_instance->generatePrivateKeyQRCode($compressed_pk_data, $this->storage_path);
+      
+      # Generate QR Code
+      $qr_user_path = $this->qr_path."/keys"."/".$user_id;
+      if(!is_dir($qr_user_path)) {
+        mkdir($qr_user_path, 0755, true);
+      }
+      $result = $this->qrcode_instance->generatePrivateKeyQRCode($compressed_pk_data, $qr_user_path);
       return $result;
     } catch (Exception $e) {
       throw new Exception($e->getMessage());
@@ -406,9 +359,9 @@ class HealthDataManager {
 $storage=new stdClass;
 $storage->path="/Users/louiejohnseno/Desktop/qr_lib";
 
-$manager = new HealthDataManager($storage);
-$keys = $manager->deleteEncKeyPair("emr-1");
-print_r($keys);
+// $manager = new HealthDataManager($storage);
+// $keys = $manager->generateEncPrivateKeyQr("emr-1");
+// print_r($keys);
 // $manager->generateEncPrivateKeyQr("LS-106");
 // $res = $manager->simulateJWSKeys();
 // $res = $manager->deleteSigPrivateKey("kid-12");
