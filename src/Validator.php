@@ -32,8 +32,8 @@ class Validator {
    * 
    * @return A boolean value.
    */
-  public function isValidPEM($pem_file){
-    $regex = '/^(-----BEGIN PUBLIC KEY-----(\n|\r|\r\n)([0-9a-zA-Z\+\/=]{64}(\n|\r|\r\n))*([0-9a-zA-Z\+\/=]{1,63}(\n|\r|\r\n))?-----END PUBLIC KEY-----)|(-----BEGIN PRIVATE KEY-----(\n|\r|\r\n)([0-9a-zA-Z\+\/=]{64}(\n|\r|\r\n))*([0-9a-zA-Z\+\/=]{1,63}(\n|\r|\r\n))?-----END PRIVATE KEY-----)$/';
+  public function isValidPrivatePEM($pem_file){
+    $regex = '/^(-+BEGIN[a-zA-Z ]*-+(\n|\r|\r\n)([0-9a-zA-Z\+\/=]{64}(\n|\r|\r\n))*([0-9a-zA-Z\+\/=]{1,63}(\n|\r|\r\n))?-+END[a-zA-Z ]*-+)$/';
     return is_string($pem_file) && preg_match($regex, $pem_file);
   }
 }

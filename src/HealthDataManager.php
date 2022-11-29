@@ -33,7 +33,7 @@ class HealthDataManager {
     $this->qrcode_instance = new HealthDataQrCode();
     $this->validator_instance = new Validator();
     $this->base_path = $storage->path;
-    $this->signature_path = $this->base_path."/signature_keys";
+    $this->signature_path = $this->base_path."/signature_key";
     $this->enc_path = $this->base_path."/enc_keys";
     $this->qr_path = $this->base_path."/qr";
 
@@ -86,9 +86,6 @@ class HealthDataManager {
       "public_key" => file_get_contents($public_key_file, true),
     );
 
-    // file_put_contents($this->storage_path . '/test-private-key.pem', $res["private_key"]);
-    // file_put_contents($this->storage_path . '/test-public-key.pem', $res["public_key"]);
-
     /**
      * Test JWS Token at https://jwt.io/.
      * 
@@ -115,26 +112,31 @@ class HealthDataManager {
     try {
       # Validate arguments.
       $validKid = $this->validator_instance->isValidKID($kid);
-      // $validPem = $this->validator_instance->isValidPEM($private_pem);
+      $validPem = $this->validator_instance->isValidPrivatePEM($private_pem);
       if (!$validKid) {
         throw new Exception('Invalid kid argument');
       }
-      // if (!$validPem) {
-      //   throw new Exception('Invalid private pem argument');
-      // }
-      # Validate private key is already registered.
-      $sig_path = $this->signature_path."/".$kid;
+      if (!$validPem) {
+        throw new Exception('Invalid private pem argument');
+      }
+     
+      $sig_path = $this->signature_path;
       if(!is_dir($sig_path)) {
         mkdir($sig_path, 0755, true);
-      }
+      } 
+      $contents = scandir($sig_path);
+
+      # Validate private key is already registered.
       $private_key_file = $sig_path."/private_key.pem";
-      if(file_exists($private_key_file)) {
-        $data = file_get_contents($pk_path, true);
+      $kid_file = $sig_path."/kid.txt";
+      if(count($contents) > 0 && file_exists($private_key_file)) {
+        $data = file_get_contents($private_key_file, true);
         if($data === $private_pem) {
-          throw new Exception('Private Key already registered.');
+         throw new Exception("Private key already exists.");
         }
       } 
       file_put_contents($private_key_file, $private_pem);
+      file_put_contents($kid_file, $kid);
       return;
     } catch (Exception $error) {
       throw new Exception($error->getMessage());
@@ -154,7 +156,11 @@ class HealthDataManager {
         return $result;
       }
 
-      # Get latest directory.
+     /**
+     * Return the latest pem file, though it is assumed, based on the documentation, 
+     * that there is only a single pem file since there is only one private key 
+     * for each institution.
+     */
       $scanDIR = scandir($sig_path);
       $dirKID = null;
       $latestDIR = null;
@@ -326,6 +332,7 @@ $storage=new stdClass;
 $storage->path="/Users/louiejohnseno/Desktop/qr_lib";
 
 $manager = new HealthDataManager($storage);
-// $keys = $manager->simulateJWSKeys("emr-1");
+$keys = $manager->simulateJWSKeys();
+$manager->setSigPrivateKey("128", $keys["private_key"]);
 // $manager->deleteSigPrivateKey();
 // $keys = $manager->deleteEncKeyPair("emr-1");
