@@ -14,17 +14,17 @@ require "Config.php";
 
 class HealthDataManager {
 
-  private $storage_path;
+  private $enc_path;
+  private $qr_path;
   private $token_instance;
   private $qrcode_instance;
   private $validator_instance;
   private $endpoint;
-  private $institution;
 
   /**
    * The constructor function initializes the class variables and creates instances of the other classes
    * 
-   * @param selected_institution The hospital id of the hospital you want to use.
+   * @param storage The folder path to store the files.
    */
   public function __construct($storage) {
     if (!is_object($storage)) {
@@ -33,15 +33,20 @@ class HealthDataManager {
     if(!property_exists($storage, 'path')) {
       throw new Exception('Storage path is required');
     }
+    $config  = new Config();
+    $this->endpoint = $config->getConfig();
     $this->token_instance = new HealthDataToken();
     $this->qrcode_instance = new HealthDataQrCode();
     $this->validator_instance = new Validator();
     $path = $storage->path;
+    $this->enc_path = $path."/enc_keys";
+    $this->qr_path = $path."/qr";
+
     $folder_not_exists = !file_exists($path);
     if ($folder_not_exists) {
-      mkdir($path, 0777, true);
+      mkdir($this->enc_path, 0777, true);
+      mkdir($this->qr_path, 0777, true);
     }
-    $this->storage_path = $path;
   }
 
   /**
@@ -124,28 +129,24 @@ class HealthDataManager {
    */
   private function _fetchJWEKeys($user_id, $request_type) {
     try {
-      $postParameter = array(
-        'emr_patient_id' => $user_id,
-        'jose_type' => 'JWE',
-        'institution_id' => $this->institution
-      );
-      $request = $this->_libraryPostRequest("/get-key-pair", $postParameter);
-      $result = json_decode($request);
-      $not_exists = str_contains(strtolower($result->message), 'row not found');
-      if($result->statusCode == 200) {
-        return $result->data->pem_list;
-      } else {
-        if($not_exists && $request_type !== 'generatePrivateKey') {
-          return [];
-        } else {
-          if ($not_exists) {
-            throw new Exception('Keys not found');
-          } else {
-            # Throw other internal server error message
-            throw new Exception($parseError->message);
-          }
-        }
-      }
+
+      // $request = $this->_libraryPostRequest("/get-key-pair", $postParameter);
+      // $result = json_decode($request);
+      // $not_exists = str_contains(strtolower($result->message), 'row not found');
+      // if($result->statusCode == 200) {
+      //   return $result->data->pem_list;
+      // } else {
+      //   if($not_exists && $request_type !== 'generatePrivateKey') {
+      //     return [];
+      //   } else {
+      //     if ($not_exists) {
+      //       throw new Exception('Keys not found');
+      //     } else {
+      //       # Throw other internal server error message
+      //       throw new Exception($parseError->message);
+      //     }
+      //   }
+      // }
     } catch (Exeption $e) {
       throw new Exception('Something went wrong when fetching keys.');
     }
@@ -164,7 +165,6 @@ class HealthDataManager {
       "public_key" => $keys->publicKey
     );
 
-    $this->_setStorageDirectory(dirname(__FILE__) . '/test_jws' . "/" . $this->institution);
     file_put_contents($this->storage_path . '/test-private-key.pem', $res["private_key"]);
     file_put_contents($this->storage_path . '/test-public-key.pem', $res["public_key"]);
 
@@ -282,12 +282,14 @@ class HealthDataManager {
       if (!$this->validator_instance->isValidUserID($user_id)) {
         throw new Exception('Invalid patient id');
       }
-      $postParameter = array(
-        'emr_patient_id' => $user_id,
-        'jose_type' => 'JWE',
-        'institution_id' => $this->institution
-      );
-      $this->_libraryPostRequest("/key-pair", $postParameter);
+      $user_path = $this->enc_path."/".$user_id;
+      if(!file_exists($user_path)) {
+        mkdir($user_path);
+      }
+      $private_key_file = $user_path."/priv_key.pem";
+      $public_key_file = $user_path."/pub_key.pem";
+      exec("openssl genrsa -out {$private_key_file} 2048");
+      exec("openssl rsa -in {$private_key_file} -pubout -out {$public_key_file}");
       return;
     } catch (Exception $e) {
       throw new Exception('Error Saving Encryption Key Pair');
@@ -315,7 +317,6 @@ class HealthDataManager {
       //   "emp_patient_id" => $user_id
       // ));
 
-      $this->_setStorageDirectory(dirname(__FILE__) . '/patient_qr' . "/" . $this->institution . "/" . $user_id);
       $compressed_pk_data = gzdeflate($data);
       $base64URLPK = $this->qrcode_instance->base64UrlEncode($compressed_pk_data);
       $result = $this->qrcode_instance->generatePrivateKeyQRCode($compressed_pk_data, $this->storage_path);
@@ -338,14 +339,14 @@ class HealthDataManager {
     }
     try {
       $data = $this->_fetchJWEKeys($user_id, 'getEncKeyPair');
-      if (count($data) > 0) {
-        $private_key = $data[0]->private_key;
-        $public_key = $data[1]->public_key;
-        return array(
-          "private_key" => $private_key,
-          "public_key" => $public_key
-        );
-      }
+      // if (count($data) > 0) {
+      //   $private_key = $data[0]->private_key;
+      //   $public_key = $data[1]->public_key;
+      //   return array(
+      //     "private_key" => $private_key,
+      //     "public_key" => $public_key
+      //   );
+      // }
       return [];
     } catch (Exception $e) {
       throw new Exception($e->getMessage());
@@ -364,7 +365,6 @@ class HealthDataManager {
       $postParameter = array(
         'emr_patient_id' => $user_id,
         'jose_type' => 'JWE',
-        'institution_id' => $this->institution
       );
       $this->_libraryPostRequest("/del-key-pair", $postParameter);
       return;
@@ -381,7 +381,7 @@ $storage=new stdClass;
 $storage->path="/Users/louiejohnseno/Desktop/qr_lib";
 
 $manager = new HealthDataManager($storage);
-
+$manager->getEncKeyPair("emr-2");
 
 // $manager->generateEncPrivateKeyQr("LS-106");
 // $res = $manager->simulateJWSKeys();
