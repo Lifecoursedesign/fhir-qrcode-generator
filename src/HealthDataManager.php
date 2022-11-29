@@ -42,7 +42,7 @@ class HealthDataManager {
     $this->enc_path = $path."/enc_keys";
     $this->qr_path = $path."/qr";
 
-    $folder_not_exists = !file_exists($path);
+    $folder_not_exists = !is_dir($path);
     if ($folder_not_exists) {
       mkdir($this->enc_path, 0777, true);
       mkdir($this->qr_path, 0777, true);
@@ -283,7 +283,7 @@ class HealthDataManager {
         throw new Exception('Invalid patient id');
       }
       $user_path = $this->enc_path."/".$user_id;
-      if(!file_exists($user_path)) {
+      if(!is_dir($user_path)) {
         mkdir($user_path);
       }
       $private_key_file = $user_path."/private_key.pem";
@@ -370,11 +370,29 @@ class HealthDataManager {
    */
   public function deleteEncKeyPair($user_id) {
     try {
-      $postParameter = array(
-        'emr_patient_id' => $user_id,
-        'jose_type' => 'JWE',
-      );
-      $this->_libraryPostRequest("/del-key-pair", $postParameter);
+      if (!$this->validator_instance->isValidUserID($user_id)) {
+        throw new Exception('Invalid patient id');
+      }
+      $folderName = $this->enc_path."/".$user_id;
+      if (is_dir($folderName)){
+        $folderHandle = opendir($folderName);
+        if(!$folderHandle) {
+          return;
+        }
+
+        while(($file = readdir($folderHandle)) !== false) {
+          if ($file != "." && $file != "..") {
+            if (!is_dir($folderName."/".$file)) {
+                unlink($folderName."/".$file);
+            } else {
+              removeFolder($folderName.'/'.$file);
+            }     
+          }
+        }
+        closedir($folderHandle);
+        rmdir($folderName);
+      }
+     
       return;
     } catch (Exception $e) {
       $response = $e->getResponse();
@@ -389,7 +407,7 @@ $storage=new stdClass;
 $storage->path="/Users/louiejohnseno/Desktop/qr_lib";
 
 $manager = new HealthDataManager($storage);
-$keys = $manager->getEncKeyPair("emr-2");
+$keys = $manager->deleteEncKeyPair("emr-1");
 print_r($keys);
 // $manager->generateEncPrivateKeyQr("LS-106");
 // $res = $manager->simulateJWSKeys();
