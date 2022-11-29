@@ -156,33 +156,14 @@ class HealthDataManager {
         return $result;
       }
 
-     /**
-     * Return the latest pem file, though it is assumed, based on the documentation, 
-     * that there is only a single pem file since there is only one private key 
-     * for each institution.
-     */
       $scanDIR = scandir($sig_path);
-      $dirKID = null;
-      $latestDIR = null;
-      $modified_date = null;
-      foreach ($scanDIR as $data) {
-        # Skip current directory and parent directory
-        if ($data == '.' || $data == '..') {
-            continue;
+      if(count($scanDIR) > 0) {
+        if(file_exists($sig_path."/kid.txt")) {
+          $result["kid"] = file_get_contents($sig_path."/kid.txt", true);
         }
-        if (is_dir($sig_path.'/'.$data)) {
-          if(filemtime($sig_path.'/'.$data) > $modified_date) {
-            $dirKID = $data;
-            $latestDIR = $sig_path.'/'.$data;
-            $modified_date = filemtime($sig_path.'/'.$data);
-          }
+        if(file_exists($sig_path."/private_key.pem")) {
+          $result["private_key"] = file_get_contents($sig_path."/private_key.pem", true);
         }
-      }
-
-      if($latestDIR){
-        $private_key_path = $latestDIR."/private_key.pem";
-        $result["kid"] = $dirKID;
-        $result["private_key"] = file_get_contents($private_key_path, true);
       }
       return $result;
     } catch (Exception $error) {
@@ -332,7 +313,4 @@ $storage=new stdClass;
 $storage->path="/Users/louiejohnseno/Desktop/qr_lib";
 
 $manager = new HealthDataManager($storage);
-$keys = $manager->simulateJWSKeys();
-$manager->setSigPrivateKey("128", $keys["private_key"]);
-// $manager->deleteSigPrivateKey();
-// $keys = $manager->deleteEncKeyPair("emr-1");
+
