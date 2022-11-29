@@ -6,7 +6,8 @@ require "HealthDataToken.php";
 require "Config.php";
 
 class HealthDataManager {
-
+  private $base_path;
+  private $signature_path;
   private $enc_path;
   private $qr_path;
   private $token_instance;
@@ -31,70 +32,17 @@ class HealthDataManager {
     $this->token_instance = new HealthDataToken();
     $this->qrcode_instance = new HealthDataQrCode();
     $this->validator_instance = new Validator();
-    $path = $storage->path;
-    $this->enc_path = $path."/enc_keys";
-    $this->qr_path = $path."/qr";
+    $this->base_path = $storage->path;
+    $this->signature_path = $this->base_path."/signature_keys";
+    $this->enc_path = $this->base_path."/enc_keys";
+    $this->qr_path = $this->base_path."/qr";
 
-    $folder_not_exists = !is_dir($path);
+    $folder_not_exists = !is_dir($this->base_path);
     if ($folder_not_exists) {
+      mkdir($this->signature_path, 0755, true);
       mkdir($this->enc_path, 0755, true);
       mkdir($this->qr_path, 0755, true);
     }
-  }
-
-  /**
-   * The function that calls the post requests.
-   * 
-   * @param path The path to request.
-   * @param postParams Array of post request.
-   */
-  private function _libraryPostRequest($path, $postParams) {
-    $curlHandle = curl_init();
-    curl_setopt($curlHandle, CURLOPT_URL, $this->endpoint."/qr-library".$path);
-    curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $postParams);
-    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
-    # Add on windows to treat request as POST
-    if(stripos(PHP_OS, 'win') === 0) {
-      curl_setopt($curlHandle,CURLOPT_POST, true);
-    }
-    
-
-    $curlResponse = curl_exec($curlHandle);
-
-    if($curlResponse=== false){
-        throw new Exception('Curl error: ' . curl_error($curlHandle));
-        echo 'Curl error: ' . curl_error($curlHandle);
-    } else {
-        echo "Success";
-    }
-    curl_close($curlHandle);
-    return $curlResponse;
-  }
-
-  /**
-   * The function that calls the get requests.
-   * 
-   * @param path The path to request.
-   */
-
-  private function _libraryGetRequest($path) {
-    $curlHandle = curl_init();
-    curl_setopt($curlHandle, CURLOPT_URL, $this->endpoint."/qr-library".$path);
-    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
-    curl_setopt($curlHandle, CURLOPT_HTTPGET, true);  
-
-    $curlResponse = curl_exec($curlHandle);
-
-    if($curlResponse=== false){
-        throw new Exception('Curl error: ' . curl_error($curlHandle));
-        echo 'Curl error: ' . curl_error($curlHandle);
-    } else {
-        echo "Success";
-    }
-    curl_close($curlHandle);
-    return $curlResponse;
   }
 
   /**
@@ -103,15 +51,21 @@ class HealthDataManager {
    * @return An array of the private and public keys.
    */
   public function simulateJWSKeys() {
-    $request = $this->_libraryGetRequest("/gen-keys");
-    $keys = json_decode($request)->data;
-    $res= array(
-      "private_key" => $keys->privateKey,
-      "public_key" => $keys->publicKey
+    $user_path = $this->base_path."/simulate_jws";
+    if(!is_dir($user_path)) {
+      mkdir($user_path, 0755, true);
+    }
+    $private_key_file = $user_path."/private_key.pem";
+    $public_key_file = $user_path."/public_key.pem";
+    exec("openssl genrsa -out {$private_key_file} 2048");
+    exec("openssl rsa -in {$private_key_file} -pubout -out {$public_key_file}");
+    $res = array(
+      "private_key" => file_get_contents($private_key_file, true),
+      "public_key" => file_get_contents($public_key_file, true),
     );
 
-    file_put_contents($this->storage_path . '/test-private-key.pem', $res["private_key"]);
-    file_put_contents($this->storage_path . '/test-public-key.pem', $res["public_key"]);
+    // file_put_contents($this->storage_path . '/test-private-key.pem', $res["private_key"]);
+    // file_put_contents($this->storage_path . '/test-public-key.pem', $res["public_key"]);
 
     /**
      * Test JWS Token at https://jwt.io/.
@@ -137,23 +91,28 @@ class HealthDataManager {
    */
   public function setSigPrivateKey($kid, $private_pem) {
     try {
+      # Validate arguments.
       $validKid = $this->validator_instance->isValidKID($kid);
-      $validPem = $this->validator_instance->isValidPEM($private_pem);
+      // $validPem = $this->validator_instance->isValidPEM($private_pem);
       if (!$validKid) {
         throw new Exception('Invalid kid argument');
       }
-      if (!$validPem) {
-        throw new Exception('Invalid private pem argument');
+      // if (!$validPem) {
+      //   throw new Exception('Invalid private pem argument');
+      // }
+      # Validate private key is already registered.
+      $sig_path = $this->signature_path."/".$kid;
+      if(!is_dir($sig_path)) {
+        mkdir($sig_path, 0755, true);
       }
-      $postParameter = array(
-        'kid' => $kid,
-        'private_key' =>  $private_pem
-      );
-      $result = $this->_libraryPostRequest("/sig-private-key", $postParameter);
-      $resp =  json_decode($result);
-      if($resp->statusCode != 200) {
-        throw new Exception($resp->message);
-      }
+      $private_key_file = $sig_path."/private_key.pem";
+      if(file_exists($private_key_file)) {
+        $data = file_get_contents($pk_path, true);
+        if($data === $private_pem) {
+          throw new Exception('Private Key already registered.');
+        }
+      } 
+      file_put_contents($private_key_file, $private_pem);
       return;
     } catch (Exception $error) {
       throw new Exception($error->getMessage());
@@ -167,26 +126,39 @@ class HealthDataManager {
    * 
    * @return An array of the kid and private key.
    */
-  public function getSigPrivateKey($kid) {
+  public function getSigPrivateKey() {
     try {
-      $validKid = $this->validator_instance->isValidKID($kid);
-      if (!$validKid) {
-        throw new Exception('Invalid kid argument');
+      $result = array();
+      $sig_path = $this->signature_path;
+      if(!is_dir($sig_path)) {
+        return $result;
       }
-      $postParameter = array(
-        'kid' => $kid
-      );
-      $request = $this->_libraryPostRequest("/get-private-key", $postParameter);
-      $resp = json_decode($request);
-      if($resp->statusCode == 200) {
-        $pair_list = $resp->data;
 
-        return count($pair_list) > 0 ? array(
-          "kid" => $pair_list[0],
-          "private_key" => $pair_list[1]
-        ) : [];
+      # Get latest directory.
+      $scanDIR = scandir($sig_path);
+      $dirKID = null;
+      $latestDIR = null;
+      $modified_date = null;
+      foreach ($scanDIR as $data) {
+        # Skip current directory and parent directory
+        if ($data == '.' || $data == '..') {
+            continue;
+        }
+        if (is_dir($sig_path.'/'.$data)) {
+          if(filemtime($sig_path.'/'.$data) > $modified_date) {
+            $dirKID = $data;
+            $latestDIR = $sig_path.'/'.$data;
+            $modified_date = filemtime($sig_path.'/'.$data);
+          }
+        }
       }
-      return [];
+
+      if($latestDIR){
+        $private_key_path = $latestDIR."/private_key.pem";
+        $result["kid"] = $dirKID;
+        $result["private_key"] = file_get_contents($private_key_path, true);
+      }
+      return $result;
     } catch (Exception $error) {
       throw new Exception($error->getMessage());
     }
@@ -355,14 +327,13 @@ class HealthDataManager {
     }
   }
 }
+
 # For testing purposes in PHP, you can change the path to your current environment.
 $storage=new stdClass;
 $storage->path="/Users/louiejohnseno/Desktop/qr_lib";
 
-// $manager = new HealthDataManager($storage);
-// $keys = $manager->generateEncPrivateKeyQr("emr-1");
-// print_r($keys);
-// $manager->generateEncPrivateKeyQr("LS-106");
-// $res = $manager->simulateJWSKeys();
-// $res = $manager->deleteSigPrivateKey("kid-12");
-// print_r($res);
+$manager = new HealthDataManager($storage);
+$keys = $manager->simulateJWSKeys();
+$manager->setSigPrivateKey("11111", $keys["private_key"]);
+$res = $manager->getSigPrivateKey();
+print_r($res);
