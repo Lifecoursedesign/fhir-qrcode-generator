@@ -286,8 +286,8 @@ class HealthDataManager {
       if(!file_exists($user_path)) {
         mkdir($user_path);
       }
-      $private_key_file = $user_path."/priv_key.pem";
-      $public_key_file = $user_path."/pub_key.pem";
+      $private_key_file = $user_path."/private_key.pem";
+      $public_key_file = $user_path."/public_key.pem";
       exec("openssl genrsa -out {$private_key_file} 2048");
       exec("openssl rsa -in {$private_key_file} -pubout -out {$public_key_file}");
       return;
@@ -338,16 +338,24 @@ class HealthDataManager {
       throw new Exception('Invalid patient id');
     }
     try {
-      $data = $this->_fetchJWEKeys($user_id, 'getEncKeyPair');
-      // if (count($data) > 0) {
-      //   $private_key = $data[0]->private_key;
-      //   $public_key = $data[1]->public_key;
-      //   return array(
-      //     "private_key" => $private_key,
-      //     "public_key" => $public_key
-      //   );
-      // }
-      return [];
+      $keys = array();
+      $user_path = $this->enc_path."/".$user_id;
+      if(is_dir($user_path)){
+        if ($dh = opendir($user_path)){
+          while (($file = readdir($dh)) !== false){
+            if($file === "private_key.pem") {
+              $content = file_get_contents( $user_path."/".$file, true);
+              $keys["private_key"] = $content;
+            }
+            if($file === "public_key.pem") {
+              $content = file_get_contents( $user_path."/".$file, true);
+              $keys["public_key"] = $content;
+            }
+          }
+          closedir($dh);
+        }
+      }
+      return $keys;
     } catch (Exception $e) {
       throw new Exception($e->getMessage());
     }
@@ -381,8 +389,8 @@ $storage=new stdClass;
 $storage->path="/Users/louiejohnseno/Desktop/qr_lib";
 
 $manager = new HealthDataManager($storage);
-$manager->getEncKeyPair("emr-2");
-
+$keys = $manager->getEncKeyPair("emr-2");
+print_r($keys);
 // $manager->generateEncPrivateKeyQr("LS-106");
 // $res = $manager->simulateJWSKeys();
 // $res = $manager->deleteSigPrivateKey("kid-12");
