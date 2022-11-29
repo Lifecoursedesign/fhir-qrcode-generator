@@ -45,6 +45,28 @@ class HealthDataManager {
     }
   }
 
+  private function _removeFolder($folderName) {
+    if (is_dir($folderName)){
+      $folderHandle = opendir($folderName);
+      if(!$folderHandle) {
+        return;
+      }
+
+      while(($file = readdir($folderHandle)) !== false) {
+        if ($file != "." && $file != "..") {
+          if (!is_dir($folderName."/".$file)) {
+              unlink($folderName."/".$file);
+          } else {
+            $this->_removeFolder($folderName.'/'.$file);
+          }     
+        }
+      }
+      closedir($folderHandle);
+      rmdir($folderName);
+    }
+    return;
+  }
+
   /**
    * Generate a dummy JWS private (and public) key pair for testing purpose only to replicate prod behavior.
    * 
@@ -122,8 +144,6 @@ class HealthDataManager {
   /**
    * Get signature private key that was set in setSigPrivateKey.
    * 
-   * @param kid Key ID of the key pair for signature
-   * 
    * @return An array of the kid and private key.
    */
   public function getSigPrivateKey() {
@@ -165,22 +185,13 @@ class HealthDataManager {
   }
 
   /**
-   * This function deletes the signature private key.
-   * 
-   * @param kid  Key ID of the key pair for signature
+   * This function deletes the signature private key. 
    * 
    * @return Nothing.
    */
-  public function deleteSigPrivateKey($kid) {
+  public function deleteSigPrivateKey() {
     try {
-      $validKid = $this->validator_instance->isValidKID($kid);
-      if (!$validKid) {
-        throw new Exception('Invalid kid argument');
-      }
-      $postParameter = array(
-        'kid' => $kid
-      );
-      $request = $this->_libraryPostRequest("/del-private-key", $postParameter);
+      $this->_removeFolder($this->signature_path);
       return;
     } catch (Exception $error) {
       throw new Exception($error->getMessage());
@@ -299,25 +310,7 @@ class HealthDataManager {
         throw new Exception('Invalid patient id');
       }
       $folderName = $this->enc_path."/".$user_id;
-      if (is_dir($folderName)){
-        $folderHandle = opendir($folderName);
-        if(!$folderHandle) {
-          return;
-        }
-
-        while(($file = readdir($folderHandle)) !== false) {
-          if ($file != "." && $file != "..") {
-            if (!is_dir($folderName."/".$file)) {
-                unlink($folderName."/".$file);
-            } else {
-              removeFolder($folderName.'/'.$file);
-            }     
-          }
-        }
-        closedir($folderHandle);
-        rmdir($folderName);
-      }
-     
+      $this->_removeFolder($folderName);
       return;
     } catch (Exception $e) {
       $response = $e->getResponse();
@@ -333,7 +326,6 @@ $storage=new stdClass;
 $storage->path="/Users/louiejohnseno/Desktop/qr_lib";
 
 $manager = new HealthDataManager($storage);
-$keys = $manager->simulateJWSKeys();
-$manager->setSigPrivateKey("11111", $keys["private_key"]);
-$res = $manager->getSigPrivateKey();
-print_r($res);
+// $keys = $manager->simulateJWSKeys("emr-1");
+// $manager->deleteSigPrivateKey();
+// $keys = $manager->deleteEncKeyPair("emr-1");
