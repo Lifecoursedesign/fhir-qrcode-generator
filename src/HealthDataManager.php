@@ -63,7 +63,7 @@ class HealthDataManager {
    * 
    * @return Nothing
    */
-  private function _removeFolder($folderName) {
+  private function _removeFolder($folderName, $removeParentFolder = true) {
     if (is_dir($folderName)){
       $folderHandle = opendir($folderName);
       if(!$folderHandle) {
@@ -81,7 +81,9 @@ class HealthDataManager {
         }
       }
       closedir($folderHandle);
-      rmdir($folderName);
+      if($removeParentFolder) {
+        rmdir($folderName);
+      }
     }
     return;
   }
@@ -201,7 +203,7 @@ class HealthDataManager {
    */
   public function deleteSigPrivateKey() {
     try {
-      $this->_removeFolder($this->signature_path);
+      $this->_removeFolder($this->signature_path, false);
       return;
     } catch (Exception $error) {
       throw new Exception($error->getMessage());
@@ -342,6 +344,4 @@ class HealthDataManager {
 $storage=new stdClass;
 $storage->path="/Users/louiejohnseno/Desktop/qr_lib";
 
-// $manager = new HealthDataManager($storage);
-// $manager->deleteSigPrivateKey();
-
+$manager = new HealthDataManager($storage);
