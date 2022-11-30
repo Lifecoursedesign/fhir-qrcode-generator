@@ -45,6 +45,13 @@ class HealthDataManager {
     }
   }
 
+  /**
+   * Remove subdirectories and files.
+   * 
+   * @param folderName The folder to clean up.
+   * 
+   * @return Nothing
+   */
   private function _removeFolder($folderName) {
     if (is_dir($folderName)){
       $folderHandle = opendir($folderName);
