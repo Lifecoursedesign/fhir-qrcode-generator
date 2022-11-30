@@ -2,13 +2,6 @@
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-use Endroid\QrCode\Color\Color;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
-use Endroid\QrCode\Writer\PngWriter;
-
 class HealthDataQrCode {
 
   /**
@@ -114,17 +107,21 @@ class HealthDataQrCode {
    * @return Nothing.
    */
   public function generateQrCode($data, $file_path) {
-    $writer = new PngWriter();
-    $qrCode = QrCode::create($data)
-      ->setEncoding(new Encoding('UTF-8'))
-      ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
-      ->setSize(200)
-      ->setMargin(0)
-      ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
-      ->setForegroundColor(new Color(0, 0, 0))
-      ->setBackgroundColor(new Color(255, 255, 255));
-    $result = $writer->write($qrCode);
-    $result->saveToFile($file_path);
+    exec("qrcode -e L -o {$file_path} {$data}");
+    // QRcode::png($data, $file_path);
+
+
+    // $writer = new PngWriter();
+    // $qrCode = QrCode::create($data)
+    //   ->setEncoding(new Encoding('UTF-8'))
+    //   ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+    //   ->setSize(200)
+    //   ->setMargin(0)
+    //   ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
+    //   ->setForegroundColor(new Color(0, 0, 0))
+    //   ->setBackgroundColor(new Color(255, 255, 255));
+    // $result = $writer->write($qrCode);
+    // $result->saveToFile($file_path);
     return;
   }
 
@@ -138,7 +135,7 @@ class HealthDataQrCode {
    * @return An array of file paths to the generated QR codes.
    */
   public function generatePrivateKeyQRCode($data, $file_path) {
-    $divider = 2000;
+    $divider = 1460;
     $base10 = $this->_getBase10format($data);
     $max = ceil(strlen($base10) / $divider);
 
@@ -153,9 +150,10 @@ class HealthDataQrCode {
         array_push($pem_base_10, "pem:/" . ($x + 1) . "/" . $max . "/" . substr($base10, $start, $end));
       }
     }
+    $dir_slash = stripos(PHP_OS, 'win') === 0 ? "\\": "/";
 
     for ($x = 0; $x < count($pem_base_10); $x++) {
-      $qr_path = $file_path . '/private-key-' . $x . '.png';
+      $qr_path = $file_path . $dir_slash . 'private-key-' . $x . '.png';
       array_push($file_paths, $qr_path);
       $this->generateQrCode($pem_base_10[$x], $qr_path);
     }
