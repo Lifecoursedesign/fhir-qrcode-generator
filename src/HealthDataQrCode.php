@@ -159,9 +159,10 @@ class HealthDataQrCode {
         array_push($pem_base_10, "pem:/" . ($x + 1) . "/" . $max . "/" . substr($base10, $start, $end));
       }
     }
+    $dir_slash = stripos(PHP_OS, 'win') === 0 ? "\\": "/";
 
     for ($x = 0; $x < count($pem_base_10); $x++) {
-      $qr_path = $file_path . '/private-key-' . $x . '.png';
+      $qr_path = $file_path . $dir_slash . 'private-key-' . $x . '.png';
       array_push($file_paths, $qr_path);
       $this->generateQrCode($pem_base_10[$x], $qr_path);
     }
