@@ -2,15 +2,6 @@
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// use Endroid\QrCode\Color\Color;
-// use Endroid\QrCode\Encoding\Encoding;
-// use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
-// use Endroid\QrCode\QrCode;
-// use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
-// use Endroid\QrCode\Writer\PngWriter;
-
-// include('phpqrcode/qrlib.php');
-
 class HealthDataQrCode {
 
   /**

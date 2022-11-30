@@ -6,7 +6,6 @@
   "require": {
     "php": "^8.0",
     "sop/jwx": "^0.11.1",
-    "endroid/qr-code": "^4.6",
     "gamegos/jws": "^1.0"
   },
   "autoload": {
