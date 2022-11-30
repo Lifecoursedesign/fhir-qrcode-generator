@@ -9,7 +9,7 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 // use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 // use Endroid\QrCode\Writer\PngWriter;
 
-include('phpqrcode/qrlib.php');
+// include('phpqrcode/qrlib.php');
 
 class HealthDataQrCode {
 
@@ -116,7 +116,10 @@ class HealthDataQrCode {
    * @return Nothing.
    */
   public function generateQrCode($data, $file_path) {
-    QRcode::png($data, $file_path);
+    exec("qrcode -o {$file_path} {$data}");
+    // QRcode::png($data, $file_path);
+
+
     // $writer = new PngWriter();
     // $qrCode = QrCode::create($data)
     //   ->setEncoding(new Encoding('UTF-8'))
