@@ -320,4 +320,4 @@ $storage=new stdClass;
 $storage->path="/Users/louiejohnseno/Desktop/qr_lib";
 
 $manager = new HealthDataManager($storage);
-
+$manager->generateEncPrivateKeyQr("emr-1");

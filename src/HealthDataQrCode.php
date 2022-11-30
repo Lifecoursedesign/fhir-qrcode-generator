@@ -116,7 +116,7 @@ class HealthDataQrCode {
    * @return Nothing.
    */
   public function generateQrCode($data, $file_path) {
-    exec("qrcode -o {$file_path} {$data}");
+    exec("qrcode -e L -o {$file_path} {$data}");
     // QRcode::png($data, $file_path);
 
 
