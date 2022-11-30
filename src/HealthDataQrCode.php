@@ -69,7 +69,7 @@ class HealthDataQrCode {
    * 
    * @return The base64UrlEncode function is returning the base64 encoded string of the data passed in.
    */
-  function base64UrlEncode($data) {
+  public function base64UrlEncode($data) {
     return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
   }
 
