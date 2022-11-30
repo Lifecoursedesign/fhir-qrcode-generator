@@ -69,7 +69,7 @@ class HealthDataQrCode {
    * 
    * @return The base64UrlEncode function is returning the base64 encoded string of the data passed in.
    */
-  function base64UrlEncode($data) {
+  public function base64UrlEncode($data) {
     return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
   }
 
@@ -107,21 +107,7 @@ class HealthDataQrCode {
    * @return Nothing.
    */
   public function generateQrCode($data, $file_path) {
-    exec("qrcode -e L -o {$file_path} {$data}");
-    // QRcode::png($data, $file_path);
-
-
-    // $writer = new PngWriter();
-    // $qrCode = QrCode::create($data)
-    //   ->setEncoding(new Encoding('UTF-8'))
-    //   ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
-    //   ->setSize(200)
-    //   ->setMargin(0)
-    //   ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
-    //   ->setForegroundColor(new Color(0, 0, 0))
-    //   ->setBackgroundColor(new Color(255, 255, 255));
-    // $result = $writer->write($qrCode);
-    // $result->saveToFile($file_path);
+    exec("qrcode -w 800 -e L -o {$file_path} {$data}");
     return;
   }
 

@@ -332,10 +332,7 @@ class HealthDataManager {
       $this->_removeFolder($folderName);
       return;
     } catch (Exception $e) {
-      $response = $e->getResponse();
-      $jsonBody = (string) $response->getBody();
-      $parseError = json_decode($jsonBody);
-      throw new Exception($parseError->message);
+      throw new Exception($e->getMessage());
     }
   }
 }
