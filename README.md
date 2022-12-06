@@ -8,6 +8,11 @@ QR Code Generator project.
 - [DotNet SDK](https://aka.ms/dotnet-download)
 - [peachpie Visual studio code extension](https://marketplace.visualstudio.com/items?itemName=iolevel.peachpie-vscode)
 - [C# Visual studio code extension](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
+- [qrcode](https://www.npmjs.com/package/qrcode)
+- [openssl](https://www.openssl.org/source)
+
+**Note:**<br>
+Install the QRcode and OpenSSL packages globally.  Since PeachPie cannot support some of the functions during compilation at the C# environment this project will utilize the command line when creating key pairs and QRcode through thru PHP **exec** function.
 
 ## Peachpie setup
 
