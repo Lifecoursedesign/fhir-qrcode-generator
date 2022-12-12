@@ -341,7 +341,7 @@ class HealthDataManager
    * 
    * @return The QR code image file name.
    */
-  public function generateQrCode($user_id, $json)
+  public function generateHealthDataQr($user_id, $json)
   {
     if (!$this->validator_instance->isValidUserID($user_id)) {
       throw new Exception('Invalid patient id');
