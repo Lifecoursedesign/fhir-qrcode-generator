@@ -27,14 +27,16 @@ use Sop\JWX\JWT\Parameter\JWTParameter;
 use Sop\JWX\JWT\JWT;
 use Sop\JWX\Util\UUIDv4;
 
-class HealthDataToken {
+class HealthDataToken
+{
 
   private $qrcode_instance;
 
   /**
    * The constructor function initializes the class variables and creates instances of the other classes
    */
-  public function __construct() {
+  public function __construct()
+  {
     $this->qrcode_instance = new HealthDataQrCode();
   }
 
@@ -46,7 +48,8 @@ class HealthDataToken {
    * 
    * @return A JWT token
    */
-  public function createPEMToken($data, $user_id) {
+  public function createPEMToken($data, $user_id)
+  {
     $claims = new Claims(
       new IssuerClaim('Saitama QR Code Generator'),
       new SubjectClaim('Private Key'),
@@ -68,7 +71,8 @@ class HealthDataToken {
    * 
    * @return A JWS token
    */
-  function createJWSToken($private_key, $content) {
+  function createJWSToken($private_key, $content)
+  {
 
     # Compressed Payload
     $compressed = gzdeflate($content);
@@ -101,7 +105,8 @@ class HealthDataToken {
    * 
    * @return A JWE token
    */
-  function createJWEToken($public_key, $content) {
+  function createJWEToken($public_key, $content)
+  {
     $claims = new Claims(
       IssuedAtClaim::now(),
       NotBeforeClaim::now(),
