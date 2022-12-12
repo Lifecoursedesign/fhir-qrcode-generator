@@ -2,8 +2,7 @@
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-require "HealthDataToken.php";
-require "Config.php";
+// require "HealthDataToken.php";
 
 class HealthDataManager
 {
@@ -11,10 +10,9 @@ class HealthDataManager
   private $signature_path;
   private $enc_path;
   private $qr_path;
-  private $token_instance;
+  // private $token_instance;
   private $qrcode_instance;
   private $validator_instance;
-  private $endpoint;
 
   /**
    * The constructor function initializes the class variables and creates instances of the other classes
@@ -29,9 +27,7 @@ class HealthDataManager
     if (!property_exists($storage, 'path')) {
       throw new Exception('Storage path is required');
     }
-    $config  = new Config();
-    $this->endpoint = $config->getConfig();
-    $this->token_instance = new HealthDataToken();
+    // $this->token_instance = new HealthDataToken();
     $this->qrcode_instance = new HealthDataQrCode();
     $this->validator_instance = new Validator();
     $this->base_path = $storage->path;
@@ -359,7 +355,7 @@ class HealthDataManager
 }
 
 # For testing purposes in PHP, you can change the path to your current environment.
-// $storage=new stdClass;
-// $storage->path="/Users/louiejohnseno/Desktop/qr_lib";
+// $storage = new stdClass;
+// $storage->path = "/Users/louiejohnseno/Desktop/qr_lib";
 
 // $manager = new HealthDataManager($storage);
