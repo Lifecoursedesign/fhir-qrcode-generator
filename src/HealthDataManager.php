@@ -5,7 +5,8 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 require "HealthDataToken.php";
 require "Config.php";
 
-class HealthDataManager {
+class HealthDataManager
+{
   private $base_path;
   private $signature_path;
   private $enc_path;
@@ -20,7 +21,8 @@ class HealthDataManager {
    * 
    * @param storage The folder path to store the files.
    */
-  public function __construct($storage) {
+  public function __construct($storage)
+  {
     if (!is_object($storage)) {
       throw new Exception('Invalid specified storage');
     }
@@ -52,7 +54,8 @@ class HealthDataManager {
    * 
    * @return string for slash according to OS.
    */
-  private function _getDirSlash() {
+  private function _getDirSlash()
+  {
     return stripos(PHP_OS, 'win') === 0 ? "\\" : "/";
   }
 
@@ -63,7 +66,8 @@ class HealthDataManager {
    * 
    * @return Nothing
    */
-  private function _removeFolder($folderName, $removeParentFolder = true) {
+  private function _removeFolder($folderName, $removeParentFolder = true)
+  {
     if (is_dir($folderName)) {
       $folderHandle = opendir($folderName);
       if (!$folderHandle) {
@@ -93,7 +97,8 @@ class HealthDataManager {
    * 
    * @return An array of the private and public keys.
    */
-  public function simulateJWSKeys() {
+  public function simulateJWSKeys()
+  {
     $dir_slash = $this->_getDirSlash();
     $user_path = $this->base_path . $dir_slash . "simulate_jws";
     if (!is_dir($user_path)) {
@@ -130,7 +135,8 @@ class HealthDataManager {
    * 
    * @return Nothing.
    */
-  public function setSigPrivateKey($kid, $private_pem) {
+  public function setSigPrivateKey($kid, $private_pem)
+  {
     try {
       $dir_slash = $this->_getDirSlash();
 
@@ -172,7 +178,8 @@ class HealthDataManager {
    * 
    * @return An array of the kid and private key.
    */
-  public function getSigPrivateKey() {
+  public function getSigPrivateKey()
+  {
     try {
       $dir_slash = $this->_getDirSlash();
       $result = array();
@@ -201,7 +208,8 @@ class HealthDataManager {
    * 
    * @return Nothing.
    */
-  public function deleteSigPrivateKey() {
+  public function deleteSigPrivateKey()
+  {
     try {
       $this->_removeFolder($this->signature_path, false);
       return;
@@ -217,7 +225,8 @@ class HealthDataManager {
    * 
    * @return Nothing.
    */
-  public function createEncKeyPair($user_id) {
+  public function createEncKeyPair($user_id)
+  {
     try {
       if (!$this->validator_instance->isValidUserID($user_id)) {
         throw new Exception('Invalid patient id');
@@ -256,7 +265,8 @@ class HealthDataManager {
    * 
    * @return the path of the generated QR code.
    */
-  public function generateEncPrivateKeyQr($user_id) {
+  public function generateEncPrivateKeyQr($user_id)
+  {
     if (!$this->validator_instance->isValidUserID($user_id)) {
       throw new Exception('Invalid patient id');
     }
@@ -281,7 +291,7 @@ class HealthDataManager {
       if (!is_dir($qr_user_path)) {
         mkdir($qr_user_path, 0755, true);
       }
-      $result = $this->qrcode_instance->generatePrivateKeyQRCode($compressed_pk_data, $qr_user_path);
+      $result = $this->qrcode_instance->generatePrivateKeyQRCode($base64URLPK, $qr_user_path);
       return $result;
     } catch (Exception $e) {
       throw new Exception($e->getMessage());
@@ -295,7 +305,8 @@ class HealthDataManager {
    * 
    * @return An array of the private and public keys.
    */
-  public function getEncKeyPair($user_id) {
+  public function getEncKeyPair($user_id)
+  {
     if (!$this->validator_instance->isValidUserID($user_id)) {
       throw new Exception('Invalid patient id');
     }
@@ -331,7 +342,8 @@ class HealthDataManager {
    * 
    * @return Nothing.
    */
-  public function deleteEncKeyPair($user_id) {
+  public function deleteEncKeyPair($user_id)
+  {
     try {
       $dir_slash = $this->_getDirSlash();
       if (!$this->validator_instance->isValidUserID($user_id)) {
