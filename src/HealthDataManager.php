@@ -331,6 +331,37 @@ class HealthDataManager
     }
   }
 
+
+  // THIS IS ONLY A TEMPORARY IMPLEMENTATION FOR DEMO. PLEASE REPLACE WITH ACTUAL
+  /**
+   * It takes a user id and a json string, and generates a QR code for the user health data
+   * 
+   * @param user_id The user id of the patient
+   * @param json The JSON data to be encoded in the QR code.
+   * 
+   * @return The QR code image file name.
+   */
+  public function generateQrCode($user_id, $json)
+  {
+    if (!$this->validator_instance->isValidUserID($user_id)) {
+      throw new Exception('Invalid patient id');
+    }
+    try {
+      $dir_slash = $this->_getDirSlash();
+
+      # Generate Health Data QR
+      $compressed_pk_data = gzdeflate($json);
+      $qr_user_path = $this->qr_path . $dir_slash . "fhir" . $dir_slash . $user_id;
+      if (!is_dir($qr_user_path)) {
+        mkdir($qr_user_path, 0755, true);
+      }
+      $result = $this->qrcode_instance->generatePrivateKeyQRCode($compressed_pk_data, $qr_user_path);
+      return $result;
+    } catch (Exception $e) {
+      throw new Exception($e->getMessage());
+    }
+  }
+
   /**
    * This function deletes the encryption key pair for a user
    * 
