@@ -1,6 +1,6 @@
 <?php
 
-namespace Saitama\QR\HealthDataManager;
+namespace Saitama\QR;
 
 class HealthDataQrCode
 {

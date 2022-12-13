@@ -1,6 +1,6 @@
 <?php
 
-namespace Saitama\QR\HealthDataManager;
+namespace Saitama\QR;
 
 include_once(__DIR__ . '/../vendor/autoload.php');
 

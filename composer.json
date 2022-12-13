@@ -11,7 +11,7 @@
   },
   "autoload": {
     "psr-4": {
-      "fhir-qr-generator\\": "src/"
+      "Saitama\\QR\\": "src/"
     }
   },
   "config": {
