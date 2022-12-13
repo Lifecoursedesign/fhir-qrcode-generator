@@ -1,9 +1,9 @@
 <?php
 
-namespace Saitama\QR\HealthDataManager;
+namespace Saitama\QR;
 
 use Exception;
-// use stdClass;
+//use stdClass;
 
 require_once "HealthDataToken.php";
 require_once "HealthDataQrCode.php";
