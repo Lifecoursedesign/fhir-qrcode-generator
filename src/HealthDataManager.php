@@ -3,6 +3,8 @@
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 // require "HealthDataToken.php";
+require_once "HealthDataQrCode.php";
+require_once "Validator.php";
 
 class HealthDataManager
 {
