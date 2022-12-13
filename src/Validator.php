@@ -1,5 +1,7 @@
 <?php
 
+namespace Saitama\QR\HealthDataManager;
+
 class Validator
 {
 

@@ -1,9 +1,11 @@
 <?php
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+namespace Saitama\QR\HealthDataManager;
+
+include_once(__DIR__ . '/../vendor/autoload.php');
+
 
 require_once "HealthDataQrCode.php";
-require_once "Validator.php";
 
 use Gamegos\JWS\Algorithm\RSA_SSA_PKCSv15;
 
