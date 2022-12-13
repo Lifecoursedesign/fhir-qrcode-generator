@@ -2,7 +2,7 @@
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-require "Validator.php";
+require_once "Validator.php";
 
 class HealthDataQrCode
 {
@@ -117,6 +117,7 @@ class HealthDataQrCode
   public function generateQrCode($data, $file_path)
   {
     exec("qrcode -w 800 -e L -o {$file_path} {$data}");
+    chmod($file_path, 0600);
     return;
   }
 
@@ -153,8 +154,6 @@ class HealthDataQrCode
       array_push($file_paths, $qr_path);
       $this->generateQrCode($pem_base_10[$x], $qr_path);
     }
-
-    print_r($pem_base_10);
     return $file_paths;
   }
 }
