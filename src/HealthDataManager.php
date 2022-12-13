@@ -41,9 +41,9 @@ class HealthDataManager
 
     $folder_not_exists = !is_dir($this->base_path);
     if ($folder_not_exists) {
-      mkdir($this->signature_path, 0755, true);
-      mkdir($this->enc_path, 0755, true);
-      mkdir($this->qr_path, 0755, true);
+      mkdir($this->signature_path, 0700, true);
+      mkdir($this->enc_path, 0700, true);
+      mkdir($this->qr_path, 0700, true);
     }
   }
 
@@ -100,12 +100,14 @@ class HealthDataManager
     $dir_slash = $this->_getDirSlash();
     $user_path = $this->base_path . $dir_slash . "simulate_jws";
     if (!is_dir($user_path)) {
-      mkdir($user_path, 0755, true);
+      mkdir($user_path, 0700, true);
     }
     $private_key_file = $user_path . $dir_slash . "private_key.pem";
     $public_key_file = $user_path . $dir_slash . "public_key.pem";
     exec("openssl genrsa -out {$private_key_file} 2048");
     exec("openssl rsa -in {$private_key_file} -pubout -out {$public_key_file}");
+    chmod($private_key_file, 0600);
+    chmod($public_key_file, 0600);
     $res = array(
       "private_key" => file_get_contents($private_key_file, true),
       "public_key" => file_get_contents($public_key_file, true),
@@ -150,7 +152,7 @@ class HealthDataManager
 
       $sig_path = $this->signature_path;
       if (!is_dir($sig_path)) {
-        mkdir($sig_path, 0755, true);
+        mkdir($sig_path, 0700, true);
       }
       $contents = scandir($sig_path);
 
@@ -165,6 +167,8 @@ class HealthDataManager
       }
       file_put_contents($private_key_file, $private_pem);
       file_put_contents($kid_file, $kid);
+      chmod($private_key_file, 0600);
+      chmod($kid_file, 0600);
       return;
     } catch (Exception $error) {
       throw new Exception($error->getMessage());
@@ -233,7 +237,7 @@ class HealthDataManager
 
       $user_path = $this->enc_path . $dir_slash . $user_id;
       if (!is_dir($user_path)) {
-        mkdir($user_path, 0755, true);
+        mkdir($user_path, 0700, true);
       }
 
       $private_output = null;
@@ -251,6 +255,8 @@ class HealthDataManager
       if (0 == $private_retval && 0 == $public_retval) {
         rename($private_key_file, $final_private_file);
         rename($public_key_file, $final_public_file);
+        chmod($final_private_file, 0600);
+        chmod($final_public_file, 0600);
         return;
       } else {
         throw new Exception('Error Saving Encryption Key Pair');
@@ -294,7 +300,7 @@ class HealthDataManager
       # Generate QR Code
       $qr_user_path = $this->qr_path . $dir_slash . "keys" . $dir_slash . $user_id;
       if (!is_dir($qr_user_path)) {
-        mkdir($qr_user_path, 0755, true);
+        mkdir($qr_user_path, 0700, true);
       }
       $result = $this->qrcode_instance->generatePrivateKeyQRCode($base64URLPK, $qr_user_path);
       return $result;
@@ -362,7 +368,7 @@ class HealthDataManager
       $compressed_pk_data = gzdeflate($json);
       $qr_user_path = $this->qr_path . $dir_slash . "fhir" . $dir_slash . $user_id;
       if (!is_dir($qr_user_path)) {
-        mkdir($qr_user_path, 0755, true);
+        mkdir($qr_user_path, 0700, true);
       }
       $result = $this->qrcode_instance->generatePrivateKeyQRCode($compressed_pk_data, $qr_user_path);
       return $result;
