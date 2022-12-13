@@ -2,7 +2,8 @@
 
 namespace Saitama\QR\HealthDataManager;
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+include_once(__DIR__ . '/../vendor/autoload.php');
+
 
 require_once "HealthDataQrCode.php";
 

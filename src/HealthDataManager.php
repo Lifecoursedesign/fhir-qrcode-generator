@@ -3,7 +3,7 @@
 namespace Saitama\QR\HealthDataManager;
 
 use Exception;
-use stdClass;
+// use stdClass;
 
 require_once "HealthDataToken.php";
 require_once "HealthDataQrCode.php";
@@ -15,7 +15,7 @@ class HealthDataManager
   private $signature_path;
   private $enc_path;
   private $qr_path;
-  private $token_instance;
+  // private $token_instance;
   private $qrcode_instance;
   private $validator_instance;
 
@@ -32,7 +32,7 @@ class HealthDataManager
     if (!property_exists($storage, 'path')) {
       throw new Exception('Storage path is required');
     }
-    $this->token_instance = new HealthDataToken();
+    // $this->token_instance = new HealthDataToken();
     $this->qrcode_instance = new HealthDataQrCode();
     $this->validator_instance = new Validator();
     $this->base_path = $storage->path;
@@ -124,8 +124,8 @@ class HealthDataManager
      *   format at https://irrte.ch/jwt-js-decode/pem2jwk.html.
      *   Then copy and paste the JWK into the verify signature box. 
      */
-    $jws_token = $this->token_instance->createJWSToken($res["private_key"], json_encode(array("data" => "test")));
-    echo $jws_token;
+    // $jws_token = $this->token_instance->createJWSToken($res["private_key"], json_encode(array("data" => "test")));
+    // echo $jws_token;
 
     return $res;
   }
