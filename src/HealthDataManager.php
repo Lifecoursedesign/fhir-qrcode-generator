@@ -238,20 +238,27 @@ class HealthDataManager
 
       $private_output = null;
       $private_retval = null;
-      $private_key_file = $user_path . $dir_slash . "private_key.pem";
+      $private_key_file = $user_path . $dir_slash . "_private_key.pem";
+      $final_private_file = $user_path . $dir_slash . "private_key.pem";
       exec("openssl genrsa -out {$private_key_file} 2048", $private_output, $private_retval);
 
       $public_output = null;
       $public_retval = null;
-      $public_key_file = $user_path . $dir_slash . "public_key.pem";
+      $public_key_file = $user_path . $dir_slash . "_public_key.pem";
+      $final_public_file = $user_path . $dir_slash . "public_key.pem";
       exec("openssl rsa -in {$private_key_file} -pubout -out {$public_key_file}", $public_output, $public_retval);
 
-      if (0 == $private_retval && 0 == $public_retval)
+      if (0 == $private_retval && 0 == $public_retval) {
+        rename($private_key_file, $final_private_file);
+        rename($public_key_file, $final_public_file);
         return;
-      else
+      } else {
         throw new Exception('Error Saving Encryption Key Pair');
-    } catch (Exception $e) {
-      throw new Exception('Error Saving Encryption Key Pair');
+      }
+    } catch (Exception $error) {
+      unlink($private_key_file);
+      unlink($public_key_file);
+      throw new Exception($error->getMessage());
     }
   }
 
