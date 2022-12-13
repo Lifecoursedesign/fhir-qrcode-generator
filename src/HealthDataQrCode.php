@@ -1,8 +1,6 @@
 <?php
 
-require dirname(__DIR__) . '/vendor/autoload.php';
-
-require_once "Validator.php";
+namespace Saitama\QR\HealthDataManager;
 
 class HealthDataQrCode
 {
