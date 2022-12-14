@@ -2,8 +2,9 @@
 
 namespace Saitama\QR;
 
-include_once(__DIR__ . '/../vendor/autoload.php');
-
+if (!str_contains(__DIR__, 'vendor')) {
+  include_once(__DIR__ . '/../vendor/autoload.php');
+}
 
 require_once "HealthDataQrCode.php";
 
