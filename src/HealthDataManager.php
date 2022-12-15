@@ -1,49 +1,52 @@
 <?php
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+namespace Saitama\QR;
 
-require "HealthDataToken.php";
-require "Config.php";
+use Exception;
+//use stdClass;
 
-class HealthDataManager {
+require_once "HealthDataToken.php";
+require_once "HealthDataQrCode.php";
+require_once "Validator.php";
+
+class HealthDataManager
+{
   private $base_path;
   private $signature_path;
   private $enc_path;
   private $qr_path;
-  private $token_instance;
+  // private $token_instance;
   private $qrcode_instance;
   private $validator_instance;
-  private $endpoint;
 
   /**
    * The constructor function initializes the class variables and creates instances of the other classes
    * 
    * @param storage The folder path to store the files.
    */
-  public function __construct($storage) {
+  public function __construct($storage)
+  {
     if (!is_object($storage)) {
       throw new Exception('Invalid specified storage');
     }
-    if(!property_exists($storage, 'path')) {
+    if (!property_exists($storage, 'path')) {
       throw new Exception('Storage path is required');
     }
-    $config  = new Config();
-    $this->endpoint = $config->getConfig();
-    $this->token_instance = new HealthDataToken();
+    // $this->token_instance = new HealthDataToken();
     $this->qrcode_instance = new HealthDataQrCode();
     $this->validator_instance = new Validator();
     $this->base_path = $storage->path;
-    $dir_slash = stripos(PHP_OS, 'win') === 0 ? "\\": "/";
+    $dir_slash = stripos(PHP_OS, 'win') === 0 ? "\\" : "/";
 
-    $this->signature_path = $this->base_path.$dir_slash."signature_key";
-    $this->enc_path = $this->base_path.$dir_slash."enc_keys";
-    $this->qr_path = $this->base_path.$dir_slash."qr";
+    $this->signature_path = $this->base_path . $dir_slash . "signature_key";
+    $this->enc_path = $this->base_path . $dir_slash . "enc_keys";
+    $this->qr_path = $this->base_path . $dir_slash . "qr";
 
     $folder_not_exists = !is_dir($this->base_path);
     if ($folder_not_exists) {
-      mkdir($this->signature_path, 0755, true);
-      mkdir($this->enc_path, 0755, true);
-      mkdir($this->qr_path, 0755, true);
+      mkdir($this->signature_path, 0700, true);
+      mkdir($this->enc_path, 0700, true);
+      mkdir($this->qr_path, 0700, true);
     }
   }
 
@@ -52,8 +55,9 @@ class HealthDataManager {
    * 
    * @return string for slash according to OS.
    */
-  private function _getDirSlash() {
-    return stripos(PHP_OS, 'win') === 0 ? "\\": "/";
+  private function _getDirSlash()
+  {
+    return stripos(PHP_OS, 'win') === 0 ? "\\" : "/";
   }
 
   /**
@@ -63,25 +67,26 @@ class HealthDataManager {
    * 
    * @return Nothing
    */
-  private function _removeFolder($folderName, $removeParentFolder = true) {
-    if (is_dir($folderName)){
+  private function _removeFolder($folderName, $removeParentFolder = true)
+  {
+    if (is_dir($folderName)) {
       $folderHandle = opendir($folderName);
-      if(!$folderHandle) {
+      if (!$folderHandle) {
         return;
       }
       $dir_slash = $this->_getDirSlash();
 
-      while(($file = readdir($folderHandle)) !== false) {
+      while (($file = readdir($folderHandle)) !== false) {
         if ($file != "." && $file != "..") {
-          if (!is_dir($folderName.$dir_slash.$file)) {
-              unlink($folderName.$dir_slash.$file);
+          if (!is_dir($folderName . $dir_slash . $file)) {
+            unlink($folderName . $dir_slash . $file);
           } else {
-            $this->_removeFolder($folderName.$dir_slash.$file);
-          }     
+            $this->_removeFolder($folderName . $dir_slash . $file);
+          }
         }
       }
       closedir($folderHandle);
-      if($removeParentFolder) {
+      if ($removeParentFolder) {
         rmdir($folderName);
       }
     }
@@ -93,16 +98,19 @@ class HealthDataManager {
    * 
    * @return An array of the private and public keys.
    */
-  public function simulateJWSKeys() {
+  public function simulateJWSKeys()
+  {
     $dir_slash = $this->_getDirSlash();
-    $user_path = $this->base_path.$dir_slash."simulate_jws";
-    if(!is_dir($user_path)) {
-      mkdir($user_path, 0755, true);
+    $user_path = $this->base_path . $dir_slash . "simulate_jws";
+    if (!is_dir($user_path)) {
+      mkdir($user_path, 0700, true);
     }
-    $private_key_file = $user_path.$dir_slash."private_key.pem";
-    $public_key_file = $user_path.$dir_slash."public_key.pem";
+    $private_key_file = $user_path . $dir_slash . "private_key.pem";
+    $public_key_file = $user_path . $dir_slash . "public_key.pem";
     exec("openssl genrsa -out {$private_key_file} 2048");
     exec("openssl rsa -in {$private_key_file} -pubout -out {$public_key_file}");
+    chmod($private_key_file, 0600);
+    chmod($public_key_file, 0600);
     $res = array(
       "private_key" => file_get_contents($private_key_file, true),
       "public_key" => file_get_contents($public_key_file, true),
@@ -116,7 +124,7 @@ class HealthDataManager {
      *   format at https://irrte.ch/jwt-js-decode/pem2jwk.html.
      *   Then copy and paste the JWK into the verify signature box. 
      */
-    // $jws_token = $this->token_instance->createJWSToken($keys["private_key"], json_encode(array("data"=>"test")));
+    // $jws_token = $this->token_instance->createJWSToken($res["private_key"], json_encode(array("data" => "test")));
     // echo $jws_token;
 
     return $res;
@@ -130,7 +138,8 @@ class HealthDataManager {
    * 
    * @return Nothing.
    */
-  public function setSigPrivateKey($kid, $private_pem) {
+  public function setSigPrivateKey($kid, $private_pem)
+  {
     try {
       $dir_slash = $this->_getDirSlash();
 
@@ -143,24 +152,26 @@ class HealthDataManager {
       if (!$validPem) {
         throw new Exception('Invalid private pem argument');
       }
-     
+
       $sig_path = $this->signature_path;
-      if(!is_dir($sig_path)) {
-        mkdir($sig_path, 0755, true);
-      } 
+      if (!is_dir($sig_path)) {
+        mkdir($sig_path, 0700, true);
+      }
       $contents = scandir($sig_path);
 
       # Validate private key is already registered.
-      $private_key_file = $sig_path.$dir_slash."private_key.pem";
-      $kid_file = $sig_path.$dir_slash."kid.txt";
-      if(count($contents) > 0 && file_exists($private_key_file)) {
+      $private_key_file = $sig_path . $dir_slash . "private_key.pem";
+      $kid_file = $sig_path . $dir_slash . "kid.txt";
+      if (count($contents) > 0 && file_exists($private_key_file)) {
         $data = file_get_contents($private_key_file, true);
-        if($data === $private_pem) {
-         throw new Exception("Private key already exists.");
+        if ($data === $private_pem) {
+          throw new Exception("Private key already exists.");
         }
-      } 
+      }
       file_put_contents($private_key_file, $private_pem);
       file_put_contents($kid_file, $kid);
+      chmod($private_key_file, 0600);
+      chmod($kid_file, 0600);
       return;
     } catch (Exception $error) {
       throw new Exception($error->getMessage());
@@ -172,22 +183,23 @@ class HealthDataManager {
    * 
    * @return An array of the kid and private key.
    */
-  public function getSigPrivateKey() {
+  public function getSigPrivateKey()
+  {
     try {
       $dir_slash = $this->_getDirSlash();
       $result = array();
       $sig_path = $this->signature_path;
-      if(!is_dir($sig_path)) {
+      if (!is_dir($sig_path)) {
         return $result;
       }
 
       $scanDIR = scandir($sig_path);
-      if(count($scanDIR) > 0) {
-        if(file_exists($sig_path.$dir_slash."kid.txt")) {
-          $result["kid"] = file_get_contents($sig_path.$dir_slash."kid.txt", true);
+      if (count($scanDIR) > 0) {
+        if (file_exists($sig_path . $dir_slash . "kid.txt")) {
+          $result["kid"] = file_get_contents($sig_path . $dir_slash . "kid.txt", true);
         }
-        if(file_exists($sig_path.$dir_slash."private_key.pem")) {
-          $result["private_key"] = file_get_contents($sig_path.$dir_slash."private_key.pem", true);
+        if (file_exists($sig_path . $dir_slash . "private_key.pem")) {
+          $result["private_key"] = file_get_contents($sig_path . $dir_slash . "private_key.pem", true);
         }
       }
       return $result;
@@ -201,7 +213,8 @@ class HealthDataManager {
    * 
    * @return Nothing.
    */
-  public function deleteSigPrivateKey() {
+  public function deleteSigPrivateKey()
+  {
     try {
       $this->_removeFolder($this->signature_path, false);
       return;
@@ -217,25 +230,44 @@ class HealthDataManager {
    * 
    * @return Nothing.
    */
-  public function createEncKeyPair($user_id) {
+  public function createEncKeyPair($user_id)
+  {
     try {
       if (!$this->validator_instance->isValidUserID($user_id)) {
         throw new Exception('Invalid patient id');
       }
       $dir_slash = $this->_getDirSlash();
 
-      $user_path = $this->enc_path.$dir_slash.$user_id;
-      if(!is_dir($user_path)) {
-        mkdir($user_path, 0755, true);
+      $user_path = $this->enc_path . $dir_slash . $user_id;
+      if (!is_dir($user_path)) {
+        mkdir($user_path, 0700, true);
       }
-      
-      $private_key_file = $user_path.$dir_slash."private_key.pem";
-      $public_key_file = $user_path.$dir_slash."public_key.pem";
-      exec("openssl genrsa -out {$private_key_file} 2048");
-      exec("openssl rsa -in {$private_key_file} -pubout -out {$public_key_file}");
-      return;
-    } catch (Exception $e) {
-      throw new Exception('Error Saving Encryption Key Pair');
+
+      $private_output = null;
+      $private_retval = null;
+      $private_key_file = $user_path . $dir_slash . "_private_key.pem";
+      $final_private_file = $user_path . $dir_slash . "private_key.pem";
+      exec("openssl genrsa -out {$private_key_file} 2048", $private_output, $private_retval);
+
+      $public_output = null;
+      $public_retval = null;
+      $public_key_file = $user_path . $dir_slash . "_public_key.pem";
+      $final_public_file = $user_path . $dir_slash . "public_key.pem";
+      exec("openssl rsa -in {$private_key_file} -pubout -out {$public_key_file}", $public_output, $public_retval);
+
+      if (0 == $private_retval && 0 == $public_retval) {
+        rename($private_key_file, $final_private_file);
+        rename($public_key_file, $final_public_file);
+        chmod($final_private_file, 0600);
+        chmod($final_public_file, 0600);
+        return;
+      } else {
+        throw new Exception('Error Saving Encryption Key Pair');
+      }
+    } catch (Exception $error) {
+      unlink($private_key_file);
+      unlink($public_key_file);
+      throw new Exception($error->getMessage());
     }
   }
 
@@ -247,7 +279,8 @@ class HealthDataManager {
    * 
    * @return the path of the generated QR code.
    */
-  public function generateEncPrivateKeyQr($user_id) {
+  public function generateEncPrivateKeyQr($user_id)
+  {
     if (!$this->validator_instance->isValidUserID($user_id)) {
       throw new Exception('Invalid patient id');
     }
@@ -255,24 +288,24 @@ class HealthDataManager {
       $dir_slash = $this->_getDirSlash();
 
       # Get Private Key
-      $enc_user_path = $this->enc_path.$dir_slash.$user_id;
-      $pk_path = $enc_user_path.$dir_slash."private_key.pem";
-      if(!is_dir($enc_user_path)){
+      $enc_user_path = $this->enc_path . $dir_slash . $user_id;
+      $pk_path = $enc_user_path . $dir_slash . "private_key.pem";
+      if (!is_dir($enc_user_path)) {
         throw new Exception("No key pairs found for this user.");
-      } 
-      if(!file_exists($pk_path)){
+      }
+      if (!file_exists($pk_path)) {
         throw new Exception("No private key found for this user.");
       }
       $data = file_get_contents($pk_path, true);
       $compressed_pk_data = gzdeflate($data);
       $base64URLPK = $this->qrcode_instance->base64UrlEncode($compressed_pk_data);
-      
+
       # Generate QR Code
-      $qr_user_path = $this->qr_path.$dir_slash."keys".$dir_slash.$user_id;
-      if(!is_dir($qr_user_path)) {
-        mkdir($qr_user_path, 0755, true);
+      $qr_user_path = $this->qr_path . $dir_slash . "keys" . $dir_slash . $user_id;
+      if (!is_dir($qr_user_path)) {
+        mkdir($qr_user_path, 0700, true);
       }
-      $result = $this->qrcode_instance->generatePrivateKeyQRCode($compressed_pk_data, $qr_user_path);
+      $result = $this->qrcode_instance->generatePrivateKeyQRCode($base64URLPK, $qr_user_path);
       return $result;
     } catch (Exception $e) {
       throw new Exception($e->getMessage());
@@ -286,23 +319,24 @@ class HealthDataManager {
    * 
    * @return An array of the private and public keys.
    */
-  public function getEncKeyPair($user_id) {
+  public function getEncKeyPair($user_id)
+  {
     if (!$this->validator_instance->isValidUserID($user_id)) {
       throw new Exception('Invalid patient id');
     }
     try {
       $dir_slash = $this->_getDirSlash();
       $keys = array();
-      $user_path = $this->enc_path.$dir_slash.$user_id;
-      if(is_dir($user_path)){
-        if ($dh = opendir($user_path)){
-          while (($file = readdir($dh)) !== false){
-            if($file === "private_key.pem") {
-              $content = file_get_contents( $user_path.$dir_slash.$file, true);
+      $user_path = $this->enc_path . $dir_slash . $user_id;
+      if (is_dir($user_path)) {
+        if ($dh = opendir($user_path)) {
+          while (($file = readdir($dh)) !== false) {
+            if ($file === "private_key.pem") {
+              $content = file_get_contents($user_path . $dir_slash . $file, true);
               $keys["private_key"] = $content;
             }
-            if($file === "public_key.pem") {
-              $content = file_get_contents( $user_path.$dir_slash.$file, true);
+            if ($file === "public_key.pem") {
+              $content = file_get_contents($user_path . $dir_slash . $file, true);
               $keys["public_key"] = $content;
             }
           }
@@ -315,6 +349,37 @@ class HealthDataManager {
     }
   }
 
+
+  // THIS IS ONLY A TEMPORARY IMPLEMENTATION FOR DEMO. PLEASE REPLACE WITH ACTUAL
+  /**
+   * It takes a user id and a json string, and generates a QR code for the user health data
+   * 
+   * @param user_id The user id of the patient
+   * @param json The JSON data to be encoded in the QR code.
+   * 
+   * @return The QR code image file name.
+   */
+  public function generateHealthDataQr($user_id, $json)
+  {
+    if (!$this->validator_instance->isValidUserID($user_id)) {
+      throw new Exception('Invalid patient id');
+    }
+    try {
+      $dir_slash = $this->_getDirSlash();
+
+      # Generate Health Data QR
+      $compressed_pk_data = gzdeflate($json);
+      $qr_user_path = $this->qr_path . $dir_slash . "fhir" . $dir_slash . $user_id;
+      if (!is_dir($qr_user_path)) {
+        mkdir($qr_user_path, 0700, true);
+      }
+      $result = $this->qrcode_instance->generatePrivateKeyQRCode($compressed_pk_data, $qr_user_path);
+      return $result;
+    } catch (Exception $e) {
+      throw new Exception($e->getMessage());
+    }
+  }
+
   /**
    * This function deletes the encryption key pair for a user
    * 
@@ -322,13 +387,14 @@ class HealthDataManager {
    * 
    * @return Nothing.
    */
-  public function deleteEncKeyPair($user_id) {
+  public function deleteEncKeyPair($user_id)
+  {
     try {
       $dir_slash = $this->_getDirSlash();
       if (!$this->validator_instance->isValidUserID($user_id)) {
         throw new Exception('Invalid patient id');
       }
-      $folderName = $this->enc_path.$dir_slash.$user_id;
+      $folderName = $this->enc_path . $dir_slash . $user_id;
       $this->_removeFolder($folderName);
       return;
     } catch (Exception $e) {
@@ -338,7 +404,7 @@ class HealthDataManager {
 }
 
 # For testing purposes in PHP, you can change the path to your current environment.
-$storage=new stdClass;
-$storage->path="/Users/louiejohnseno/Desktop/qr_lib";
+// $storage = new stdClass;
+// $storage->path = "/Users/louiejohnseno/Desktop/qr_lib";
 
-$manager = new HealthDataManager($storage);
+// $manager = new HealthDataManager($storage);

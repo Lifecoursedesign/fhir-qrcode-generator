@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23cbac60bb659e3af7d9667621ef2828",
+    "content-hash": "d397830bb449de216184c929b6d4aaf1",
     "packages": [
         {
             "name": "gamegos/jws",
@@ -18,7 +18,13 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/gamegos/php-jws/zipball/a94218e43f45d4e818eecaaa4063ff436b4a5ee0",
                 "reference": "a94218e43f45d4e818eecaaa4063ff436b4a5ee0",
-                "shasum": ""
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "require": {
                 "php": ">=5.4"
@@ -35,7 +41,7 @@
                     ]
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/lnx/downloads/",
             "license": [
                 "MIT"
             ],
@@ -72,7 +78,13 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sop/aes-kw/zipball/1a7e6a19216a4ca58d01c0b0f36a543b4439e5c6",
                 "reference": "1a7e6a19216a4ca58d01c0b0f36a543b4439e5c6",
-                "shasum": ""
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "require": {
                 "ext-hash": "*",
@@ -88,7 +100,7 @@
                     "Sop\\AESKW\\": "lib/AESKW/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/lnx/downloads/",
             "license": [
                 "MIT"
             ],
@@ -124,7 +136,13 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sop/asn1/zipball/074efe8f7c353c54edc809ac3d74efda83edd776",
                 "reference": "074efe8f7c353c54edc809ac3d74efda83edd776",
-                "shasum": ""
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "require": {
                 "ext-gmp": "*",
@@ -140,7 +158,7 @@
                     "Sop\\ASN1\\": "lib/ASN1/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/lnx/downloads/",
             "license": [
                 "MIT"
             ],
@@ -178,7 +196,13 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sop/crypto-encoding/zipball/07537353e1b0e76c382a58a9c6e041b7c7dc9052",
                 "reference": "07537353e1b0e76c382a58a9c6e041b7c7dc9052",
-                "shasum": ""
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "require": {
                 "php": ">=7.2"
@@ -192,7 +216,7 @@
                     "Sop\\CryptoEncoding\\": "lib/CryptoEncoding/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/lnx/downloads/",
             "license": [
                 "MIT"
             ],
@@ -229,7 +253,13 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sop/crypto-types/zipball/9da5b0a6e9e308ae0f75745dc41b6d24bd4136f8",
                 "reference": "9da5b0a6e9e308ae0f75745dc41b6d24bd4136f8",
-                "shasum": ""
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "require": {
                 "ext-gmp": "*",
@@ -246,7 +276,7 @@
                     "Sop\\CryptoTypes\\": "lib/CryptoTypes/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/lnx/downloads/",
             "license": [
                 "MIT"
             ],
@@ -287,7 +317,13 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sop/gcm/zipball/dc42ca748431e7acc454657cbab14cbbd48bb10d",
                 "reference": "dc42ca748431e7acc454657cbab14cbbd48bb10d",
-                "shasum": ""
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "require": {
                 "ext-gmp": "*",
@@ -304,7 +340,7 @@
                     "Sop\\GCM\\": "lib/GCM/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/lnx/downloads/",
             "license": [
                 "MIT"
             ],
@@ -344,7 +380,13 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sop/jwx/zipball/6b69a8c479a50b925a2abbb6c6c063fd7eab22e7",
                 "reference": "6b69a8c479a50b925a2abbb6c6c063fd7eab22e7",
-                "shasum": ""
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "require": {
                 "ext-hash": "*",
@@ -365,7 +407,7 @@
                     "Sop\\JWX\\": "lib/JWX/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/lnx/downloads/",
             "license": [
                 "MIT"
             ],

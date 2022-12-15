@@ -1,17 +1,19 @@
 <?php
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+namespace Saitama\QR;
 
-class HealthDataQrCode {
+class HealthDataQrCode
+{
 
   /**
    * It takes a string and converts it to a base 10 number
    * 
    * @param id The id of the user you want to get the information of.
    * 
-   * @return The base 10 format of the id.
+   * @return A string base 10 format of the id.
    */
-  private function _getBase10format($id) {
+  private function _getBase10format($id)
+  {
     $value = "";
     foreach (str_split($id) as $letter) {
       $difference = ord($letter) - 45;
@@ -31,7 +33,8 @@ class HealthDataQrCode {
    * 
    * @return the base64 encoded text.
    */
-  private function _revertText($text) {
+  private function _revertText($text)
+  {
     $base64text = "";
     for ($x = 0; $x < strlen($text); $x = $x + 2) {
       $ascii = $text[$x] . $text[$x + 1];
@@ -47,7 +50,8 @@ class HealthDataQrCode {
    * 
    * @return The decrypted text is being returned.
    */
-  public function convertSHCSToToken($base_64_arr) {
+  public function convertSHCSToToken($base_64_arr)
+  {
     $len = count($base_64_arr);
     $decryptedText = "";
     for ($x = 0; $x < $len; $x++) {
@@ -69,7 +73,8 @@ class HealthDataQrCode {
    * 
    * @return The base64UrlEncode function is returning the base64 encoded string of the data passed in.
    */
-  public function base64UrlEncode($data) {
+  public function base64UrlEncode($data)
+  {
     return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
   }
 
@@ -80,9 +85,10 @@ class HealthDataQrCode {
    * 
    * @return An array of strings.
    */
-  public function convertTokenToDecimalArray($id) {
+  public function convertTokenToDecimalArray($id)
+  {
     $divider = 1194;
-    $base10 = $this->_getBase10format($id);
+    $base10 = strVal($this->_getBase10format($id));
     $max = ceil(strlen($base10) / $divider);
 
     $arr = [];
@@ -106,8 +112,10 @@ class HealthDataQrCode {
    * 
    * @return Nothing.
    */
-  public function generateQrCode($data, $file_path) {
+  public function generateQrCode($data, $file_path)
+  {
     exec("qrcode -w 800 -e L -o {$file_path} {$data}");
+    chmod($file_path, 0600);
     return;
   }
 
@@ -120,9 +128,10 @@ class HealthDataQrCode {
    * 
    * @return An array of file paths to the generated QR codes.
    */
-  public function generatePrivateKeyQRCode($data, $file_path) {
+  public function generatePrivateKeyQRCode($data, $file_path)
+  {
     $divider = 1460;
-    $base10 = $this->_getBase10format($data);
+    $base10 = strVal($this->_getBase10format($data));
     $max = ceil(strlen($base10) / $divider);
 
     $pem_base_10 = [];
@@ -136,14 +145,13 @@ class HealthDataQrCode {
         array_push($pem_base_10, "pem:/" . ($x + 1) . "/" . $max . "/" . substr($base10, $start, $end));
       }
     }
-    $dir_slash = stripos(PHP_OS, 'win') === 0 ? "\\": "/";
+    $dir_slash = stripos(PHP_OS, 'win') === 0 ? "\\" : "/";
 
     for ($x = 0; $x < count($pem_base_10); $x++) {
       $qr_path = $file_path . $dir_slash . 'private-key-' . $x . '.png';
       array_push($file_paths, $qr_path);
       $this->generateQrCode($pem_base_10[$x], $qr_path);
     }
-
     return $file_paths;
   }
 }

@@ -1,6 +1,7 @@
 {
   "name": "saitama/fhir-qr-generator",
   "description": "A QR Code Generator.",
+  "version": "1.0.0",
   "license": "MIT",
   "type": "library",
   "require": {
@@ -13,10 +14,17 @@
   },
   "autoload": {
     "psr-4": {
-      "fhir-qr-generator\\": "src/"
+      "Saitama\\QR\\": "src/"
     }
   },
   "config": {
     "platform-check": false
+  },
+  "repositories": {
+    "packagist.org": false,
+    "private-packagist": {
+      "type": "composer",
+      "url": "https://repo.packagist.com/lnx/"
+    }
   }
 }
