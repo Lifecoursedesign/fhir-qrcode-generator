@@ -3,7 +3,6 @@
 namespace Saitama\QR;
 
 use Exception;
-use FHIRPARSER;
 
 use stdClass;
 
@@ -409,10 +408,10 @@ class HealthDataManager
 }
 
 # For testing purposes in PHP, you can change the path to your current environment.
-$storage = new stdClass;
-$storage->path = "/Users/clize/Desktop/qr";
+// $storage = new stdClass;
+// $storage->path = "/Users/clize/Desktop/qr";
 
-$manager = new HealthDataManager($storage);
-$filename = 'sample.fhir.json';
-$data = file_get_contents($filename); 
-echo $manager->generateHealthDataQr(1,$data);
+// $manager = new HealthDataManager($storage);
+// $filename = 'sample.fhir.json';
+// $data = file_get_contents($filename); 
+// echo var_dump($manager->generateHealthDataQr("cliz",$data));

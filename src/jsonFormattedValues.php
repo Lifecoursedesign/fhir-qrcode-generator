@@ -1,5 +1,13 @@
-<?
-class jsonFormattedValues {
+<?php
+namespace Saitama\QR;
+
+if (!str_contains(__DIR__, 'vendor')) {
+  include_once(__DIR__ . '/../vendor/autoload.php');
+}
+
+class jsonFormattedValues
+{
+
 	public $institution_id;
 	public $department_id;
 	public $doctor_name;
@@ -31,5 +39,3 @@ class jsonFormattedValues {
 
   }
 }
-
-?>

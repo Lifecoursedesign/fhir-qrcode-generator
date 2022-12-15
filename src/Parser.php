@@ -1,27 +1,35 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
+
+namespace Saitama\QR;
+
 require_once "jsonFormattedValues.php";
+if (!str_contains(__DIR__, 'vendor')) {
+	include_once(__DIR__ . '/../vendor/autoload.php');
+  }
+  
+
 class FHIRPARSER {
 	private $parser;
 	private $jsonFormattedValues;
 	private $obsList;
 	private $institution_id;
 	private $department_id;
+	
 	/**
 	 * The constructor function initializes the class variables and creates instances of the other classes
 	 * 
 	 * @param storage The folder path to store the files.
 	*/
 	public function __construct(){
-		$this->parser = new \DCarbone\PHPFHIRGenerated\R4\PHPFHIRResponseParser();
 		$this->jsonFormattedValues = new jsonFormattedValues();
+		$this->parser = new \DCarbone\PHPFHIRGenerated\R4\PHPFHIRResponseParser();
 		$this->department_id= array("Obstetrics"=>1, "Internal Medicine"=>2, "Nutritional Guidance"=>3, "Diabetes Internal Medicine"=>4);
 		// $insts = array("埼玉医大総合医療センター"=>1, "愛和病院"=>2, "恵愛病院"=>3, "瀬戸病院"=>4);
 		// $department = array("産科"=>1, "内科"=>2, "栄養指導"=>3, "糖尿病内科"=>4);
 		$this->institution_id = array("Saitama Medical University General Medical Center"=>1, "Aiwa Hospital"=>2, "Keiai Hospital"=>3, "Seto Hospital"=>4);
 		$this->obsList = array(
 		'obs_week_of_prgncy' => "weeks of pregnancy", 
-		'obs_body_temp' => "body temperature", // s
+		'obs_body_temp' => "body temperature",
 		'obs_pulse' => "pulse",
 		'obs_bp_contraction' => "Systolic Blood Pressure",
 		'obs_bp_dilation' => "Diastolic Blood Pressure",
