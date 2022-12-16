@@ -67,7 +67,15 @@ class FHIRPARSER {
 		);
 	}
 
-	public function getData($type,$resource){
+ /**
+   * This gets the data per entry and place it into a json formatted object
+   * 
+   * @param $type resourceType
+   * @param $resource the entry
+   * 
+   * @return Nothing.
+   */
+	private function getData($type,$resource){
 		switch ($type){
 			case "Patient":
 				$this->jsonFormattedValues->medical_card_id = " ".$resource->getId();
@@ -125,7 +133,6 @@ class FHIRPARSER {
 				
 				
 				$type = "";
-				$typeVal = "";
 				$doneFlag = false;
 				$tempResource = $resource;
 				foreach ($arrOfCoding as $code) {
@@ -165,6 +172,13 @@ class FHIRPARSER {
 				break;
 		}
 	}
+	/**
+   * This split a json string into per entry and sends each entry by resourceType
+   * 
+   * @param $json json string
+   * 
+   * @return String of Json Formatted Values.
+   */
 	public function handleJson ($json){
 		$users = json_decode($json);
 		$entries = $users->entry;
