@@ -3,11 +3,13 @@
 namespace Saitama\QR;
 
 use Exception;
-//use stdClass;
+
+use stdClass;
 
 require_once "HealthDataToken.php";
 require_once "HealthDataQrCode.php";
 require_once "Validator.php";
+require_once "Parser.php";
 
 class HealthDataManager
 {
@@ -15,6 +17,7 @@ class HealthDataManager
   private $signature_path;
   private $enc_path;
   private $qr_path;
+  private $parser;
   // private $token_instance;
   private $qrcode_instance;
   private $validator_instance;
@@ -36,6 +39,7 @@ class HealthDataManager
     $this->qrcode_instance = new HealthDataQrCode();
     $this->validator_instance = new Validator();
     $this->base_path = $storage->path;
+    $this->parser = new FHIRPARSER();
     $dir_slash = stripos(PHP_OS, 'win') === 0 ? "\\" : "/";
 
     $this->signature_path = $this->base_path . $dir_slash . "signature_key";
@@ -366,9 +370,9 @@ class HealthDataManager
     }
     try {
       $dir_slash = $this->_getDirSlash();
-
+      $fhirJson = $this->parser->handleJson($json);
       # Generate Health Data QR
-      $compressed_pk_data = gzdeflate($json);
+      $compressed_pk_data = gzdeflate($fhirJson);
       $qr_user_path = $this->qr_path . $dir_slash . "fhir" . $dir_slash . $user_id;
       if (!is_dir($qr_user_path)) {
         mkdir($qr_user_path, 0700, true);
@@ -405,6 +409,9 @@ class HealthDataManager
 
 # For testing purposes in PHP, you can change the path to your current environment.
 // $storage = new stdClass;
-// $storage->path = "/Users/louiejohnseno/Desktop/qr_lib";
+// $storage->path = "/Users/clize/Desktop/qr";
 
 // $manager = new HealthDataManager($storage);
+// $filename = 'sample.fhir.json';
+// $data = file_get_contents($filename); 
+// echo var_dump($manager->generateHealthDataQr("cliz",$data));
