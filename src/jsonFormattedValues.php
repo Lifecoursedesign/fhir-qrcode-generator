@@ -1,10 +1,5 @@
 <?php
 namespace Saitama\QR;
-
-if (!str_contains(__DIR__, 'vendor')) {
-  include_once(__DIR__ . '/../vendor/autoload.php');
-}
-
 class jsonFormattedValues
 {
 
