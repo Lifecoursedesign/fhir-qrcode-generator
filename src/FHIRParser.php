@@ -2,13 +2,13 @@
 
 namespace Saitama\QR;
 
-require_once "JSONFormattedValues.php";
+require_once "jsonFormattedValues.php";
 
-if (!str_contains(__DIR__, 'vendor')) {
+if (!strpos(__DIR__, 'vendor')) {
 	include_once(__DIR__ . '/../vendor/autoload.php');
 }
 
-// use DCarbone\PHPFHIRGenerated\R4\PHPFHIRResponseParser;
+use DCarbone\PHPFHIRGenerated\R4\PHPFHIRResponseParser;
 
 class FHIRParser
 {
@@ -25,8 +25,8 @@ class FHIRParser
 	 */
 	public function __construct()
 	{
-		$this->jsonFormattedValues = new JSONFormattedValues();
-		// $this->parser = new PHPFHIRResponseParser();
+		$this->jsonFormattedValues = new JsonFormattedValues();
+		$this->parser = new PHPFHIRResponseParser();
 		$this->department_id = array("Obstetrics" => 1, "Internal Medicine" => 2, "Nutritional Guidance" => 3, "Diabetes Internal Medicine" => 4);
 		// $insts = array("埼玉医大総合医療センター"=>1, "愛和病院"=>2, "恵愛病院"=>3, "瀬戸病院"=>4);
 		// $department = array("産科"=>1, "内科"=>2, "栄養指導"=>3, "糖尿病内科"=>4);

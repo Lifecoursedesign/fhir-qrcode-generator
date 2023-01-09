@@ -11,6 +11,7 @@ require_once "HealthDataQrCode.php";
 require_once "Validator.php";
 require_once "FHIRParser.php";
 
+
 class HealthDataManager
 {
   private $base_path;
@@ -353,6 +354,19 @@ class HealthDataManager
     }
   }
 
+   /**
+   * Checks if String is a valid json
+   * 
+   * @param string json string.
+   * @param return_data set to true if you want to return the decoded data.
+   * 
+   * @return string/boolean returns decoded string if return_data is true otherwise BOOLEAN.
+   */
+  private function is_json($string,$return_data = false) {
+    $data = json_decode($string);
+    return (json_last_error() == JSON_ERROR_NONE) ? ($return_data ? $data : TRUE) : FALSE;
+  }
+
 
   /**
    * It takes a user id and a json string, and generates a QR code for the user health data
@@ -369,9 +383,13 @@ class HealthDataManager
       if (!$this->validator_instance->isValidUserID($user_id)) {
         throw new Exception('Invalid patient id');
       }
-      if (empty($json)) {
+      if (empty($json) || trim($json) === "{}") {
         throw new Exception('Empty JSON');
       }
+      if ($this->is_json($json,false) === false){
+        throw new Exception('Not a Valid JSON');
+      }
+
       $signature_key = $this->getSigPrivateKey();
       $enc_keys = $this->getEncKeyPair($user_id);
       if (empty($signature_key)) {
@@ -380,11 +398,11 @@ class HealthDataManager
       if (empty($enc_keys)) {
         throw new Exception('User does not exists. Missing Encryption Keys');
       }
-
+      
       $dir_slash = $this->_getDirSlash();
       # Parse FHIR JSON
-      $fhirJson ="test";
-      //  $this->parser->handleJson($json);
+      // $fhirJson ="test";
+      $fhirJson= $this->parser->handleJson($json);
 
     
       $jws_token = $this->token_instance->createJWSToken($signature_key["kid"], $user_id, $this->signature_path, $fhirJson);
@@ -393,19 +411,22 @@ class HealthDataManager
       }
 
       // $user_enc_path = $this->enc_path . $dir_slash . $user_id;
-      // $jwe_token = $this->token_instance->createJWEToken($enc_keys["public_key"], $jws_token);
-      // if (empty($jwe_token)) {
-      //   throw new Exception('JWE Error: No token generated');
-      // }
+      $jwe_token = $this->token_instance->createJWEToken($enc_keys["public_key"], $jws_token);
+      if (empty($jwe_token)) {
+        throw new Exception('JWE Error: No token generated');
+      }
 
-      // # Generate QR Code
-      // $qr_user_path = $this->qr_path . $dir_slash . "health-record" . $dir_slash . $user_id;
-      // if (!is_dir($qr_user_path)) {
-      //   mkdir($qr_user_path, 0700, true);
-      // }
-      // $result = $this->qrcode_instance->generateFHIRQRCode($jwe_token, $qr_user_path);
-      // return $result;
-      return $jws_token;
+
+      if (empty($jwe_token)) {
+        throw new Exception('JWE Error: No token generated');
+      }
+      # Generate QR Code
+      $qr_user_path = $this->qr_path . $dir_slash . "health-record" . $dir_slash . $user_id;
+      if (!is_dir($qr_user_path)) {
+        mkdir($qr_user_path, 0700, true);
+      }
+      $result = $this->qrcode_instance->generateFHIRQRCode($jwe_token, $qr_user_path);
+      return $result;
     } catch (Exception $e) {
       throw new Exception($e->getMessage());
     }

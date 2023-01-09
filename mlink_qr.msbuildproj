@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-     <Compile Include="**/*.php" Exclude="**/tests/**;**/test/**;**/PHPFHIRTests/**"/>
+     <Compile Include="**/*.php" Exclude="**/phpunit**;**/tests/**;**/test/**;**/PHPFHIRTests/**;**/Tests/**;**/Seeds/**;**/Testing/**;**/Migrations/**;**/pki-framework/**"/>
   </ItemGroup>
 
 </Project>

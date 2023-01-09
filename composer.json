@@ -5,22 +5,14 @@
   "license": "MIT",
   "type": "library",
   "require": {
-    "php": "^8.0",
+    "php": "^7.2",
+    "phpseclib/phpseclib": "2.0.0",
     "dcarbone/php-fhir-generated": "^2.0"
+
   },
   "autoload": {
     "psr-4": {
       "Saitama\\QR\\": "src/"
-    }
-  },
-  "config": {
-    "platform-check": false
-  },
-  "repositories": {
-    "packagist.org": false,
-    "private-packagist": {
-      "type": "composer",
-      "url": "https://repo.packagist.com/lnx/"
     }
   }
 }

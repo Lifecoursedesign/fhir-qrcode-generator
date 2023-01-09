@@ -6,8 +6,7 @@ use Exception;
 
 
 require_once "HealthDataQrCode.php";
-// require_once "JOSE/JWE.php";
-
+require_once "JWE.php";
 class HealthDataToken
 {
 
@@ -110,67 +109,10 @@ class HealthDataToken
   function createJWEToken($public_key, $content)
   {
     $token = "";
-    // $dir_slash = stripos(PHP_OS, 'win') === 0 ? "\\" : "/";
 
     $jwe = new JWE($content);
     $jwe->encrypt($public_key, 'RSA-OAEP', 'A256CBC-HS512');
     $token = $jwe->toString();
     return $token;
-
-    // # Create temporary folder and files for package read reference during generation.
-    // $temp_enc = __DIR__ . $dir_slash . "jwe_temp" . $dir_slash . $user_id; 
-    // $temp_enc_file = $temp_enc . $dir_slash . "enc_public.jwks";
-    // $temp_jws_file = $temp_enc . $dir_slash . "jws.txt";
-    // $temp_pk_file = $temp_enc . $dir_slash . "public_key.pem";
-    // if (!is_dir($temp_enc)) {
-    //   mkdir($temp_enc, 0700, true);
-    // }
-
-    // # Copy public key content for read
-    // $public_key = file_get_contents($user_enc_path . $dir_slash . "public_key.pem");
-    // file_put_contents($temp_pk_file, $public_key);
-
-    // /*
-    // *
-    // * NOTE: Change directory to where the user encryption keys are located, this is a workaround to handle Windows behavior),
-    // * since the node-jose-tools will read the pem file to generate a token.  
-    // */
-
-    // $original_cwd = getcwd();
-
-    // # Upsert Public key to keystore
-    // chdir($temp_enc);
-    // $enc_output = null;
-    // $enc_retval = null;
-    // exec("jose addkey --create public_key.pem", $enc_output, $enc_retval);
-    // if ($enc_retval != 0) {
-    //   $msg = is_array($enc_output) ? implode($enc_output) : $enc_output;
-    //   throw new Exception("JWE Error: {$msg}");
-    // } else {
-    //   file_put_contents($temp_enc_file, $enc_output[0]);
-    //   file_put_contents($temp_jws_file, $content);
-    // }
-
-    // # Generate JWE Token
-    // $jwe_output = null;
-    // $jwe_retval = null;
-    // exec("jose encrypt -j enc_public.jwks -l RSA-OAEP -e A128CBC-HS256 -p jws.txt -N", $jwe_output, $jwe_retval);
-    // if ($jwe_retval != 0) {
-    //   $msg = is_array($jwe_output) ? implode($jwe_output) : $jwe_output;
-    //   throw new Exception("JWE Error: {$msg}");
-    // } else {
-    //   if (!empty($jwe_output)) {
-    //     $token = $jwe_output[0];
-    //   }
-    // }
-    // chdir($original_cwd);
-
-    // # Clean up temporary folder and files
-    // unlink($temp_enc_file);
-    // unlink($temp_jws_file);
-    // unlink($temp_pk_file);
-    // rmdir($temp_enc);
-    // echo $token;
-    // return $token;
   }
 }
