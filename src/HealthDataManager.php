@@ -9,7 +9,8 @@ use stdClass;
 require_once "HealthDataToken.php";
 require_once "HealthDataQrCode.php";
 require_once "Validator.php";
-require_once "Parser.php";
+require_once "FHIRParser.php";
+
 
 class HealthDataManager
 {
@@ -18,7 +19,7 @@ class HealthDataManager
   private $enc_path;
   private $qr_path;
   private $parser;
-  // private $token_instance;
+  private $token_instance;
   private $qrcode_instance;
   private $validator_instance;
 
@@ -35,11 +36,11 @@ class HealthDataManager
     if (!property_exists($storage, 'path')) {
       throw new Exception('Storage path is required');
     }
-    // $this->token_instance = new HealthDataToken();
+    $this->token_instance = new HealthDataToken();
     $this->qrcode_instance = new HealthDataQrCode();
     $this->validator_instance = new Validator();
     $this->base_path = $storage->path;
-    $this->parser = new FHIRPARSER();
+    $this->parser = new FHIRParser();
     $dir_slash = stripos(PHP_OS, 'win') === 0 ? "\\" : "/";
 
     $this->signature_path = $this->base_path . $dir_slash . "signature_key";
@@ -149,7 +150,7 @@ class HealthDataManager
 
       # Validate arguments.
       $validKid = $this->validator_instance->isValidKID($kid);
-      $validPem = $this->validator_instance->isValidPrivatePEM($private_pem);
+      $validPem = $this->validator_instance->isValidPrivatePEM(trim($private_pem));
       if (!$validKid) {
         throw new Exception('Invalid kid argument');
       }
@@ -353,8 +354,20 @@ class HealthDataManager
     }
   }
 
+   /**
+   * Checks if String is a valid json
+   * 
+   * @param string json string.
+   * @param return_data set to true if you want to return the decoded data.
+   * 
+   * @return string/boolean returns decoded string if return_data is true otherwise BOOLEAN.
+   */
+  private function is_json($string,$return_data = false) {
+    $data = json_decode($string);
+    return (json_last_error() == JSON_ERROR_NONE) ? ($return_data ? $data : TRUE) : FALSE;
+  }
 
-  // THIS IS ONLY A TEMPORARY IMPLEMENTATION FOR DEMO. PLEASE REPLACE WITH ACTUAL
+
   /**
    * It takes a user id and a json string, and generates a QR code for the user health data
    * 
@@ -365,19 +378,50 @@ class HealthDataManager
    */
   public function generateHealthDataQr($user_id, $json)
   {
-    if (!$this->validator_instance->isValidUserID($user_id)) {
-      throw new Exception('Invalid patient id');
-    }
     try {
+      # Start validating arguments and keys.
+      if (!$this->validator_instance->isValidUserID($user_id)) {
+        throw new Exception('Invalid patient id');
+      }
+      if (empty($json) || trim($json) === "{}") {
+        throw new Exception('Empty JSON');
+      }
+      if ($this->is_json($json,false) === false){
+        throw new Exception('Not a Valid JSON');
+      }
+
+      $signature_key = $this->getSigPrivateKey();
+      $enc_keys = $this->getEncKeyPair($user_id);
+      if (empty($signature_key)) {
+        throw new Exception('Missing Signature Key');
+      }
+      if (empty($enc_keys)) {
+        throw new Exception('User does not exists. Missing Encryption Keys');
+      }
+
       $dir_slash = $this->_getDirSlash();
-      $fhirJson = $this->parser->handleJson($json);
-      # Generate Health Data QR
-      $compressed_pk_data = gzdeflate($fhirJson);
-      $qr_user_path = $this->qr_path . $dir_slash . "fhir" . $dir_slash . $user_id;
+      # Parse FHIR JSON
+      // $fhirJson ="test";
+      $fhirJson= $this->parser->handleJson($json);
+
+    
+      $jws_token = $this->token_instance->createJWSToken($signature_key["kid"], $user_id, $this->signature_path, $fhirJson);
+      if (empty($jws_token)) {
+        throw new Exception('JWS Error: No token generated');
+      }
+
+      // $user_enc_path = $this->enc_path . $dir_slash . $user_id;
+      $jwe_token = $this->token_instance->createJWEToken($enc_keys["public_key"], $jws_token);
+      if (empty($jwe_token)) {
+        throw new Exception('JWE Error: No token generated');
+      }
+
+      # Generate QR Code
+      $qr_user_path = $this->qr_path . $dir_slash . "health-record" . $dir_slash . $user_id;
       if (!is_dir($qr_user_path)) {
         mkdir($qr_user_path, 0700, true);
       }
-      $result = $this->qrcode_instance->generatePrivateKeyQRCode($compressed_pk_data, $qr_user_path);
+      $result = $this->qrcode_instance->generateFHIRQRCode($jwe_token, $qr_user_path);
       return $result;
     } catch (Exception $e) {
       throw new Exception($e->getMessage());
@@ -409,9 +453,11 @@ class HealthDataManager
 
 # For testing purposes in PHP, you can change the path to your current environment.
 // $storage = new stdClass;
-// $storage->path = "/Users/clize/Desktop/qr";
-
+// $storage->path = "C:\Users\clize\Desktop\qr";
+// $user_id = "user-test";
 // $manager = new HealthDataManager($storage);
-// $filename = 'sample.fhir.json';
-// $data = file_get_contents($filename); 
-// echo var_dump($manager->generateHealthDataQr("cliz",$data));
+
+// $filename = __DIR__ . "/fhir_json/sample.fhir.json";
+// $data = file_get_contents($filename);
+// $results = $manager->generateHealthDataQr($user_id, $data);
+// print_r($results);

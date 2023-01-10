@@ -70,39 +70,18 @@ class HealthDataQrCode
    * and _ respectively
    * 
    * @param data The data to be encoded.
+   * @param encode Default to true, to encode the data pass.
    * 
    * @return The base64UrlEncode function is returning the base64 encoded string of the data passed in.
    */
-  public function base64UrlEncode($data)
+  public function base64UrlEncode($data, $encode = true)
   {
-    return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
-  }
-
-  /**
-   * It takes a base 10 number and converts it to a base 62 number
-   * 
-   * @param id The id of the token you want to convert to decimal
-   * 
-   * @return An array of strings.
-   */
-  public function convertTokenToDecimalArray($id)
-  {
-    $divider = 1194;
-    $base10 = strVal($this->_getBase10format($id));
-    $max = ceil(strlen($base10) / $divider);
-
-    $arr = [];
-    array_push($arr, "shcs://" . $base10);
-    if ($max > 1) {
-      $arr = [];
-      for ($x = 0; $x <  $max; $x++) {
-        $start = $x == 0 ? $x * $divider : ($x * $divider) + 1;
-        $end = (($x + 1) * $divider) > strlen($base10) ?  strlen($base10) : (($x + 1) * $divider);
-        array_push($arr, "shcs://" . ($x + 1) . "/" . $max . "/" . substr($base10, $start, $end));
-      }
+    if ($encode) {
+      return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
-    return $arr;
+    return rtrim(strtr($data, '+/', '-_'), '=');
   }
+
 
   /**
    * It generates a QR code from the given data and saves it to the given file path
@@ -120,7 +99,7 @@ class HealthDataQrCode
   }
 
   /**
-   * It takes a private key and converts it to base 10, then splits it into chunks of 2000 characters
+   * It takes a private key and converts it to base 10, then splits it into chunks of 1460 characters
    * and generates a QR code for each chunk
    * 
    * @param data The private key in PEM format
@@ -149,6 +128,42 @@ class HealthDataQrCode
 
     for ($x = 0; $x < count($pem_base_10); $x++) {
       $qr_path = $file_path . $dir_slash . 'private-key-' . $x . '.png';
+      array_push($file_paths, $qr_path);
+      $this->generateQrCode($pem_base_10[$x], $qr_path);
+    }
+    return $file_paths;
+  }
+
+  /**
+   * It takes a JWE Token and converts it to base 10, then splits it into chunks of 1460 characters
+   * and generates a QR code for each chunk
+   * 
+   * @param data The JWE Token.
+   * @param file_path The path where the QR code will be saved.
+   * 
+   * @return An array of file paths to the generated QR codes.
+   */
+  public function generateFHIRQRCode($data, $file_path)
+  {
+    $divider = 1460;
+    $base10 = strVal($this->_getBase10format($data));
+    $max = ceil(strlen($base10) / $divider);
+
+    $pem_base_10 = [];
+    $file_paths = [];
+    array_push($pem_base_10, "shcs:/" . $base10);
+    if ($max > 1) {
+      $pem_base_10 = [];
+      for ($x = 0; $x <  $max; $x++) {
+        $start = $x == 0 ? $x * $divider : ($x * $divider) + 1;
+        $end = (($x + 1) * $divider) > strlen($base10) ?  strlen($base10) : (($x + 1) * $divider);
+        array_push($pem_base_10, "shcs:/" . ($x + 1) . "/" . $max . "/" . substr($base10, $start, $end));
+      }
+    }
+    $dir_slash = stripos(PHP_OS, 'win') === 0 ? "\\" : "/";
+
+    for ($x = 0; $x < count($pem_base_10); $x++) {
+      $qr_path = $file_path . $dir_slash . 'record-' . $x . '.png';
       array_push($file_paths, $qr_path);
       $this->generateQrCode($pem_base_10[$x], $qr_path);
     }

@@ -4,440 +4,157 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d397830bb449de216184c929b6d4aaf1",
+    "content-hash": "2635f9ab297139f37d8e1d8c295a73e1",
     "packages": [
         {
-            "name": "gamegos/jws",
-            "version": "1.0.1",
+            "name": "dcarbone/php-fhir-generated",
+            "version": "v2.0.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/gamegos/php-jws.git",
-                "reference": "a94218e43f45d4e818eecaaa4063ff436b4a5ee0"
+                "url": "https://github.com/dcarbone/php-fhir-generated.git",
+                "reference": "52075aac90a167a40097ba4329544c5e1aa44856"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gamegos/php-jws/zipball/a94218e43f45d4e818eecaaa4063ff436b4a5ee0",
-                "reference": "a94218e43f45d4e818eecaaa4063ff436b4a5ee0",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "url": "https://api.github.com/repos/dcarbone/php-fhir-generated/zipball/52075aac90a167a40097ba4329544c5e1aa44856",
+                "reference": "52075aac90a167a40097ba4329544c5e1aa44856",
+                "shasum": ""
             },
             "require": {
-                "php": ">=5.4"
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-simplexml": "*",
+                "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.1.*"
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-simplexml": "*",
+                "phpunit/phpunit": "@stable"
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Gamegos\\JWS\\": [
-                        "src",
-                        "tests"
-                    ]
+                "psr-0": {
+                    "DCarbone\\PHPFHIRGenerated\\": "./src"
                 }
             },
-            "notification-url": "https://repo.packagist.com/lnx/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT"
+                "Apache-2.0"
             ],
             "authors": [
                 {
-                    "name": "Mustafa Altun",
-                    "email": "gmail@mustafaaltun.com"
+                    "name": "Daniel Paul Carbone",
+                    "email": "daniel.p.carbone@gmail.com"
                 }
             ],
-            "description": "Json Web Signature (JWS) PHP implementation",
+            "description": "Pre-generated classes from dcarbone/php-fhir",
+            "homepage": "https://github.com/dcarbone/php-fhir-generated",
             "keywords": [
-                "JSON Web Signature",
-                "JSON Web Token",
-                "JWS",
-                "digital signature",
-                "jwa",
-                "jwt"
+                "ehr",
+                "fhir",
+                "hl7",
+                "php",
+                "php-fhir"
             ],
             "support": {
-                "issues": "https://github.com/Gamegos/php-jws/issues",
-                "source": "https://github.com/Gamegos/php-jws/tree/1.0.1"
+                "issues": "https://github.com/dcarbone/php-fhir-generated/issues",
+                "source": "https://github.com/dcarbone/php-fhir-generated/tree/v2.0.5"
             },
-            "time": "2015-04-09T08:33:49+00:00"
+            "time": "2019-12-26T15:50:30+00:00"
         },
         {
-            "name": "sop/aes-kw",
-            "version": "3.0.0",
+            "name": "phpseclib/phpseclib",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/sop/aes-kw.git",
-                "reference": "1a7e6a19216a4ca58d01c0b0f36a543b4439e5c6"
+                "url": "https://github.com/phpseclib/phpseclib.git",
+                "reference": "a74aa9efbe61430fcb60157c8e025a48ec8ff604"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sop/aes-kw/zipball/1a7e6a19216a4ca58d01c0b0f36a543b4439e5c6",
-                "reference": "1a7e6a19216a4ca58d01c0b0f36a543b4439e5c6",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/a74aa9efbe61430fcb60157c8e025a48ec8ff604",
+                "reference": "a74aa9efbe61430fcb60157c8e025a48ec8ff604",
+                "shasum": ""
             },
             "require": {
-                "ext-hash": "*",
-                "ext-openssl": "*",
-                "php": ">=7.2"
+                "php": ">=5.3.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.1"
+                "phing/phing": "~2.7",
+                "phpunit/phpunit": "~4.0",
+                "sami/sami": "~2.0",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "suggest": {
+                "ext-gmp": "Install the GMP (GNU Multiple Precision) extension in order to speed up arbitrary precision integer arithmetic operations.",
+                "ext-libsodium": "SSH2/SFTP can make use of some algorithms provided by the libsodium-php extension.",
+                "ext-mcrypt": "Install the Mcrypt extension in order to speed up a few other cryptographic operations.",
+                "ext-openssl": "Install the OpenSSL extension in order to speed up a wide variety of cryptographic operations.",
+                "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP < 5.0.0."
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Sop\\AESKW\\": "lib/AESKW/"
+                    "phpseclib\\": "phpseclib/"
                 }
             },
-            "notification-url": "https://repo.packagist.com/lnx/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "phpseclib/"
+            ],
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "Joni Eskelinen",
-                    "email": "jonieske@gmail.com",
+                    "name": "Jim Wigginton",
+                    "email": "terrafrost@php.net",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Patrick Monnerat",
+                    "email": "pm@datasphere.ch",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Andreas Fischer",
+                    "email": "bantu@phpbb.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Hans-Jürgen Petrich",
+                    "email": "petrich@tronic-media.com",
                     "role": "Developer"
                 }
             ],
-            "description": "A PHP library for AES Key Wrap algorithm with padding support.",
-            "homepage": "https://github.com/sop/aes-kw",
+            "description": "PHP Secure Communications Library - Pure-PHP implementations of RSA, AES, SSH2, SFTP, X.509 etc.",
+            "homepage": "http://phpseclib.sourceforge.net",
             "keywords": [
+                "BigInteger",
                 "aes",
-                "aes key wrap",
-                "key wrap"
-            ],
-            "support": {
-                "issues": "https://github.com/sop/aes-kw/issues",
-                "source": "https://github.com/sop/aes-kw/tree/master"
-            },
-            "time": "2019-05-23T10:25:06+00:00"
-        },
-        {
-            "name": "sop/asn1",
-            "version": "4.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sop/asn1.git",
-                "reference": "074efe8f7c353c54edc809ac3d74efda83edd776"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sop/asn1/zipball/074efe8f7c353c54edc809ac3d74efda83edd776",
-                "reference": "074efe8f7c353c54edc809ac3d74efda83edd776",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "ext-gmp": "*",
-                "ext-mbstring": "*",
-                "php": ">=7.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Sop\\ASN1\\": "lib/ASN1/"
-                }
-            },
-            "notification-url": "https://repo.packagist.com/lnx/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Joni Eskelinen",
-                    "email": "jonieske@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A PHP library for X.690 ASN.1 DER encoding and decoding.",
-            "homepage": "https://github.com/sop/asn1",
-            "keywords": [
-                "DER",
                 "asn.1",
                 "asn1",
-                "x.690",
-                "x690"
-            ],
-            "support": {
-                "issues": "https://github.com/sop/asn1/issues",
-                "source": "https://github.com/sop/asn1/tree/4.1.1"
-            },
-            "time": "2022-02-17T07:08:51+00:00"
-        },
-        {
-            "name": "sop/crypto-encoding",
-            "version": "0.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sop/crypto-encoding.git",
-                "reference": "07537353e1b0e76c382a58a9c6e041b7c7dc9052"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sop/crypto-encoding/zipball/07537353e1b0e76c382a58a9c6e041b7c7dc9052",
-                "reference": "07537353e1b0e76c382a58a9c6e041b7c7dc9052",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "php": ">=7.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Sop\\CryptoEncoding\\": "lib/CryptoEncoding/"
-                }
-            },
-            "notification-url": "https://repo.packagist.com/lnx/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Joni Eskelinen",
-                    "email": "jonieske@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A PHP implementation of textual encodings of cryptographic structures.",
-            "homepage": "https://github.com/sop/crypto-encoding",
-            "keywords": [
-                "Private Key",
-                "certificate",
-                "pem",
-                "public key"
-            ],
-            "support": {
-                "issues": "https://github.com/sop/crypto-encoding/issues",
-                "source": "https://github.com/sop/crypto-encoding/tree/master"
-            },
-            "time": "2019-05-22T11:46:12+00:00"
-        },
-        {
-            "name": "sop/crypto-types",
-            "version": "0.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sop/crypto-types.git",
-                "reference": "9da5b0a6e9e308ae0f75745dc41b6d24bd4136f8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sop/crypto-types/zipball/9da5b0a6e9e308ae0f75745dc41b6d24bd4136f8",
-                "reference": "9da5b0a6e9e308ae0f75745dc41b6d24bd4136f8",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "ext-gmp": "*",
-                "php": ">=7.2",
-                "sop/asn1": "^4.0.0",
-                "sop/crypto-encoding": "^0.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Sop\\CryptoTypes\\": "lib/CryptoTypes/"
-                }
-            },
-            "notification-url": "https://repo.packagist.com/lnx/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Joni Eskelinen",
-                    "email": "jonieske@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A PHP library of various ASN.1 types for cryptographic applications.",
-            "homepage": "https://github.com/sop/crypto-types",
-            "keywords": [
-                "Private Key",
-                "algorithm identifier",
-                "asn1",
+                "blowfish",
+                "crypto",
                 "cryptography",
-                "ec",
-                "public key",
+                "encryption",
                 "rsa",
-                "signature"
+                "security",
+                "sftp",
+                "signature",
+                "signing",
+                "ssh",
+                "twofish",
+                "x.509",
+                "x509"
             ],
             "support": {
-                "issues": "https://github.com/sop/crypto-types/issues",
-                "source": "https://github.com/sop/crypto-types/tree/master"
+                "issues": "https://github.com/phpseclib/phpseclib/issues",
+                "source": "https://github.com/phpseclib/phpseclib/tree/2.0"
             },
-            "time": "2019-05-22T12:33:51+00:00"
-        },
-        {
-            "name": "sop/gcm",
-            "version": "3.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sop/gcm.git",
-                "reference": "dc42ca748431e7acc454657cbab14cbbd48bb10d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sop/gcm/zipball/dc42ca748431e7acc454657cbab14cbbd48bb10d",
-                "reference": "dc42ca748431e7acc454657cbab14cbbd48bb10d",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "ext-gmp": "*",
-                "ext-hash": "*",
-                "ext-openssl": "*",
-                "php": ">=7.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Sop\\GCM\\": "lib/GCM/"
-                }
-            },
-            "notification-url": "https://repo.packagist.com/lnx/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Joni Eskelinen",
-                    "email": "jonieske@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A PHP library for Galois/Counter Mode encryption with AES.",
-            "homepage": "https://github.com/sop/gcm",
-            "keywords": [
-                "AES-GCM",
-                "Galois Counter Mode",
-                "aes",
-                "decrypt",
-                "encrypt",
-                "galois",
-                "gcm"
-            ],
-            "support": {
-                "issues": "https://github.com/sop/gcm/issues",
-                "source": "https://github.com/sop/gcm/tree/3.0.0"
-            },
-            "time": "2019-05-23T10:37:33+00:00"
-        },
-        {
-            "name": "sop/jwx",
-            "version": "0.11.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sop/jwx.git",
-                "reference": "6b69a8c479a50b925a2abbb6c6c063fd7eab22e7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sop/jwx/zipball/6b69a8c479a50b925a2abbb6c6c063fd7eab22e7",
-                "reference": "6b69a8c479a50b925a2abbb6c6c063fd7eab22e7",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/lnx/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "ext-hash": "*",
-                "ext-openssl": "*",
-                "php": ">=7.2",
-                "sop/aes-kw": "^3.0.0",
-                "sop/crypto-encoding": "^0.3.0",
-                "sop/crypto-types": "^0.3.0",
-                "sop/gcm": "^3.0.0"
-            },
-            "require-dev": {
-                "ietf-jose/cookbook": "*",
-                "phpunit/phpunit": "^8.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Sop\\JWX\\": "lib/JWX/"
-                }
-            },
-            "notification-url": "https://repo.packagist.com/lnx/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Joni Eskelinen",
-                    "email": "jonieske@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A PHP library for JSON web tokens (JWT) with signature (JWS) and encryption (JWE) support.",
-            "homepage": "https://github.com/sop/jwx",
-            "keywords": [
-                "JOSE",
-                "JSON Web Encryption",
-                "JSON Web Signature",
-                "JSON Web Token",
-                "JWE",
-                "JWK",
-                "JWS",
-                "json",
-                "json web key",
-                "jwt",
-                "token"
-            ],
-            "support": {
-                "issues": "https://github.com/sop/jwx/issues",
-                "source": "https://github.com/sop/jwx/tree/0.11.1"
-            },
-            "time": "2021-09-27T06:57:39+00:00"
+            "time": "2015-08-04T04:48:03+00:00"
         }
     ],
     "packages-dev": [],
@@ -447,8 +164,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.0"
+        "php": "^7.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }

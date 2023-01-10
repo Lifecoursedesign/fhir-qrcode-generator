@@ -1,6 +1,8 @@
 <?php
+
 namespace Saitama\QR;
-class jsonFormattedValues
+
+class JsonFormattedValues
 {
 
 	public $institution_id;
@@ -15,22 +17,21 @@ class jsonFormattedValues
 	public $obs_bp_contraction;
 	public $obs_bp_dilation;
 
-    /**
-     ** The constructor function initializes the class variables and creates instances of the other classes
-    */
-  public function __construct()
-  {
-    $this->institution_id = null;
-    $this->department_id = null;
-    $this->doctor_name = null;
-    $this->medical_card_id = null;
-	$this->obs_consult_date = null;
-	$this->obs_next_otp_date = null;
-	$this->obs_weight = null;
-	$this->exam_egfr = null;
-	$this->exam_cre = null;
-	$this->obs_bp_contraction = null;
-	$this->obs_bp_dilation = null;
-
-  }
+	/**
+	 ** The constructor function initializes the class variables and creates instances of the other classes
+	 */
+	public function __construct()
+	{
+		$this->institution_id = null;
+		$this->department_id = null;
+		$this->doctor_name = null;
+		$this->medical_card_id = null;
+		$this->obs_consult_date = null;
+		$this->obs_next_otp_date = null;
+		$this->obs_weight = null;
+		$this->exam_egfr = null;
+		$this->exam_cre = null;
+		$this->obs_bp_contraction = null;
+		$this->obs_bp_dilation = null;
+	}
 }
