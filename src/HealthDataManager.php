@@ -398,7 +398,7 @@ class HealthDataManager
       if (empty($enc_keys)) {
         throw new Exception('User does not exists. Missing Encryption Keys');
       }
-      
+
       $dir_slash = $this->_getDirSlash();
       # Parse FHIR JSON
       // $fhirJson ="test";
@@ -416,10 +416,6 @@ class HealthDataManager
         throw new Exception('JWE Error: No token generated');
       }
 
-
-      if (empty($jwe_token)) {
-        throw new Exception('JWE Error: No token generated');
-      }
       # Generate QR Code
       $qr_user_path = $this->qr_path . $dir_slash . "health-record" . $dir_slash . $user_id;
       if (!is_dir($qr_user_path)) {

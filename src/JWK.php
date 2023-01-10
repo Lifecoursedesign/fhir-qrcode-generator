@@ -3,7 +3,7 @@
 namespace Saitama\QR;
 
 if (!strpos(__DIR__, 'vendor')) {
-	include_once(__DIR__ . '/../../vendor/autoload.php');
+	include_once(__DIR__ . '/../vendor/autoload.php');
 }
 
 require_once "URLSafeBase64.php";

@@ -142,7 +142,7 @@ class FHIRParser
 				$tempResource = $resource;
 				foreach ($arrOfCoding as $code) {
 					foreach ($this->obsList as $key => $key_value) {
-						if (stripos($code->getDisplay(), $key_value) !== false  || stripos($key_value, $code->getDisplay()) !== false) {
+						if (stripos($code->getDisplay(), $key_value) !== false  || stripos($key_value, (string)$code->getDisplay()) !== false) {
 							// echo "\n"."code->getDisplay: ".$code->getDisplay()." key_value: ".$key_value;
 							$type = $key;
 							if (stripos($key_value, "blood pressure") !== false) {
