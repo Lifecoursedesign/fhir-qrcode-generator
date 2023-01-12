@@ -323,9 +323,13 @@ class HealthDataManager
 
       # Generate QR Code
       $qr_user_path = $this->qr_path . $dir_slash . "keys" . $dir_slash . $user_id;
-      if (!is_dir($qr_user_path)) {
-        mkdir($qr_user_path, 0700, true);
+      if (is_dir($qr_user_path)) {
+        array_map("unlink", glob("$qr_user_path/*")); // deletes all files inside folder
+        array_map("rmdir", glob("$qr_user_path/*")); // deletes all sub folders inside main folder
+        rmdir($qr_user_path);
       }
+      mkdir($qr_user_path, 0700, true);
+
       $result = $this->qrcode_instance->generatePrivateKeyQRCode($base64URLPK, $qr_user_path);
       return $result;
     } catch (Exception $e) {
@@ -434,9 +438,12 @@ class HealthDataManager
 
       # Generate QR Code
       $qr_user_path = $this->qr_path . $dir_slash . "health-record" . $dir_slash . $user_id;
-      if (!is_dir($qr_user_path)) {
-        mkdir($qr_user_path, 0700, true);
+      if (is_dir($qr_user_path)) {
+        array_map("unlink", glob("$qr_user_path/*")); // deletes all files inside folder
+        array_map("rmdir", glob("$qr_user_path/*")); // deletes all sub folders inside main folder
+        rmdir($qr_user_path);
       }
+      mkdir($qr_user_path, 0700, true);
       $result = $this->qrcode_instance->generateFHIRQRCode($jwe_token, $qr_user_path);
       return $result;
     } catch (Exception $e) {
