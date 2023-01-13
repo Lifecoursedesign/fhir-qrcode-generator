@@ -324,9 +324,7 @@ class HealthDataManager
       # Generate QR Code
       $qr_user_path = $this->qr_path . $dir_slash . "keys" . $dir_slash . $user_id;
       if (is_dir($qr_user_path)) {
-        array_map("unlink", glob("$qr_user_path/*")); // deletes all files inside folder
-        array_map("rmdir", glob("$qr_user_path/*")); // deletes all sub folders inside main folder
-        rmdir($qr_user_path);
+        $this->cleanupFolder($qr_user_path);
       }
       mkdir($qr_user_path, 0700, true);
 
@@ -386,8 +384,18 @@ class HealthDataManager
     $data = json_decode($string);
     return (json_last_error() == JSON_ERROR_NONE) ? ($return_data ? $data : TRUE) : FALSE;
   }
-
-
+ /**
+   * Deletes all files and subfolders inside given folder path
+   * 
+   * @param folder_path path of the folder you want to be cleaned.
+   * 
+   * @return Nothing.
+   */
+  private function cleanupFolder($folder_path){
+    array_map("unlink", glob("$folder_path/*")); // deletes all files inside folder
+    array_map("rmdir", glob("$folder_path/*")); // deletes all sub folders inside main folder
+    rmdir($folder_path);
+  }
   /**
    * It takes a user id and a json string, and generates a QR code for the user health data
    * 
@@ -439,9 +447,7 @@ class HealthDataManager
       # Generate QR Code
       $qr_user_path = $this->qr_path . $dir_slash . "health-record" . $dir_slash . $user_id;
       if (is_dir($qr_user_path)) {
-        array_map("unlink", glob("$qr_user_path/*")); // deletes all files inside folder
-        array_map("rmdir", glob("$qr_user_path/*")); // deletes all sub folders inside main folder
-        rmdir($qr_user_path);
+        $this->cleanupFolder($qr_user_path);
       }
       mkdir($qr_user_path, 0700, true);
       $result = $this->qrcode_instance->generateFHIRQRCode($jwe_token, $qr_user_path);
