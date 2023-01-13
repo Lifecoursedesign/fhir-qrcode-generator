@@ -221,6 +221,10 @@ class HealthDataManager
   public function deleteSigPrivateKey()
   {
     try {
+      $signature_key = $this->getSigPrivateKey();
+      if (empty($signature_key)) {
+        throw new Exception('Missing Signature Key');
+      }
       $this->_removeFolder($this->signature_path, false);
       return;
     } catch (Exception $error) {
@@ -261,10 +265,22 @@ class HealthDataManager
       exec("openssl rsa -in {$private_key_file} -pubout -out {$public_key_file}", $public_output, $public_retval);
 
       if (0 == $private_retval && 0 == $public_retval) {
-        rename($private_key_file, $final_private_file);
-        rename($public_key_file, $final_public_file);
-        chmod($final_private_file, 0600);
-        chmod($final_public_file, 0600);
+        // rename($private_key_file, $final_private_file);
+        // rename($public_key_file, $final_public_file);
+
+          $private_key_file_contents = file_get_contents($private_key_file);
+          file_put_contents($final_private_file, $private_key_file_contents);
+          
+          $public_key_file_contents = file_get_contents($public_key_file);
+          file_put_contents($final_public_file, $public_key_file_contents);
+          if (!unlink($private_key_file)){
+            throw new Exception('Error Deleting '.$private_key_file);
+          }
+          if (!unlink($public_key_file)){
+            throw new Exception('Error Deleting '.$public_key_file);
+          }
+          chmod($final_private_file, 0600);
+          chmod($final_public_file, 0600);
         return;
       } else {
         throw new Exception('Error Saving Encryption Key Pair');
@@ -307,9 +323,11 @@ class HealthDataManager
 
       # Generate QR Code
       $qr_user_path = $this->qr_path . $dir_slash . "keys" . $dir_slash . $user_id;
-      if (!is_dir($qr_user_path)) {
-        mkdir($qr_user_path, 0700, true);
+      if (is_dir($qr_user_path)) {
+        $this->cleanupFolder($qr_user_path);
       }
+      mkdir($qr_user_path, 0700, true);
+
       $result = $this->qrcode_instance->generatePrivateKeyQRCode($base64URLPK, $qr_user_path);
       return $result;
     } catch (Exception $e) {
@@ -366,8 +384,18 @@ class HealthDataManager
     $data = json_decode($string);
     return (json_last_error() == JSON_ERROR_NONE) ? ($return_data ? $data : TRUE) : FALSE;
   }
-
-
+ /**
+   * Deletes all files and subfolders inside given folder path
+   * 
+   * @param folder_path path of the folder you want to be cleaned.
+   * 
+   * @return Nothing.
+   */
+  private function cleanupFolder($folder_path){
+    array_map("unlink", glob("$folder_path/*")); // deletes all files inside folder
+    array_map("rmdir", glob("$folder_path/*")); // deletes all sub folders inside main folder
+    rmdir($folder_path);
+  }
   /**
    * It takes a user id and a json string, and generates a QR code for the user health data
    * 
@@ -418,9 +446,10 @@ class HealthDataManager
 
       # Generate QR Code
       $qr_user_path = $this->qr_path . $dir_slash . "health-record" . $dir_slash . $user_id;
-      if (!is_dir($qr_user_path)) {
-        mkdir($qr_user_path, 0700, true);
+      if (is_dir($qr_user_path)) {
+        $this->cleanupFolder($qr_user_path);
       }
+      mkdir($qr_user_path, 0700, true);
       $result = $this->qrcode_instance->generateFHIRQRCode($jwe_token, $qr_user_path);
       return $result;
     } catch (Exception $e) {
@@ -441,6 +470,10 @@ class HealthDataManager
       $dir_slash = $this->_getDirSlash();
       if (!$this->validator_instance->isValidUserID($user_id)) {
         throw new Exception('Invalid patient id');
+      }
+      $enc_keys = $this->getEncKeyPair($user_id);
+      if (empty($enc_keys)) {
+        throw new Exception('User does not exists. Missing Encryption Keys');
       }
       $folderName = $this->enc_path . $dir_slash . $user_id;
       $this->_removeFolder($folderName);

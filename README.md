@@ -4,7 +4,8 @@ QR Code Generator project.
 
 ## Prerequisites
 
-- [php 8.0](https://www.php.net/downloads.php)
+- [php 7.2.30](https://www.php.net/downloads.php)
+- [composer 2.2.18](https://getcomposer.org/download/)
 - [DotNet SDK](https://aka.ms/dotnet-download)
 - [peachpie Visual studio code extension](https://marketplace.visualstudio.com/items?itemName=iolevel.peachpie-vscode)
 - [C# Visual studio code extension](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
