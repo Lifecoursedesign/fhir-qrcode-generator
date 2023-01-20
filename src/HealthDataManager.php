@@ -47,7 +47,7 @@ class HealthDataManager
     $this->enc_path = $this->base_path . $dir_slash . "enc_keys";
     $this->qr_path = $this->base_path . $dir_slash . "qr";
 
-    $folder_not_exists = !is_dir($this->base_path);
+    $folder_not_exists = !file_exists($this->base_path);
     if ($folder_not_exists) {
       mkdir($this->signature_path, 0700, true);
       mkdir($this->enc_path, 0700, true);
@@ -74,7 +74,7 @@ class HealthDataManager
    */
   private function _removeFolder($folderName, $removeParentFolder = true)
   {
-    if (is_dir($folderName)) {
+    if (file_exists($folderName)) {
       $folderHandle = opendir($folderName);
       if (!$folderHandle) {
         return;
@@ -83,7 +83,7 @@ class HealthDataManager
 
       while (($file = readdir($folderHandle)) !== false) {
         if ($file != "." && $file != "..") {
-          if (!is_dir($folderName . $dir_slash . $file)) {
+          if (!file_exists($folderName . $dir_slash . $file)) {
             unlink($folderName . $dir_slash . $file);
           } else {
             $this->_removeFolder($folderName . $dir_slash . $file);
@@ -107,7 +107,7 @@ class HealthDataManager
   {
     $dir_slash = $this->_getDirSlash();
     $user_path = $this->base_path . $dir_slash . "simulate_jws";
-    if (!is_dir($user_path)) {
+    if (!file_exists($user_path)) {
       mkdir($user_path, 0700, true);
     }
     $private_key_file = $user_path . $dir_slash . "private_key.pem";
@@ -159,7 +159,7 @@ class HealthDataManager
       }
 
       $sig_path = $this->signature_path;
-      if (!is_dir($sig_path)) {
+      if (!file_exists($sig_path)) {
         mkdir($sig_path, 0700, true);
       }
       $contents = scandir($sig_path);
@@ -194,7 +194,7 @@ class HealthDataManager
       $dir_slash = $this->_getDirSlash();
       $result = array();
       $sig_path = $this->signature_path;
-      if (!is_dir($sig_path)) {
+      if (!file_exists($sig_path)) {
         return $result;
       }
 
@@ -248,9 +248,10 @@ class HealthDataManager
       $dir_slash = $this->_getDirSlash();
 
       $user_path = $this->enc_path . $dir_slash . $user_id;
-      if (!is_dir($user_path)) {
-        mkdir($user_path, 0700, true);
+      if (file_exists($user_path)) {
+        $this->cleanupFolder($user_path);
       }
+      mkdir($user_path, 0700, true);
 
       $private_output = null;
       $private_retval = null;
@@ -311,7 +312,7 @@ class HealthDataManager
       # Get Private Key
       $enc_user_path = $this->enc_path . $dir_slash . $user_id;
       $pk_path = $enc_user_path . $dir_slash . "private_key.pem";
-      if (!is_dir($enc_user_path)) {
+      if (!file_exists($enc_user_path)) {
         throw new Exception("No key pairs found for this user.");
       }
       if (!file_exists($pk_path)) {
@@ -323,7 +324,7 @@ class HealthDataManager
 
       # Generate QR Code
       $qr_user_path = $this->qr_path . $dir_slash . "keys" . $dir_slash . $user_id;
-      if (is_dir($qr_user_path)) {
+      if (file_exists($qr_user_path)) {
         $this->cleanupFolder($qr_user_path);
       }
       mkdir($qr_user_path, 0700, true);
@@ -351,7 +352,7 @@ class HealthDataManager
       $dir_slash = $this->_getDirSlash();
       $keys = array();
       $user_path = $this->enc_path . $dir_slash . $user_id;
-      if (is_dir($user_path)) {
+      if (file_exists($user_path)) {
         if ($dh = opendir($user_path)) {
           while (($file = readdir($dh)) !== false) {
             if ($file === "private_key.pem") {
@@ -446,7 +447,7 @@ class HealthDataManager
 
       # Generate QR Code
       $qr_user_path = $this->qr_path . $dir_slash . "health-record" . $dir_slash . $user_id;
-      if (is_dir($qr_user_path)) {
+      if (file_exists($qr_user_path)) {
         $this->cleanupFolder($qr_user_path);
       }
       mkdir($qr_user_path, 0700, true);
