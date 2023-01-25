@@ -447,12 +447,28 @@ class HealthDataManager
 
       # Generate QR Code
       $qr_user_path = $this->qr_path . $dir_slash . "health-record" . $dir_slash . $user_id;
+      $qr_user_path_temp = $qr_user_path."_temp";
+      // if (file_exists($qr_user_path)) {
+      //   $this->cleanupFolder($qr_user_path);
+      // }
       if (file_exists($qr_user_path)) {
-        $this->cleanupFolder($qr_user_path);
+        mkdir($qr_user_path_temp, 0700, true);
+        $result = $this->qrcode_instance->generateFHIRQRCode($jwe_token, $qr_user_path_temp);
+  
+        if (file_exists($qr_user_path_temp.$dir_slash."record-0.png")){
+            $this->cleanupFolder($qr_user_path);
+            exec("mv ".$qr_user_path_temp." ".$qr_user_path);
+            // rename(realpath(dirname($qr_user_path_temp)),realpath(dirname($qr_user_path)));
+        }
+  
+        return $result;
+      }else {
+        mkdir($qr_user_path, 0700, true);
+        $result = $this->qrcode_instance->generateFHIRQRCode($jwe_token, $qr_user_path);
+        return $result;
       }
-      mkdir($qr_user_path, 0700, true);
-      $result = $this->qrcode_instance->generateFHIRQRCode($jwe_token, $qr_user_path);
-      return $result;
+      
+
     } catch (Exception $e) {
       throw new Exception($e->getMessage());
     }
