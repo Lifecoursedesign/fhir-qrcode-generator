@@ -225,7 +225,8 @@ class HealthDataManager
       if (empty($signature_key)) {
         throw new Exception('Missing Signature Key');
       }
-      $this->_removeFolder($this->signature_path, false);
+      $this->cleanupFolder($this->signature_path);
+      // $this->_removeFolder($this->signature_path, false);
       return;
     } catch (Exception $error) {
       throw new Exception($error->getMessage());
@@ -493,7 +494,8 @@ class HealthDataManager
         throw new Exception('User does not exists. Missing Encryption Keys');
       }
       $folderName = $this->enc_path . $dir_slash . $user_id;
-      $this->_removeFolder($folderName);
+      $this->cleanupFolder($folderName);
+      // $this->_removeFolder($folderName);
       return;
     } catch (Exception $e) {
       throw new Exception($e->getMessage());
