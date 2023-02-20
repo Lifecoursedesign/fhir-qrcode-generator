@@ -164,7 +164,7 @@ class HealthDataQrCode
 
     for ($x = 0; $x < count($pem_base_10); $x++) {
       $qr_path = $file_path . $dir_slash . 'record-' . $x . '.png';
-      array_push($file_paths, $qr_path);
+      array_push($file_paths, str_replace("_temp","",$qr_path));
       $this->generateQrCode($pem_base_10[$x], $qr_path);
     }
     return $file_paths;
