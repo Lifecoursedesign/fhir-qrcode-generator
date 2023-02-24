@@ -109,6 +109,7 @@ class HealthDataQrCode
    */
   public function generatePrivateKeyQRCode($data, $file_path)
   {
+    $batchID = uniqid();
     $divider = 1460;
     $base10 = strVal($this->_getBase10format($data));
     $max = ceil(strlen($base10) / $divider);
@@ -121,11 +122,10 @@ class HealthDataQrCode
       for ($x = 0; $x <  $max; $x++) {
         $start = $x == 0 ? $x * $divider : ($x * $divider) + 1;
         $end = (($x + 1) * $divider) > strlen($base10) ?  strlen($base10) : (($x + 1) * $divider);
-        array_push($pem_base_10, "pem:/" . ($x + 1) . "/" . $max . "/" . substr($base10, $start, $end));
+        array_push($pem_base_10, "pem:/" . ($x + 1) . "/" . $max . "/" . $batchID . "/" . substr($base10, $start, $end));
       }
     }
     $dir_slash = stripos(PHP_OS, 'win') === 0 ? "\\" : "/";
-
     for ($x = 0; $x < count($pem_base_10); $x++) {
       $qr_path = $file_path . $dir_slash . 'private-key-' . $x . '.png';
       array_push($file_paths, $qr_path);
