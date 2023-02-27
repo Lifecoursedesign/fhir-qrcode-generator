@@ -1,6 +1,7 @@
 <?php
 
 namespace Saitama\QR;
+use Exception;
 
 require_once "jsonFormattedValues.php";
 
@@ -51,15 +52,15 @@ class FHIRParser
 		switch ($type) {
 			case "FamilyMemberHistory":
 				// get names
-				foreach ($resource->getName() as $name) {
-					$valueCode = $name->getExtension()[0]->getValueCode()->getValue()->getValue();
-					$key = "partner_name_kana";
-					if ($valueCode == "SYL") {
-						$key = "partner_name_furi";
-					}
+				// foreach ($resource->getName() as $name) {
+				// 	$valueCode = $name->getExtension()[0]->getValueCode()->getValue()->getValue();
+				// 	$key = "partner_name_kana";
+				// 	if ($valueCode == "SYL") {
+				// 		$key = "partner_name_furi";
+				// 	}
 
-					$this->jsonFormattedValues->$key = $name->getText()->getValue()->getValue();
-				}
+				// 	$this->jsonFormattedValues->$key = $name->getText()->getValue()->getValue();
+				// }
 				$this->jsonFormattedValues->partner_age = $resource->getAgeAge()->getValue()->getValue()->getValue();
 				$arrOfExtensions = $resource->getExtension();
 				foreach ($arrOfExtensions as $code) {
@@ -84,18 +85,18 @@ class FHIRParser
 				break;
 			case "Patient":
 				// get medical card _id
-				$this->jsonFormattedValues->medical_card_id = " " . $resource->getId();
+				// $this->jsonFormattedValues->medical_card_id = " " . $resource->getId();
 
 				// get names
-				foreach ($resource->getName() as $name) {
-					$valueCode = $name->getExtension()[0]->getValueCode()->getValue()->getValue();
-					$key = "patient_name_kana";
-					if ($valueCode == "SYL") {
-						$key = "patient_name_furi";
-					}
+				// foreach ($resource->getName() as $name) {
+				// 	$valueCode = $name->getExtension()[0]->getValueCode()->getValue()->getValue();
+				// 	$key = "patient_name_kana";
+				// 	if ($valueCode == "SYL") {
+				// 		$key = "patient_name_furi";
+				// 	}
 
-					$this->jsonFormattedValues->$key = $name->getText()->getValue()->getValue();
-				}
+				// 	$this->jsonFormattedValues->$key = $name->getText()->getValue()->getValue();
+				// }
 
 				// needs actual data
 				// get Occupation 

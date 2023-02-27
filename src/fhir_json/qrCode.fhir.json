@@ -2399,9 +2399,7 @@
               "valueString": "Text"
             }                                                
         ]
-
       }
-   
     },
     {
       "fullUrl": "urn:uuid:d62b6132-b0bb-11ed-afa1-0242ac120002", 
@@ -2427,9 +2425,7 @@
             "type": "Encounter"
           },
         "effectiveDateTime": "2023-02-03",
-  
         "component":[
-          
           {
             "code":{
               "coding":[
@@ -2574,9 +2570,7 @@
             "valueString": "Text"
           }                                            
         ]
-
       }
-
     },
     {
       "fullUrl": "urn:uuid:d62b625e-b0bb-11ed-afa1-0242ac120002", 
@@ -2593,17 +2587,13 @@
           }
         ],
         "text": "子宮頸部細胞診"
-        
       },
       "subject":{
         "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
       },
-     
       "effectiveDateTime": "2023-02-03",
       "valueString": "Text"
-
       }
-      
     },
     {
       "fullUrl": "urn:uuid:d62b654c-b0bb-11ed-afa1-0242ac120002", 
@@ -3375,13 +3365,9 @@
               "system": "http://unitsofmeasure.org",
               "code": "ml"
             }
-          }
-          
-                                                    
+          }                                       
         ]
-
       }
     }
-
   ]
 }
