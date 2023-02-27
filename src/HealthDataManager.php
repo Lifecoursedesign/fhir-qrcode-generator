@@ -509,7 +509,7 @@ class HealthDataManager
 // $user_id = "user-test";
 // $manager = new HealthDataManager($storage);
 
-// $filename = __DIR__ . "/fhir_json/sample.fhir.json";
+// $filename = __DIR__ . "/fhir_json/qrCode.fhir.json";
 // $data = file_get_contents($filename);
 // $results = $manager->generateHealthDataQr($user_id, $data);
 // print_r($results);
