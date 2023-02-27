@@ -110,7 +110,7 @@ class HealthDataQrCode
   public function generatePrivateKeyQRCode($data, $file_path)
   {
     $batchID = uniqid();
-    $divider = 1460;
+    $divider = 4296;
     $base10 = strVal($this->_getBase10format($data));
     $max = ceil(strlen($base10) / $divider);
 
@@ -146,7 +146,7 @@ class HealthDataQrCode
   public function generateFHIRQRCode($data, $file_path)
   {
     $batchID = uniqid();
-    $divider = 1460;
+    $divider = 4296;
     $base10 = strVal($this->_getBase10format($data));
     $max = ceil(strlen($base10) / $divider);
 
