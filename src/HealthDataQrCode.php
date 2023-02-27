@@ -118,12 +118,12 @@ class HealthDataQrCode
     $file_paths = [];
     array_push($pem_base_10, "pem:/" . $base10);
     if ($max > 1) {
-      $pem_base_10 = [];
-      for ($x = 0; $x <  $max; $x++) {
-        $start = $x == 0 ? $x * $divider : ($x * $divider) + 1;
-        $end = (($x + 1) * $divider) > strlen($base10) ?  strlen($base10) : (($x + 1) * $divider);
-        array_push($pem_base_10, "pem:/" . ($x + 1) . "/" . $max . "/" . $batchID . "/" . substr($base10, $start, $end));
+      $pem_base_10 = str_split($base10, $divider);
+      foreach($pem_base_10 as $key=>&$value) {
+        $id = $key + 1;
+        $value = "pem:/" . $id . "/" . $max . "/" . $batchID . "/" .$value;
       }
+      unset($value);
     }
     $dir_slash = stripos(PHP_OS, 'win') === 0 ? "\\" : "/";
     for ($x = 0; $x < count($pem_base_10); $x++) {
@@ -145,27 +145,28 @@ class HealthDataQrCode
    */
   public function generateFHIRQRCode($data, $file_path)
   {
+    $batchID = uniqid();
     $divider = 1460;
     $base10 = strVal($this->_getBase10format($data));
     $max = ceil(strlen($base10) / $divider);
 
-    $pem_base_10 = [];
+    $fhir_base_10 = [];
     $file_paths = [];
-    array_push($pem_base_10, "shcs:/" . $base10);
+    array_push($fhir_base_10, "shcs:/" . $base10);
     if ($max > 1) {
-      $pem_base_10 = [];
-      for ($x = 0; $x <  $max; $x++) {
-        $start = $x == 0 ? $x * $divider : ($x * $divider) + 1;
-        $end = (($x + 1) * $divider) > strlen($base10) ?  strlen($base10) : (($x + 1) * $divider);
-        array_push($pem_base_10, "shcs:/" . ($x + 1) . "/" . $max . "/" . substr($base10, $start, $end));
+      $fhir_base_10 = str_split($base10, $divider);
+      foreach($fhir_base_10 as $key=>&$value) {
+        $id = $key + 1;
+        $value = "shcs:/" . $id . "/" . $max . "/" . $batchID . "/" .$value;
       }
+      unset($value);
     }
     $dir_slash = stripos(PHP_OS, 'win') === 0 ? "\\" : "/";
 
-    for ($x = 0; $x < count($pem_base_10); $x++) {
+    for ($x = 0; $x < count($fhir_base_10); $x++) {
       $qr_path = $file_path . $dir_slash . 'record-' . $x . '.png';
       array_push($file_paths, str_replace("_temp","",$qr_path));
-      $this->generateQrCode($pem_base_10[$x], $qr_path);
+      $this->generateQrCode($fhir_base_10[$x], $qr_path);
     }
     return $file_paths;
   }
