@@ -66,7 +66,7 @@ class LOINC
 			"5797-6" => "ValueString~ketones_mass_volume_in_urine",
 			"3141-9"  => "ValueQuantity~body_weight_measured", 
 			"66330-2"  => "ValueQuantity~weight_gain_and_lose", 
-			"11961-0" => "ValueString~cervix_length_us",
+			"11961-0" => "ValueQuantity~cervix_length_us",
 			"32423-6" => "ValueString~physical_findings_cervix",
 			"48767-8" => "ValueString~annotation_comment",
 			"11875-2" => "ValueString~fetal_position_us",
