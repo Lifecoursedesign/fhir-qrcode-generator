@@ -66,39 +66,6 @@ class HealthDataManager
   }
 
   /**
-   * Remove subdirectories and files.
-   * 
-   * @param folderName The folder to clean up.
-   * 
-   * @return Nothing
-   */
-  private function _removeFolder($folderName, $removeParentFolder = true)
-  {
-    if (file_exists($folderName)) {
-      $folderHandle = opendir($folderName);
-      if (!$folderHandle) {
-        return;
-      }
-      $dir_slash = $this->_getDirSlash();
-
-      while (($file = readdir($folderHandle)) !== false) {
-        if ($file != "." && $file != "..") {
-          if (!file_exists($folderName . $dir_slash . $file)) {
-            unlink($folderName . $dir_slash . $file);
-          } else {
-            $this->_removeFolder($folderName . $dir_slash . $file);
-          }
-        }
-      }
-      closedir($folderHandle);
-      if ($removeParentFolder) {
-        rmdir($folderName);
-      }
-    }
-    return;
-  }
-
-  /**
    * Generate a dummy JWS private (and public) key pair for testing purpose only to replicate prod behavior.
    * 
    * @return An array of the private and public keys.
@@ -134,7 +101,7 @@ class HealthDataManager
 
     return $res;
   }
-
+  
   /**
    * It sets the private keys issued by the CA.
    * 
@@ -226,7 +193,6 @@ class HealthDataManager
         throw new Exception('Missing Signature Key');
       }
       $this->cleanupFolder($this->signature_path);
-      // $this->_removeFolder($this->signature_path, false);
       return;
     } catch (Exception $error) {
       throw new Exception($error->getMessage());
@@ -494,7 +460,6 @@ class HealthDataManager
       }
       $folderName = $this->enc_path . $dir_slash . $user_id;
       $this->cleanupFolder($folderName);
-      // $this->_removeFolder($folderName);
       return;
     } catch (Exception $e) {
       throw new Exception($e->getMessage());
