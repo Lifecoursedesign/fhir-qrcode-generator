@@ -51,9 +51,8 @@ class JsonFormattedValues implements \ArrayAccess {
      * @var array
      * @access private
      */
-    private $data = [];
-
-
+    private $data;
+    
     public function toArray(){
         return json_encode($this->data);
         // return json_decode(

@@ -433,7 +433,6 @@ class HealthDataManager
       # Parse FHIR JSON
       // $fhirJson ="test";
       $fhirJson= $this->parser->handleJson($json);
-
     
       $jws_token = $this->token_instance->createJWSToken($signature_key["kid"], $user_id, $this->signature_path, $fhirJson);
       if (empty($jws_token)) {
@@ -508,8 +507,10 @@ class HealthDataManager
 // $storage->path = "C:\Users\clize\Desktop\qr";
 // $user_id = "user-test";
 // $manager = new HealthDataManager($storage);
-
-// $filename = __DIR__ . "/fhir_json/qrCode.fhir.json";
+// $manager->createEncKeyPair($user_id);
+// $keys= $manager->getEncKeyPair($user_id);
+// $manager->setSigPrivateKey("test",$keys["private_key"]);
+// $filename = __DIR__ . "/fhir_json/qrCodeLatest.fhir.json";
 // $data = file_get_contents($filename);
 // $results = $manager->generateHealthDataQr($user_id, $data);
 // print_r($results);
