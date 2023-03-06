@@ -158,7 +158,9 @@ class FHIRParser
 
 				$group = "health_checkup";
 				$name_code = $resource->getName()[0]->getExtension()[0]->getValueCodeableConcept()->getCoding()[0]->getCode()->getValue()->getValue();
-				$resourceCode = $resource->getCode() != NULL ? $resource->getCode()->getCoding()[0]->getCode()->getValue()->getValue() : null;
+				$resourceCode = NULL;
+				$nameKey = NULL;
+				// $resourceCode = $resource->getCode() != NULL ? $resource->getCode()->getCoding()[0]->getCode()->getValue()->getValue() : null;
 				switch ($name_code) {
 					case "52526-1":
 						if ($resourceCode != NULL){
