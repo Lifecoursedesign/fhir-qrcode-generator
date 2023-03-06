@@ -20,52 +20,53 @@
             }
           ]
         },
-        "subject": [{
-          "reference": "Patient/101 ",
-          "type": "Patient"  
-        },
-        [
+        "subject": [
           {
-            "reference": "RelatedPerson/husband",
-            "type": "RelatedPerson"
+            "reference": "Patient/101 ",
+            "type": "Patient"
           },
+          [
+            {
+              "reference": "RelatedPerson/husband",
+              "type": "RelatedPerson"
+            },
+            {
+              "reference": "Observation/bloodgroup ",
+              "type": "Observation"
+            },
+            {
+              "reference": "Observation/smokinghusband",
+              "type": "Observation"
+            },
+            {
+              "reference": "Observation/drinkinghusband",
+              "type": "Observation"
+            }
+          ],
           {
-            "reference": "Observation/bloodgroup ",
+            "reference": "Observation/height01",
             "type": "Observation"
           },
           {
-            "reference": "Observation/smokinghusband",
+            "reference": "Observation/weight02 ",
             "type": "Observation"
           },
           {
-            "reference": "Observation/drinkinghusband",
+            "reference": "Observation/bmi ",
+            "type": "Observation"
+          },
+          {
+            "reference": "Observation/smokingpatient",
+            "type": "Observation"
+          },
+          {
+            "reference": "Observation/drinkingpatient",
             "type": "Observation"
           }
         ],
-        {
-          "reference": "Observation/height01",
-            "type": "Observation"
-        },
-        {
-          "reference": "Observation/weight02 ",
-            "type": "Observation"
-        },
-        {
-          "reference": "Observation/bmi ",
-            "type": "Observation"
-        },
-        {
-          "reference": "Observation/smokingpatient",
-          "type": "Observation"
-        },
-        {
-          "reference": "Observation/drinkingpatient",
-          "type": "Observation"
-        }
-      ],
-        
+
         "date": "2022-12-09",
-        
+
         "author": [
           {
             "reference": "Organization/institution ",
@@ -73,7 +74,7 @@
           },
           {
             "reference": "Organization/department ",
-            "type": "Organization" 
+            "type": "Organization"
           },
           {
             "reference": "Practitioner/doctor01 ",
@@ -88,7 +89,7 @@
               {
                 "reference": "Encounter/checkup101"
               },
-              
+
               {
                 "reference": "Observation/bloodpressure01"
               },
@@ -130,210 +131,258 @@
             "value": "100001"
           }
         ],
-         "active": true,
+        "activeq": true,
         "name": [
           {
+            "extension": [
+              {
+                "url": "test",
+                "valueCode": "IDE"
+              }
+            ],
             "use": "official",
-            "family": "Ogawa",
-            "given": [
-              "Tomomi"
+            "family": "山田",
+            "text": "山田 太郎",
+            "given": ["太郎"]
+          },
+          {
+            "extension": [
+              {
+                "url": "test",
+                "valueCode": "SYL"
+              }
+            ],
+            "use": "official",
+            "family": "ヤマダ",
+            "text": "ヤマダ タロウ",
+            "given": ["タロウ"]
+          }
+        ],
+        "maritalStatus": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "11380-3",
+              "display": "Marital status and living arrangements Narrative - Reported"
+            }
+          ],
+          "text": "A"
+        },
+        "extension": [
+          {
+            "extension": [
+              {
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "74164-5",
+                      "display": "History of Usual occupation and industry Narrative"
+                    }
+                  ]
+                },
+                "text": "Occupation Test"
+              }
             ]
           }
         ]
       }
     },
     {
-      "resourceType": "RelatedPerson",
-      "id": "husband",
-      "patient": {
-        "reference": "Patient/101"
-      },
-      "relationship": [
-        {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "husband",
+        "patient": {
+          "reference": "Patient/101"
+        },
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "HUSB"
+              }
+            ]
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Ogawa",
+            "given": ["Naoki"]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1982-07-10",
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "001-001-001",
+            "use": "mobile"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "bloodgroup",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ],
+            "text": "Laboratory"
+          }
+        ],
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "883-9",
+                  "display": "血液型（ABO）"
+                }
+              ],
+              "text": "Blood Group"
+            },
+            "subject": {
+              "reference": "RelatedPerson/husband",
+              "display": "Naoki Ogawa"
+            },
+            "effectiveDateTime": "2022-12-09",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "112144000",
+                  "display": "Blood group A"
+                }
+              ]
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "10331-7",
+                  "display": "血液型（Rh）"
+                }
+              ],
+              "text": "RH"
+            },
+            "effectiveDateTime": "2022-12-09",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "10828004",
+                  "display": "Positive"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "smokinghusband",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "social-history",
+                "display": "Social History"
+              }
+            ],
+            "text": "Social History"
+          }
+        ],
+        "code": {
           "coding": [
             {
-              "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
-              "code": "HUSB"
+              "system": "http://loinc.org",
+              "code": "72166-2",
+              "display": "喫煙"
             }
-          ]
-        }
-      ],
-      "name": [
-        {
-          "use": "official",
-          "family": "Ogawa",
-          "given": [
-            "Naoki"
-          ]
-        }
-      ],
-      "gender" : "male",
-      "birthDate" : "1982-07-10",
-      "telecom": [
-        {
-          "system": "phone",
-          "value": "001-001-001",
-          "use": "mobile"
-        }
-      ]
-    },
-
-    {
-      "resourceType" : "Observation",
-      "id" : "bloodgroup",
-      "category" : [
-        {
-        "coding" : [
-          {
-          "system" : "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code" : "laboratory",
-          "display" : "Laboratory"
-        }
-      ],
-        "text" : "Laboratory"
-      }],
-      "component" : [
-        {
-          "code" : {
-            "coding" : [
-              {
-                "system" : "http://loinc.org",
-                "code" : "883-9",
-                "display" : "血液型（ABO）"
-              }
-            ],
-            "text" : "Blood Group"
-          },
-          "subject" : {
-            "reference" : "RelatedPerson/husband",
-            "display" : "Naoki Ogawa"
-          },
-          "effectiveDateTime" : "2022-12-09",
-          "valueCodeableConcept" : {
-            "coding" : [
-              {
-                "system" : "http://snomed.info/sct",
-                "code" : "112144000",
-                "display" : "Blood group A"
-              }
-            ]
-          }
+          ],
+          "text": "Smoking Husband"
         },
-        {
-          "code" : {
-            "coding" : [
+        "subject": {
+          "reference": "RelatedPerson/husband",
+          "display": "Naoki Ogawa"
+        },
+        "effectiveDateTime": "2022-12-09",
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "428041000124106"
+            }
+          ],
+          "text": "現在も吸っている"
+        }
+      }
+    },
+
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "drinkinghusband",
+        "category": [
+          {
+            "coding": [
               {
-                "system" : "http://loinc.org",
-                "code" : "10331-7",
-                "display" : "血液型（Rh）"
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "social-history",
+                "display": "Social History"
               }
             ],
-            "text" : "RH"
-          },
-          "effectiveDateTime" : "2022-12-09",
-          "valueCodeableConcept" : {
-            "coding" : [
-              {
-                "system" : "http://snomed.info/sct",
-                "code" : "10828004",
-                "display" : "Positive"
-              }
-            ]
+            "text": "Social History"
           }
-        }
-      ]
-
-    },
-
-    {
-      "resourceType" : "Observation",
-      "id" : "smokinghusband",
-      "category" : [
-        {
-          "coding" : [
+        ],
+        "code": {
+          "coding": [
             {
-              "system" : "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code" : "social-history",
-              "display" : "Social History"
+              "system": "http://loinc.org",
+              "code": "74205-6",
+              "display": "飲酒"
             }
           ],
-          "text" : "Social History"
-        }
-      ],
-      "code" : {
-        "coding" : [
-          {
-            "system" : "http://loinc.org",
-            "code" : "72166-2",
-            "display" : "喫煙"
-          }
-        ],
-        "text" : "Smoking Husband"
-      },
-      "subject" : {
-        "reference" : "RelatedPerson/husband",
-        "display" : "Naoki Ogawa"
-      },
-      "effectiveDateTime": "2022-12-09",
-      "valueCodeableConcept" : {
-        "coding" : [
-          {
-            "system" : "http://snomed.info/sct",
-            "code" : "428041000124106"
-          }
-        ],
-        "text" : "現在も吸っている"
-      }
-    }, 
-
-    {
-      "resourceType" : "Observation",
-      "id" : "drinkinghusband",
-      "category" : [
-        {
-          "coding" : [
+          "text": "Drinking Husband"
+        },
+        "subject": {
+          "reference": "RelatedPerson/husband",
+          "display": "Naoki Ogawa"
+        },
+        "effectiveDateTime": "2022-12-09",
+        "valueCodeableConcept": {
+          "coding": [
             {
-              "system" : "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code" : "social-history",
-              "display" : "Social History"
+              "system": "http://snomed.info/sct",
+              "code": "219006"
             }
           ],
-          "text" : "Social History"
+          "text": "現在も飲んでいる"
         }
-      ],
-      "code" : {
-        "coding" : [
-          {
-            "system" : "http://loinc.org",
-            "code" : "74205-6",
-            "display" : "飲酒"
-          }
-        ],
-        "text" : "Drinking Husband"
-      },
-      "subject" : {
-        "reference" : "RelatedPerson/husband",
-        "display" : "Naoki Ogawa"
-      },
-      "effectiveDateTime": "2022-12-09",
-      "valueCodeableConcept" : {
-        "coding" : [
-          {
-            "system" : "http://snomed.info/sct",
-            "code" : "219006"
-          }
-        ],
-        "text" : "現在も飲んでいる"
       }
     },
-
 
     {
       "resource": {
         "resourceType": "Organization",
         "id": "institution",
         "identifier": [
-        {
+          {
             "type": {
               "coding": [
                 {
@@ -384,511 +433,558 @@
                 {
                   "system": "http://loinc.org",
                   "code": "46106-1",
-                  "display": "泉田欣彦" 
+                  "display": "泉田欣彦"
                 }
               ]
             },
-            "value": "doctor01" 
+            "value": "doctor01"
           }
         ]
       }
     },
     {
-      "resourceType": "Observation",
-      "id": "bloodpressure01",
-      "status": "final",
-      "category": [
-        {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code": "vital-signs",
-              "display": "Vital Signs"
-            }
-          ]
-        }
-      ],
-      "code": {
-        "coding": [
+      "resource": {
+        "resourceType": "Observation",
+        "id": "bloodpressure01",
+        "status": "final",
+        "category": [
           {
-            "system": "http://loinc.org",
-            "code": "85354-9",  
-            "display":"Blood Pressure"
-          }
-        ],
-        "text":"Blood Pressure 1"
-      },
-      "subject": {
-        "reference": "Patient/101"
-      },
-      "effectiveDateTime": "2022-12-09",
-      "component": [
-        {
-          "code": {
             "coding": [
               {
-                "system": "http://loinc.org",
-                "code": "8480-6",
-                "display": "血圧（収縮）"
-              } 
-            ],
-            "text":"Systolic blood pressure"        
-          },          
-          "valueQuantity": {
-            "value": 107,
-            "unit": "mmHg",
-            "system": "http://unitsofmeasure.org",
-            "code": "mm[Hg]"
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs",
+                "display": "Vital Signs"
+              }
+            ]
           }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "85354-9",
+              "display": "Blood Pressure"
+            }
+          ],
+          "text": "Blood Pressure 1"
         },
-        {
-          "code": {
+        "subject": {
+          "reference": "Patient/101"
+        },
+        "effectiveDateTime": "2022-12-09",
+        "component": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8480-6",
+                  "display": "血圧（収縮）"
+                }
+              ],
+              "text": "Systolic blood pressure"
+            },
+            "valueQuantity": {
+              "value": 107,
+              "unit": "mmHg",
+              "system": "http://unitsofmeasure.org",
+              "code": "mm[Hg]"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "8462-4",
+                  "display": "血圧（拡張）"
+                }
+              ],
+              "text": "Diastolic blood pressure"
+            },
+            "valueQuantity": {
+              "value": 60,
+              "unit": "mmHg",
+              "system": "http://unitsofmeasure.org",
+              "code": "mm[Hg]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "heartrate01",
+        "status": "final",
+        "category": [
+          {
             "coding": [
               {
-                "system": "http://loinc.org",
-                "code": "8462-4",
-                "display": "血圧（拡張）"
-              } 
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs",
+                "display": "Vital Signs"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8867-4",
+              "display": "脈拍"
+            }
+          ],
+          "text": "Heart Rate"
+        },
+        "subject": {
+          "reference": "Patient/101"
+        },
+        "effectiveDateTime": "2022-12-09",
+        "valueQuantity": {
+          "value": 44,
+          "unit": "beats/minute",
+          "system": "http://unitsofmeasure.org",
+          "code": "{beats}/min"
+        }
+      }
+    },
+
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "weight01",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs",
+                "display": "Vital Signs"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "29463-7",
+              "display": "体重"
+            }
+          ],
+          "text": "Body Weight"
+        },
+        "subject": {
+          "reference": "Patient/101"
+        },
+        "effectiveDateTime": "2022-12-09",
+        "valueQuantity": {
+          "value": 70.09414,
+          "unit": "kg",
+          "system": "http://unitsofmeasure.org",
+          "code": "kg"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "observation-last-mens",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "33066-2",
+              "display": "Last menstrual period"
+            }
+          ],
+          "text": "Body Weight"
+        },
+        "subject": {
+          "reference": "Patient/101"
+        },
+        "effectiveDateTime": "2022-12-09",
+        "valueDateTime" : "2017-08-01"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "weightlossgain",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs",
+                "display": "Vital Signs"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "29463-7",
+              "display": "体重増減"
+            }
+          ],
+          "text": "Weight Loss Gain"
+        },
+        "subject": {
+          "reference": "Patient/101"
+        },
+        "effectiveDateTime": "2022-12-09",
+        "valueQuantity": {
+          "value": 5,
+          "unit": "kg",
+          "system": "http://unitsofmeasure.org",
+          "code": "kg"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "height01",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs",
+                "display": "Vital Signs"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8302-2",
+              "display": "身長"
+            }
+          ],
+          "text": "Body Height"
+        },
+        "subject": {
+          "reference": "Patient/101"
+        },
+        "effectiveDateTime": "2022-12-09",
+        "valueQuantity": {
+          "value": 156,
+          "unit": "cm",
+          "system": "http://unitsofmeasure.org",
+          "code": "cm"
+        }
+      }
+    },
+
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "weight02",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs",
+                "display": "Vital Signs"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "29463-7",
+              "display": "妊娠前の体重"
+            }
+          ],
+          "text": "Weight before pregnancy"
+        },
+        "subject": {
+          "reference": "Patient/101"
+        },
+        "effectiveDateTime": "2022-12-09",
+        "valueQuantity": {
+          "value": 67,
+          "unit": "kg",
+          "system": "http://unitsofmeasure.org",
+          "code": "kg"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "bmi",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs",
+                "display": "Vital Signs"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "39156-5",
+              "display": "BMI"
+            }
+          ],
+          "text": "BMI"
+        },
+        "subject": {
+          "reference": "Patient/101"
+        },
+        "effectiveDateTime": "2022-12-09",
+        "valueQuantity": {
+          "value": 28.8,
+          "unit": "kg/m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "kg/m2"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "smokingpatient",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "social-history",
+                "display": "Social History"
+              }
             ],
-            "text":"Diastolic blood pressure"        
-          },          
-          "valueQuantity": {
-            "value": 60,
-            "unit": "mmHg",
-            "system": "http://unitsofmeasure.org",
-            "code": "mm[Hg]"
-          }
-        }
-      ]
-    },
-    {
-      "resourceType": "Observation",
-      "id": "heartrate01",
-      "status": "final",
-      "category": [
-        {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code": "vital-signs",
-              "display": "Vital Signs"
-            }
-          ]
-        }
-      ],
-      "code": {
-        "coding": [
-          {
-            "system": "http://loinc.org",
-            "code": "8867-4",
-            "display": "脈拍"
+            "text": "Social History"
           }
         ],
-        "text":"Heart Rate"
-      },
-      "subject": {
-        "reference": "Patient/101"
-      },            
-      "effectiveDateTime": "2022-12-09",
-      "valueQuantity": {
-        "value": 44,
-        "unit": "beats/minute",
-        "system": "http://unitsofmeasure.org",
-        "code": "{beats}/min"
-      }
-    },
-
-    {
-      "resourceType": "Observation",
-      "id": "weight01",
-      "status": "final",
-      "category": [
-        {
+        "code": {
           "coding": [
             {
-              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code": "vital-signs",
-              "display": "Vital Signs"
-            }
-          ]
-        }
-      ],
-      "code": {
-        "coding": [
-          {
-            "system": "http://loinc.org",
-            "code": "29463-7",
-            "display": "体重"
-          }
-        ],
-        "text":"Body Weight"
-      },
-      "subject": {
-        "reference": "Patient/101"
-      },            
-      "effectiveDateTime": "2022-12-09",
-      "valueQuantity": {
-        "value" : 70.09414,
-        "unit" : "kg",
-        "system" : "http://unitsofmeasure.org",
-        "code" : "kg"
-      }
-    },
-    {
-      "resourceType": "Observation",
-      "id": "weightlossgain",
-      "status": "final",
-      "category": [
-        {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code": "vital-signs",
-              "display": "Vital Signs"
-            }
-          ]
-        }
-      ],
-      "code": {
-        "coding": [
-          {
-            "system": "http://loinc.org",
-            "code": "29463-7",
-            "display": "体重増減"
-          }
-        ],
-        "text":"Weight Loss Gain"
-      },
-      "subject": {
-        "reference": "Patient/101"
-      },            
-      "effectiveDateTime": "2022-12-09",
-      "valueQuantity": {
-        "value" : 5,
-        "unit" : "kg",
-        "system" : "http://unitsofmeasure.org",
-        "code" : "kg"
-      }
-    },
-    {
-      "resourceType": "Observation",
-      "id": "height01",
-      "status": "final",
-      "category": [
-        {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code": "vital-signs",
-              "display": "Vital Signs"
-            }
-          ]
-        }
-      ],
-      "code": {
-        "coding": [
-          {
-            "system": "http://loinc.org",
-            "code": "8302-2",
-            "display": "身長"
-          }
-        ],
-        "text":"Body Height"
-      },
-      "subject": {
-        "reference": "Patient/101"
-      },            
-      "effectiveDateTime": "2022-12-09",
-      "valueQuantity": {
-        "value" : 156,
-        "unit" : "cm",
-        "system" : "http://unitsofmeasure.org",
-        "code" : "cm"
-      }
-    },
-
-    {
-      "resourceType": "Observation",
-      "id": "weight02",
-      "status": "final",
-      "category": [
-        {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code": "vital-signs",
-              "display": "Vital Signs"
-            }
-          ]
-        }
-      ],
-      "code": {
-        "coding": [
-          {
-            "system": "http://loinc.org",
-            "code": "29463-7",
-            "display": "妊娠前の体重"
-          }
-        ],
-        "text":"Weight before pregnancy"
-      },
-      "subject": {
-        "reference": "Patient/101"
-      },            
-      "effectiveDateTime": "2022-12-09",
-      "valueQuantity": {
-        "value" : 67,
-        "unit" : "kg",
-        "system" : "http://unitsofmeasure.org",
-        "code" : "kg"
-      }
-    },
-    {
-      "resourceType": "Observation",
-      "id": "bmi",
-      "status": "final",
-      "category": [
-        {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code": "vital-signs",
-              "display": "Vital Signs"
-            }
-          ]
-        }
-      ],
-      "code": {
-        "coding": [
-          {
-            "system": "http://loinc.org",
-            "code": "39156-5",
-            "display": "BMI"
-          }
-        ],
-        "text":"BMI"
-      },
-      "subject": {
-        "reference": "Patient/101"
-      },            
-      "effectiveDateTime": "2022-12-09",
-      "valueQuantity": {
-        "value" : 28.8 ,
-        "unit" : "kg/m2",
-        "system" : "http://unitsofmeasure.org",
-        "code" : "kg/m2"
-      }
-    },
-    {
-      "resourceType" : "Observation",
-      "id" : "smokingpatient",
-      "category" : [
-        {
-          "coding" : [
-            {
-              "system" : "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code" : "social-history",
-              "display" : "Social History"
+              "system": "http://loinc.org",
+              "code": "72166-2",
+              "display": "喫煙"
             }
           ],
-          "text" : "Social History"
-        }
-      ],
-      "code" : {
-        "coding" : [
-          {
-            "system" : "http://loinc.org",
-            "code" : "72166-2",
-            "display" : "喫煙"
-          }
-        ],
-        "text" : "Smoking Patient"
-      },
-      "subject" : {
-        "reference" : "Patient/101",
-        "display" : "Tomomi Ogawa"
-      },
-      "effectiveDateTime": "2022-12-09",
-      "valueCodeableConcept" : {
-        "coding" : [
-          {
-            "system" : "http://snomed.info/sct",
-            "code" : "428041000124106"
-          }
-        ],
-        "text" : "現在も吸っている"
-      }
-    }, 
-
-    {
-      "resourceType" : "Observation",
-      "id" : "drinkingpatient",
-      "category" : [
-        {
-          "coding" : [
+          "text": "Smoking Patient"
+        },
+        "subject": {
+          "reference": "Patient/101",
+          "display": "Tomomi Ogawa"
+        },
+        "effectiveDateTime": "2022-12-09",
+        "valueCodeableConcept": {
+          "coding": [
             {
-              "system" : "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code" : "social-history",
-              "display" : "Social History"
+              "system": "http://snomed.info/sct",
+              "code": "428041000124106"
             }
           ],
-          "text" : "Social History"
+          "text": "現在も吸っている"
         }
-      ],
-      "code" : {
-        "coding" : [
-          {
-            "system" : "http://loinc.org",
-            "code" : "74205-6",
-            "display" : "飲酒"
-          }
-        ],
-        "text" : "Drinking Patient"
-      },
-      "subject" : {
-        "reference" : "Patient/101",
-        "display" : "Tomomi Ogawa"
-      },
-      "effectiveDateTime": "2022-12-09",
-      "valueCodeableConcept" : {
-        "coding" : [
-          {
-            "system" : "http://snomed.info/sct",
-            "code" : "219006"
-          }
-        ],
-        "text" : "現在も飲んでいる"
       }
     },
+
     {
-      "resourceType": "Observation",
-      "id": "proteinurine",
-      "status": "final",
-      "category": [
-        {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "drinkingpatient",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "social-history",
+                "display": "Social History"
+              }
+            ],
+            "text": "Social History"
+          }
+        ],
+        "code": {
           "coding": [
             {
-              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code": "laboratory",
-              "display": "Laboratory"
+              "system": "http://loinc.org",
+              "code": "74205-6",
+              "display": "飲酒"
             }
-          ]
-        }
-      ],
-      "code": {
-        "coding": [
-          {
-            "system": "http://loinc.org",
-            "code": "20454-5",
-            "display": "Protein In Urine"
-          }
-        ],
-        "text":"Protein In Urine"
-      },
-      "subject": {
-        "reference": "Patient/101"
-      },            
-      "valueCodeableConcept" : {
-        "coding" : [
-          {
-            "system" : "http://snomed.info/sct",
-            "code" : "260385009",
-            "display":"Negative"
-          }
-        ],
-        "text" : "Negative"
-      }
-    },
-    {
-      "resourceType": "Observation",
-      "id": "sugarurine",
-      "status": "final",
-      "category": [
-        {
+          ],
+          "text": "Drinking Patient"
+        },
+        "subject": {
+          "reference": "Patient/101",
+          "display": "Tomomi Ogawa"
+        },
+        "effectiveDateTime": "2022-12-09",
+        "valueCodeableConcept": {
           "coding": [
             {
-              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code": "laboratory",
-              "display": "Laboratory"
+              "system": "http://snomed.info/sct",
+              "code": "219006"
             }
-          ]
+          ],
+          "text": "現在も飲んでいる"
         }
-      ],
-      "code": {
-        "coding": [
-          {
-            "system": "http://loinc.org",
-            "code": "2349-9",
-            "display": "Sugar In Urine"
-          }
-        ],
-        "text":"Sugar In Urine"
-      },
-      "subject": {
-        "reference": "Patient/101"
-      },            
-      "valueCodeableConcept" : {
-        "coding" : [
-          {
-            "system" : "http://snomed.info/sct",
-            "code" : "260385009",
-            "display":"Negative"
-          }
-        ],
-        "text" : "Negative"
       }
     },
     {
-      "resourceType": "Observation",
-      "id": "ketonesurine",
-      "status": "final",
-      "category": [
-        {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "proteinurine",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
           "coding": [
             {
-              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code": "laboratory",
-              "display": "Laboratory"
+              "system": "http://loinc.org",
+              "code": "20454-5",
+              "display": "Protein In Urine"
             }
-          ]
+          ],
+          "text": "Protein In Urine"
+        },
+        "subject": {
+          "reference": "Patient/101"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "260385009",
+              "display": "Negative"
+            }
+          ],
+          "text": "Negative"
         }
-      ],
-      "code": {
-        "coding": [
-          {
-            "system": "http://loinc.org",
-            "code": "5797-6",
-            "display": "尿ケトン"
-          }
-        ],
-        "text":"Ketones In Urine"
-      },
-      "subject": {
-        "reference": "Patient/101"
-      },            
-      "valueCodeableConcept" : {
-        "coding" : [
-          {
-            "system" : "http://snomed.info/sct",
-            "code" : "260385009",
-            "display":"Positive"
-          }
-        ],
-        "text" : "Positive"
       }
     },
     {
-      "resourceType": "Encounter",
-      "id": "checkup101",
-      "status": "finished",
-      "subject": {
-        "reference": "Patient/101"
-      },
-      "period": {
-        "start": "2022-12-09",
-        "end": "2022-12-09"
+      "resource": {
+        "resourceType": "Observation",
+        "id": "sugarurine",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2349-9",
+              "display": "Sugar In Urine"
+            }
+          ],
+          "text": "Sugar In Urine"
+        },
+        "subject": {
+          "reference": "Patient/101"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "260385009",
+              "display": "Negative"
+            }
+          ],
+          "text": "Negative"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "ketonesurine",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "5797-6",
+              "display": "尿ケトン"
+            }
+          ],
+          "text": "Ketones In Urine"
+        },
+        "subject": {
+          "reference": "Patient/101"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "260385009",
+              "display": "Positive"
+            }
+          ],
+          "text": "Positive"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "checkup101",
+        "status": "finished",
+        "subject": {
+          "reference": "Patient/101"
+        },
+        "period": {
+          "start": "2022-12-09",
+          "end": "2022-12-09"
+        }
       }
     }
-    
   ]
 }

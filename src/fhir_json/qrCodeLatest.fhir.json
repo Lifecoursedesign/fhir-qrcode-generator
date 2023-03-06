@@ -1,0 +1,3906 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:88f151c0-a954-468a-88bd-5ae15c08e059", 
+      "resource": {
+        "resourceType": "Composition",
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "11503-0",
+              "display": "Medical records"
+            }
+          ]
+        },
+        "subject": 
+          {
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002 ",
+          "type": "Patient"  
+        },
+        
+        "date": "2022-12-09",
+        "author": [
+          {
+            "reference": "Practitioner/d62b4ea4-b0bb-11ed-afa1-0242ac120002",
+            "type": "Practitioner"
+          },
+          {
+            "reference": "Organization/d62b4fe4-b0bb-11ed-afa1-0242ac120002",
+            "type": "Organization"
+          }
+          
+        ],
+        "title": "山田様医療データ",
+        "section": [
+          {
+            "title": "患者プロファイル",
+            "entry": [
+              {
+                "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/d62b7406-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/d62b7546-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/d62b6f92-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/d62b6cd6-b0bb-11ed-afa1-0242ac120002"
+              },
+              
+              
+              {
+                "reference": "Observation/c0a775b6-b73d-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/c0a7799e-b73d-11ed-afa1-0242ac120002"
+              },
+              
+              {
+                "reference": "Observation/d62b7276-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "FamilyMemberHistory/d62b4472-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/d62b48d2-b0bb-11ed-afa1-0242ac120002"
+              }
+            ]
+          },
+          {
+            "title": "健診",
+            "entry": [
+              {
+                "reference": "Observation/d62b5156-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/d62b52c8-b0bb-11ed-afa1-0242ac120002"
+              },
+              
+              {
+                "reference": "Practitioner/d62b4ea4-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Organization/d62b4fe4-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Encounter/d62b567e-b0bb-11ed-afa1-0242ac120002"
+              }
+            ]
+
+          },
+          {
+            "title": "血液・尿検査",
+            "entry": [
+              {
+                "reference": "Observation/d62b5a84-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/d62b5e4e-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/d62b6132-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/d62b625e-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Encounter/c0a788c6-b73d-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Organization/d62b5566-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/c0a78308-b73d-11ed-afa1-0242ac120002"
+              }
+            ]
+          },
+          {
+            "title": "分娩・産後",
+            "entry": [
+              {
+                "reference": "Practitioner/d62b6362-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Practitioner/c0a78434-b73d-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Practitioner/c0a7866e-b73d-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Encounter/d62b567e-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Organization/d62b6448-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/d62b654c-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/d62b68c6-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/d62b69c0-b0bb-11ed-afa1-0242ac120002"
+              },
+              {
+                "reference": "Observation/c0a787a4-b73d-11ed-afa1-0242ac120002"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d62b6b00-b0bb-11ed-afa1-0242ac120002", 
+      "resource": {
+        "resourceType": "Patient",
+        "id": "d62b6b00-b0bb-11ed-afa1-0242ac120002",
+        "identifier": [
+          {
+            "system": "urn:oid:1.2.392.100495.20.3.51",
+            "value": "1"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "46106-1",
+                  "display": "Medical record number [Identifier]"
+                }
+              ],
+              "text": "患者ID"
+            },
+            "value": "patient ID"
+          }
+        ],
+         
+        "name": [
+          {
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/iso21090-EN-representation",
+                "valueCode": "IDE"
+              }
+            ],
+
+            "use": "usual",
+            "text": "山田 太郎",
+            "family": "山田",
+            "given": [
+              "太郎"
+            ]
+
+            },
+
+          {
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/iso21090-EN-representation",
+                "valueCode": "SYL"
+              }
+            ],
+            "code":{
+              "coding":[
+                {
+                  "system":"https://lcd.or.jp/code/",
+                  "code":"lCD.E00024",
+                  "display":"Kana name"
+                }
+              ]
+            },
+            "use": "usual",
+            "text": "ヤマダ タロウ",
+            "family": "ヤマダ",
+            "given": [
+              "タロウ"
+            ]
+          }
+        ],
+        "maritalStatus": 
+          {
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11380-3",
+                  "display": "Marital status and living arrangements Narrative - Reported"
+                }
+              ],
+              "text": "結婚"
+          },
+
+        "extension": [
+          {
+            "url": "https://lcd.or.jp/extension/element-declaration-value-pair",
+            "extension": [
+              {
+                "url":"https://lcd.or.jp/extension/elementDeclaration",
+                "valueCoding":{
+                      "system": "http://loinc.org",
+                      "code": "74164-5",
+                      "display": "History of Usual occupation and industry Narrative"
+                    
+                }
+              },
+              {
+                "url": "https://lcd.or.jp/extension/elementValue",
+                "valueString": "会社員(事務員、6時間/日、、当直なし)"
+              }
+            ]
+            
+          }
+        ]
+      }
+    },
+    {
+      "resource":{
+        "resourceType": "Observation",
+        "id": "d62b7276-b0bb-11ed-afa1-0242ac120002",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8302-2",
+              "display": "Body height"
+            }
+          ],
+          "text": "身長"
+        },
+        "valueQuantity":{  
+          "value":153.4,
+          "unit":"cm",
+          "system":"http://unitsofmeasure.org",
+          "code":"cm"
+       },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+       
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00"
+      }
+    },
+    {
+      "resource":{
+        "resourceType": "Observation",
+        "id": "d62b6f92-b0bb-11ed-afa1-0242ac120002",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "69460-4",
+              "display": "Body weight Mother --pre current pregnancy"
+            }
+          ],
+          "text": "非妊時体重"
+        },
+        "valueQuantity":{  
+          "value":50.6,
+          "unit":"kg",
+          "system":"http://unitsofmeasure.org",
+          "code":"kg"
+       },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+       
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00"
+      }
+    },
+    {
+      "resource":{
+        "resourceType": "Observation",
+        "id": "d62b7406-b0bb-11ed-afa1-0242ac120002",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "72166-2",
+              "display": "Tobacco smoking status"
+            }
+          ],
+          "text": "喫煙"
+        },
+        "valueString": "以前吸っていた(5本、開始年齢25歳、終了年齢30歳)、受動喫煙(妊娠中)",
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00"
+      }
+    },
+    {
+      "resource":{
+        "resourceType": "Observation",
+        "id": "d62b7546-b0bb-11ed-afa1-0242ac120002",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "11331-6",
+              "display": "History of Alcohol use"
+            }
+          ],
+          "text": "飲酒"
+        },
+        "valueString": "(ほぼ)毎日(500ml/日)",
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d62b6ea2-b0bb-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id": "d62b6ea2-b0bb-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "https://lcd.or.jp/code/",
+              "code": "G10001",
+              "display": "family_history"
+            }
+          ],
+          "text": "家族歴"
+        },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+        
+        "component":[
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "97063-2",
+                  "display": "Family history of Diabetes"
+                }
+              ],
+              "text": "糖尿病"
+            },
+            "valueString": "有 1型糖尿病、父、5年前から"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://hl7.org/fhir/sid/icd-10-cm",
+                  "code": "Z82.49",
+                  "display": "Family history of ischemic heart disease and other diseases of the circulatory system"
+                }
+              ],
+              "text": "高血圧"
+            },
+            "valueString": "有 二次性高血圧、母、3年前から"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "8670-2",
+                  "display": "History of family member diseases"
+                }
+              ],
+              "text": "その他"
+            },
+            "valueString": "Unknown"
+          }
+        ]
+
+      }
+    },
+
+
+
+    {
+      "fullUrl": "urn:uuid:d62b6cd6-b0bb-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id": "d62b6cd6-b0bb-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "http://loinc.org",
+              "code": "49033-4",
+              "display": "Menstrual History - Reported"
+            }
+          ],
+          "text": "月経"
+        },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+        
+        "component":[
+          
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "10632-8",
+                  "display": "Time until next menstrual period"
+                }
+              ],
+              "text": "周期"
+            },
+            "valueQuantity":{  
+               "value":6,
+               "unit":"{d}",
+               "system":"http://unitsofmeasure.org",
+               "code":"{day}"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "'3144-3",
+                  "display":"Last menstrual period duration"
+                }
+              ],
+              "text": "持続日数"
+            },
+            "valueQuantity":{  
+               "value":30,
+               "unit":"{d}",
+               "system":"http://unitsofmeasure.org",
+               "code":"{day}"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "33066-2",
+                  "display": "Last menstrual period"
+                }
+              ],
+              "text": "最終月経日"
+            },
+            "valueDateTime": "2022-11-12"
+          }
+        ]
+
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c0a775b6-b73d-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id": "c0a775b6-b73d-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "https://lcd.or.jp/code/",
+              "code": "G10002",
+              "display": "history of pregnancy"
+            }
+          ],
+          "text": "妊娠分娩歴"
+        },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+        
+        "component":[
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11996-6",
+                  "display": "[#] Pregnancies"
+                }
+              ],
+              "text": "妊娠回数"
+            },
+            "valueQuantity":{
+              "value": 2,
+              "unit": "{#}",
+              "system": "http://unitsofmeasure.org",
+              "code": "{#}"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11977-6",
+                  "display": "[#] Parity"
+                }
+              ],
+              "text": "分娩回数"
+            },
+            "valueQuantity":{
+              "value": 1,
+              "unit": "{#}",
+              "system": "http://unitsofmeasure.org",
+              "code": "{#}"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11637-6",
+                  "display": "[#] Births.preterm"
+                }
+              ],
+              "text": "早産"
+            },
+            "valueQuantity":{
+              "value": 1,
+              "unit": "{#}",
+              "system": "http://unitsofmeasure.org",
+              "code": "{#}"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "68497-7",
+                  "display": "Previous cesarean deliveries #"
+                }
+              ],
+              "text": "帝王切開"
+            },
+            "valueQuantity":{
+              "value": 0,
+              "unit": "{#}",
+              "system": "http://unitsofmeasure.org",
+              "code": "{#}"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11614-5",
+                  "display": "[#] Abortions.spontaneous"
+                }
+              ],
+              "text": "自然流産"
+            },
+            "valueQuantity":{
+              "value": 0,
+              "unit": "{#}",
+              "system": "http://unitsofmeasure.org",
+              "code": "{#}"
+            }
+          },
+          
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "73772-6",
+                  "display": "Number of fetal deaths delivered"
+                }
+              ],
+              "text": "死産"
+            },
+            "valueQuantity":{
+              "value": 0,
+              "unit": "{#}",
+              "system": "http://unitsofmeasure.org",
+              "code": "{#}"
+            }
+          }
+        ]
+
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c0a7799e-b73d-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id": "c0a7799e-b73d-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "https://lcd.or.jp/code/",
+              "code": "G10003",
+              "display": "past child birth"
+            }
+          ],
+          "text": "過去分娩"
+        },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+        
+        "component":[
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "93857-1",
+                  "display": "Date and time of obstetric delivery"
+                }
+              ],
+              "text": "年月日"
+            },
+            "valueDateTime": "2021-12-12"
+
+
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "76516-4",
+                  "display": "Gestational age--at birth"
+                }
+              ],
+              "text": "週数"
+            },
+            "valueString": "35w2d"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11882-8",
+                  "display": "Fetal Sex US"
+                }
+              ],
+              "text": "性別"
+            },
+            "valueString": "男"
+          },
+         {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "8339-4",
+                  "display": "Birth weight Measured"
+                }
+              ],
+              "text": "出生体重"
+            },
+            "valueQuantity":{  
+               "value":2450,
+               "unit":"g",
+               "system":"http://unitsofmeasure.org",
+               "code":"g"
+            }
+          },
+  
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "72149-8",
+                  "display": "Delivery method"
+                }
+              ],
+              "text": "分娩様式"
+            },
+            "valueString": "正常分娩 誘発"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "10162-6",
+                  "display": "History of pregnancies Narrative"
+                }
+              ],
+              "text": "分娩異常"
+            },
+            "valueString": "過強陣痛"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "32416-0",
+                  "display": "Newborn complication"
+                }
+              ],
+              "text": "新生児異常"
+            },
+            "valueString": "新生児死亡"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "72150-6",
+                  "display": "Delivery location"
+                }
+              ],
+              "text": "分娩施設"
+            },
+            "valueString": "埼玉医科大学総合医療センター"
+          }
+          
+        ]
+      }
+
+    },
+    {
+      "fullUrl": "urn:uuid:d62b48d2-b0bb-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id": "d62b48d2-b0bb-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "https://lcd.or.jp/code/",
+              "code": "G10005",
+              "display": "mother body development"
+            }
+          ],
+          "text": "母体情報"
+        },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+       
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+        
+        "component":[
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11778-8",
+                  "display": "Delivery date Estimated"
+                }
+              ],
+              "text": "分娩予定日（年月日）"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11779-6",
+                  "display": "Delivery date Estimated from last menstrual period"
+                }
+              ],
+              "text": "分娩予定日(決定理由)"
+            },
+            "valueString": "その他（胚移植日）"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "82364-1",
+                  "display": "Reproductive endocrinology and infertility Plan of care note"
+                }
+              ],
+              "text": "不妊治療"
+            },
+            "valueString": "有 他院、IVF-ET 顕微授精"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "55281-0",
+                  "display": "Number of fetuses"
+                }
+              ],
+              "text": "胎児数"
+            },
+            "valueString": "双胎 DD"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "85712-8",
+                  "display": "Expected delivery location"
+                }
+              ],
+              "text": "分娩予定施設"
+            },
+            "valueString": "埼玉医科大学総合医療センター"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "57079-6",
+                  "display": "Birth plan Narrative"
+                }
+              ],
+              "text": "分娩方針"
+            },
+            "valueString": "経腟分娩 無痛分娩、TOLAC希望"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11359-7",
+                  "display": "History of Allergenic and Immunologic disorders"
+                }
+              ],
+              "text": "アレルギー"
+            },
+            "valueString": "牛乳"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "52418-1",
+                  "display": "Current medication, Name"
+                }
+              ],
+              "text": "使用中の薬剤"
+            },
+            "valueString": "ロキソニン"
+  
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "10164-2",
+                  "display": "History of Present illness Narrative"
+                }
+              ],
+              "text": "母体基礎疾患"
+            },
+            "valueString": "有 消化器(胃腸炎"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "65869-0",
+                  "display": "Pregnancy complication"
+                }
+              ],
+              "text": "産科異常"
+            },
+            "valueString": "有 切迫早産"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11349-8",
+                  "display": "History of Past illness"
+                }
+              ],
+              "text": "産科既往症"
+            },
+            "valueString": "有 自然早産"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "56838-6",
+                  "display": "History of Infectious disease Narrative"
+                }
+              ],
+              "text": "母体感染症"
+            },
+            "valueString": "有 GBS"
+          }
+          
+        ]
+
+      }
+
+    },
+
+    {
+      "fullUrl": "urn:uuid:d62b4472-b0bb-11ed-afa1-0242ac120002", 
+      "resource": {
+        "resourceType": "FamilyMemberHistory",
+        "id": "d62b4472-b0bb-11ed-afa1-0242ac120002",
+        "status": "partial",
+        "patient" :{
+          "id": "d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        "name": [
+          {
+            "extension":[
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/iso21090-EN-representation",
+                "valueCode": "IDE"
+              }
+            ],
+            "code":{
+              "coding":[
+                {
+                  "system":"http://loinc.org",
+                  "code": "95730-8",
+                  "display": "Surviving spouse name"
+                }
+              ]
+            },
+            "text":"山田 太郎"
+          }
+        ],
+          "relationship":{
+            
+              "coding":[
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                  "code": "SPS",
+                  "display": "spouse"
+                }
+              ]
+            },
+          "bornDate":"2000-12-01",
+          "ageAge": {
+            "value": 45,
+            "unit": "yr",
+            "system": "http://unitsofmeasure.org",
+            "code": "a"
+          },
+          "extension": [
+            {
+              "extension": [
+                {
+                  "url": "https://lcd.or.jp/extension/elementDeclaration",
+                  "valueCoding": {
+                    "system": "http://loinc.org",
+                    "code": "74164-5",
+                    "display": "History of Usual occupation and industry Narrative"
+                  }
+                },
+                {
+                  "url": "https://lcd.or.jp/extension/elementValue",
+                  "valueString": "職業"
+                }
+              ]
+            },
+            {
+              "url": "https://lcd.or.jp/extension/element-declaration-value-pair",
+              "extension": [
+                {
+                  "url": "https://lcd.or.jp/extension/elementDeclaration",
+                  "valueCoding": {
+                    "system": "http://loinc.org",
+                    "code": "89060-8",
+                    "display": "Contact Phone number"
+                  }
+                },
+                {
+                  "url": "https://lcd.or.jp/extension/elementValue",
+                  "valueString": "連絡先"
+                }
+              ]
+            },
+            {
+              "url": "https://lcd.or.jp/extension/element-declaration-value-pair",
+              "extension": [
+                {
+                  "url": "https://lcd.or.jp/extension/elementDeclaration",
+                  "valueCoding": {
+                    "system": "http://loinc.org",
+                    "code": "883-9",
+                    "display": "ABO group [Type] in Blood"
+                  }
+                },
+                {
+                  "url": "https://lcd.or.jp/extension/elementValue",
+                  "valueString": "血液型 (ABO)"
+                }
+              ]
+            },
+            {
+              "url": "https://lcd.or.jp/extension/element-declaration-value-pair",
+              "extension": [
+                {
+                  "url": "https://lcd.or.jp/extension/elementDeclaration",
+                  "valueCoding": {
+                    "system": "http://loinc.org",
+                    "code": "10331-7",
+                    "display": "Rh [Type] in Blood"
+                  }
+                },
+                {
+                  "url": "https://lcd.or.jp/extension/elementValue",
+                  "valueString": "血液型 (Rh)"
+                }
+              ]
+            },
+            {
+              "url": "https://lcd.or.jp/extension/element-declaration-value-pair",
+              "extension": [
+                {
+                  "url": "https://lcd.or.jp/extension/elementDeclaration",
+                  "valueCoding": {
+                    "system": "http://loinc.org",
+                    "code": "72166-2",
+                    "display": "Tobacco smoking status"
+                  }
+                },
+                {
+                  "url": "https://lcd.or.jp/extension/elementValue",
+                  "valueString": "喫煙"
+                }
+              ]
+            },
+            {
+              "url": "https://lcd.or.jp/extension/element-declaration-value-pair",
+              "extension": [
+                {
+                  "url": "https://lcd.or.jp/extension/elementDeclaration",
+                  "valueCoding": {
+                    "system": "http://loinc.org",
+                    "code": "11331-6",
+                    "display": "History of Alcohol use"
+                  }
+                },
+                {
+                  "url": "https://lcd.or.jp/extension/elementValue",
+                  "valueString": "飲酒"
+                }
+              ]
+            }
+          ]
+      }
+    },
+
+    {
+      "fullUrl": "urn:uuid:d62b4fe4-b0bb-11ed-afa1-0242ac120002", 
+      "resource": {
+        "resourceType": "Organization",
+        "id": "d62b4fe4-b0bb-11ed-afa1-0242ac120002",
+        "extension": [
+          {
+            "url": "https://lcd.or.jp/extension/codeDesignation",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "58237-9",
+                  "display": "Hospital name"
+                }
+              ]
+            }
+          }
+        ],
+        "name": "埼玉医大総合医療センター"
+      }
+    }, 
+
+
+    
+    {
+      "fullUrl": "urn:uuid:d62b4ea4-b0bb-11ed-afa1-0242ac120002", 
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "d62b4ea4-b0bb-11ed-afa1-0242ac120002",
+        
+        "name": [
+          {
+            "extension": [
+              {
+                "url": "https://lcd.or.jp/extension/codeDesignation",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "52526-1",
+                      "display": "Attending physician name"
+                    }
+                  ]
+                }
+              }
+            ],
+            "text": "健診の医療者名"
+          }
+          
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d62b567e-b0bb-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Encounter",
+        "id": "d62b567e-b0bb-11ed-afa1-0242ac120002",
+        "status": "finished",
+        "extension": [
+          {
+  
+            "url": "https://lcd.or.jp/extension/codeDesignation",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "76427-4",
+                  "display": "Visit date"
+                }
+              ]
+            }
+          }
+        ],
+        "class":[
+          {
+            "system": "http://terminology.hl7.org/ValueSet/v3-ActEncounterCode",
+            "code": "AMB",
+            "display": "Ambulatory"
+          }
+        ],
+        "serviceProvider": {},
+        "period": {
+          "start": "2023-02-03",
+          "end": "2023-02-03"
+        }
+
+      }
+     
+    },
+    {
+      "fullUrl": "urn:uuid:d62b5426-b0bb-11ed-afa1-0242ac120002", 
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "d62b5426-b0bb-11ed-afa1-0242ac120002",
+       
+        "name": [
+          {
+            "extension": [
+              {
+                "url": "https://lcd.or.jp/extension/codeDesignation",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "52526-1",
+                      "display": "Attending physician name"
+                    }
+                  ]
+                }
+              }
+            ],
+            "text": "検診の医療者名"
+          }
+          
+        ]
+      }
+      
+    },
+    
+    {
+      
+        "fullUrl": "urn:uuid:d62b5566-b0bb-11ed-afa1-0242ac120002", 
+        "resource": {
+          "resourceType": "Organization",
+          "id": "d62b5566-b0bb-11ed-afa1-0242ac120002",
+          "extension": [
+            {
+              "url": "https://lcd.or.jp/extension/codeDesignation",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "58237-9",
+                    "display": "Hospital name"
+                  }
+                ]
+              }
+            }
+          ],
+          "name": "検診の施設名"
+        }
+      
+    },
+    {
+      "fullUrl": "urn:uuid:c0a788c6-b73d-11ed-afa1-0242ac120002",
+      "resource":{
+        "resourceType": "Encounter",
+        "id": "c0a788c6-b73d-11ed-afa1-0242ac120002",
+        "status": "finished",
+        "class": [
+          {
+            "system":"http://terminology.hl7.org/ValueSet/v3-ActEncounterCode",
+            "code":"AMB",
+            "display":"Ambulatory"
+            
+          }
+        ],
+        "serviceProvider": {
+          "reference": "Organization/d62b5566-b0bb-11ed-afa1-0242ac120002",
+          "type": "Organization"
+        },
+        "period": {
+          "start": "2023-02-03",
+          "end": "2023-02-03"
+        }
+      }
+    },
+
+    {
+      "fullUrl": "urn:uuid:d62b6362-b0bb-11ed-afa1-0242ac120002", 
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "d62b6362-b0bb-11ed-afa1-0242ac120002",
+        
+        "name": [
+          {
+            "extension": [
+              {
+                "url": "https://lcd.or.jp/extension/codeDesignation",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "52526-1",
+                      "display": "Attending physician name"
+                    }
+                  ]
+                }
+              }
+            ],
+            "text": "分娩取扱者-医師名"
+          }
+          
+        ]
+      }
+      
+    },
+    {
+      "fullUrl": "urn:uuid:c0a78434-b73d-11ed-afa1-0242ac120002", 
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "c0a78434-b73d-11ed-afa1-0242ac120002",
+        
+        "name": [
+          {
+            "extension": [
+              {
+                "url": "https://lcd.or.jp/extension/codeDesignation",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "https://www.phenxtoolkit.org/",
+                      "code": "PX161601010400",
+                      "display": "Birth Doctor"
+                    }
+                  ]
+                }
+              }
+            ],
+            "text": "分娩取扱者-助産師名"
+          }
+          
+        ]
+      }
+      
+    },
+    {
+      "fullUrl": "urn:uuid:c0a7866e-b73d-11ed-afa1-0242ac120002", 
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "c0a7866e-b73d-11ed-afa1-0242ac120002",
+        
+        "name": [
+          {
+            "extension": [
+              {
+                "url": "https://lcd.or.jp/extension/codeDesignation",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "18774-0",
+                      "display": "Staff practitioner name"
+                    }
+                  ]
+                }
+              }
+            ],
+            "text": "分娩取扱者-その他"
+          }
+          
+        ]
+      }
+      
+    },
+    
+    
+    {
+      
+        "fullUrl": "urn:uuid:d62b6448-b0bb-11ed-afa1-0242ac120002", 
+        "resource": {
+          "resourceType": "Organization",
+          "id": "d62b6448-b0bb-11ed-afa1-0242ac120002",
+          "extension": [
+            {
+              "url": "https://lcd.or.jp/extension/codeDesignation",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "58237-9",
+                    "display": "Hospital name"
+                  }
+                ]
+              }
+            }
+          ],
+          "name": "分娩の施設名"
+        }
+      
+    },
+
+    {
+      "fullUrl": "urn:uuid:d62b5156-b0bb-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id": "d62b5156-b0bb-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "http://loinc.org",
+              "code": "100230-2",
+              "display": "Routine prenatal assessment panel"
+            }
+          ],
+          "text": "母体健診"
+        },
+        
+        "encounter":
+        {
+          "reference": "Encounter/d62b567e-b0bb-11ed-afa1-0242ac120002",
+          "type": "Encounter"
+        },
+        
+        "subject":{
+           "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+        "component":[
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "18185-9",
+                  "display": "Gestational age"
+                }
+              ],
+              "text": "妊娠週数"
+            },
+            "valueString": "21w3d"
+  
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11881-0",
+                  "display": "Uterus Fundal height Tape measure"
+                }
+              ],
+              "text": "子宮底"
+            },
+            "valueQuantity":{
+              "value": 10.25,
+              "unit": "cm",
+              "system": "http://unitsofmeasure.org",
+              "code": "cm"
+            }
+
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "8280-0",
+                  "display": "Waist Circumference at umbilicus by Tape measure"
+                }
+              ],
+              "text": "腹囲"
+            },
+            "valueQuantity":{
+              "value": 91.2,
+              "unit": "cm",
+              "system": "http://unitsofmeasure.org",
+              "code": "cm"
+            }
+
+          },
+          {
+            "code": {
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "35094-2",
+                  "display": "Blood pressure panel"
+                }
+              ]
+            },
+            "component": [
+              {
+                "code":{
+                  "coding":[
+                    {
+                      "system": "http://loinc.org",
+                      "code": "8480-6",
+                      "display": "Systolic blood pressure"
+                    }
+                  ],
+                  "text": "血圧①"
+                },
+                "valueQuantity":{
+                  "value": 115,
+                  "unit": "mmHg",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "mm[Hg]"
+                }
+
+              },
+              {
+                "code":{
+                  "coding":[
+                    {
+                      "system": "http://loinc.org",
+                      "code": "8462-4",
+                      "display": "Diastolic blood pressure"
+                    }
+                  ],
+                  "text": "血圧②"
+                },
+                "valueQuantity":{
+                  "value": 81,
+                  "unit": "mmHg",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "mm[Hg]"
+                }
+              }
+            ]
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "55407-1",
+                  "display": "Pitting edema severity of Ankle"
+                }
+              ],
+              "text": "浮腫"
+            },
+            "valueString": "3+"
+  
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "20454-5",
+                  "display": "Protein [Presence] in Urine by Test strip"
+                }
+              ],
+              "text": "尿蛋白"
+            },
+            "valueString": "2+"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "25428-4",
+                  "display": "Glucose [Presence] in Urine by Test strip"
+                }
+              ],
+              "text": "尿糖"
+            },
+            "valueString": "+"
+  
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "5797-6",
+                  "display": "Ketones [Mass/volume] in Urine by Test strip"
+                }
+              ],
+              "text": "尿ケトン"
+            },
+            "valueString": "-"
+  
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "3141-9",
+                  "display": "Body weight Measured"
+                }
+              ],
+              "text": "体重"
+            },
+            "valueQuantity":{
+              "value": 75,
+              "unit": "kg",
+              "system": "http://unitsofmeasure.org",
+              "code": "kg"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "66330-2",
+                  "display": "About how much weight did you gain and lose [Mass] [QIDS]"
+                }
+              ],
+              "text": "体重増減"
+            },
+            "valueQuantity":{
+              "value": 75,
+              "unit": "kg",
+              "system": "http://unitsofmeasure.org",
+              "code": "kg"
+            }
+
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11961-0",
+                  "display": "Cervix [Length] US"
+                }
+              ],
+              "text": "頸管長"
+            },
+            "valueQuantity":{
+              "value": 24,
+              "unit": "mm",
+              "system": "http://unitsofmeasure.org",
+              "code": "mm"
+            }   
+           },
+         
+          {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "32423-6",
+                    "display": "Physical findings of Cervix"
+                  }
+                ],
+                "text": "頸管長所見"
+              },
+              "valueString": "異常所見無し"
+  
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "Enter the LOINC Code",
+                  "display": "Enter the LOINC Title"
+                }
+              ],
+              "text": "その他所見"
+            },
+            "valueString": "Enter the Value"
+        }
+        ]
+        
+
+      }
+     
+    },
+
+   
+
+    {
+      "fullUrl": "urn:uuid:d62b52c8-b0bb-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id": "d62b52c8-b0bb-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "http://loinc.org",
+              "code": "35096-7",
+              "display": "OB ultrasound panel"
+            }
+          ],
+          "text": "超音波検査"
+        },
+       
+        "subject":{
+           "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+        "component":[
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "55281-0",
+                  "display": "Number of fetuses"
+                }
+              ],
+              "text": "胎児数"
+            },
+            "valueQuantity":{
+              "value": 2,
+              "unit": "{#}",
+              "system": "http://unitsofmeasure.org",
+              "code": "{#}"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11875-2",
+                  "display": "Fetal Position US"
+                }
+              ],
+              "text": "胎位"
+            },
+            "valueString": "1"
+  
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11633-5",
+                  "display": "Fetal Heart Rate Reactivity US"
+                }
+              ],
+              "text": "胎児心拍"
+            },
+            "valueString": "異常 異常内容"
+  
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11957-8",
+                  "display": "Fetal Crown Rump Length US"
+                }
+              ],
+              "text": "CRL"
+            },
+            "valueString": "5.6cm 12週相当"
+  
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11820-8",
+                  "display": "Fetal Head Diameter.biparietal US"
+                }
+              ],
+              "text": "BPD"
+            },
+            "valueQuantity":{
+              "value": 11.1,
+              "unit": "cm",
+              "system": "http://unitsofmeasure.org",
+              "code": "cm"
+            },
+            "component":[
+              {
+                "code":{
+                  "system":"http://terminology.hl7.org/CodeSystem/observation-statistics",
+                  "code":"std-dev",
+                  "display":"Standard Deviation"
+                },
+                "text":"(BPD)標準偏差",
+                "valueQuantity":{
+                  "value": -0.5,
+                  "unit": "{STDV}",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "standard deviation"
+                }
+              }
+            ]
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11777-0",
+                  "display": "Fetal Abdomen [Area] Cross section derived by US"
+                }
+              ],
+              "text": "AxT"
+            },
+            "valueQuantity":{
+              "value": 8,
+              "unit": "cm2",
+              "system": "http://unitsofmeasure.org",
+              "code": "cm2"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11979-2",
+                  "display": "Fetal Abdomen Circumference US"
+                }
+              ],
+              "text": "AC"
+            },
+            "valueQuantity":{
+              "value": 23,
+              "unit": "cm",
+              "system": "http://unitsofmeasure.org",
+              "code": "cm"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11963-6",
+                  "display": "Fetal Femur diaphysis [Length] US"
+                }
+              ],
+              "text": "FL"
+            },
+            "valueQuantity":{
+              "value": 37,
+              "unit": "cm",
+              "system": "http://unitsofmeasure.org",
+              "code": "cm"
+            },
+            "component":[
+              {
+                "code":{
+                  "system":"http://terminology.hl7.org/CodeSystem/observation-statistics",
+                  "code":"std-dev",
+                  "display":"Standard Deviation"
+                },
+                "text":"(FL)標準偏差",
+                "valueQuantity":{
+                  "value": -0.5,
+                  "unit": "{STDV}",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "standard deviation"
+                }
+              }
+            ]
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11727-5",
+                  "display": "Fetal Body weight estimated by US"
+                }
+              ],
+              "text": "EFBW"
+            },
+            "valueQuantity":{
+              "value": 890,
+              "unit": "g",
+              "system": "http://unitsofmeasure.org",
+              "code": "g"
+            },
+            "component":[
+              {
+                "code":{
+                  "system":"http://terminology.hl7.org/CodeSystem/observation-statistics",
+                  "code":"std-dev",
+                  "display":"Standard Deviation"
+                },
+                "text":"(EFBW)標準偏差",
+                "valueQuantity":{
+                  "value": 0.5,
+                  "unit": "{STDV}",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "standard deviation"
+                }
+              }
+            ]
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "12167-3",
+                  "display": "Fetal Amniotic Fluid Space [Interpretation] Volume.amniotic fluid US"
+                }
+              ],
+              "text": "羊水"
+            },
+            "valueString": "正常"
+  
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11832-3",
+                  "display": "Fetal Amniotic fluid space Maximum diameter largest pocket US"
+                }
+              ],
+              "text": "MVP"
+            },
+            "valueQuantity":{
+              "value": 53,
+              "unit": "cm",
+              "system":"http://unitsofmeasure.org",
+              "code":"cm"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11627-7",
+                  "display": "Fetal Amniotic fluid index.sum derived by US"
+                }
+              ],
+              "text": "AFI"
+            },
+            "valueQuantity":{
+              "value": 67,
+              "unit": "cm",
+              "system": "http://unitsofmeasure.org",
+              "code": "cm"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11882-8",
+                  "display": "Fetal Sex US"
+                }
+              ],
+              "text": "性別"
+            },
+            "valueString": "M"
+  
+          },
+          
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "11995-8",
+                  "display": "Narrative Placenta position US"
+                }
+              ],
+              "text": "胎盤"
+            },
+            "valueString": "あり（異常テキスト）"
+  
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "12116-0",
+                  "display": "Fetal Umbilical cord Study observation US"
+                }
+              ],
+              "text": "臍帯付着部"
+            },
+            "valueString": "あり（異常テキスト）"
+  
+          }
+  
+        ]
+
+      }
+     
+    },
+
+
+
+    {
+      "fullUrl": "urn:uuid:d62b5a84-b0bb-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id": "d62b5a84-b0bb-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "http://loinc.org",
+              "code": "24357-6",
+              "display": "Urinalysis macro (dipstick) panel - Urine"
+            }
+          ],
+          "text": "尿"
+        },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+        "component":[
+          
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "25428-4",
+                    "display": "Glucose [Presence] in Urine by Test strip"
+                  }
+                ],
+                "text": "尿糖"
+              },
+              "valueString": "2+"
+  
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "20454-5",
+                    "display": "Protein [Presence] in Urine by Test strip"
+                  }
+                ],
+                "text": "尿蛋白"
+              },
+              "valueString": "+"
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "5797-6",
+                    "display": "Ketones [Mass/volume] in Urine by Test strip"
+                  }
+                ],
+                "text": "尿ケトン"
+              },
+              "valueString": "-"
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "14959-1",
+                    "display": "Microalbumin/Creatinine [Mass Ratio] in Urine"
+                  }
+                ],
+                "text": "尿中アルブミン（クレアチニン補正）"
+              },
+              "valueQuantity":{  
+               "value":10,
+               "unit":"mg/g{creat}",
+               "system":"http://unitsofmeasure.org",
+               "code":"milligram per gram of creatinine"
+            }
+            }
+        ]
+
+      }
+
+    },
+    {
+      "fullUrl": "urn:uuid:d62b5e4e-b0bb-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id": "d62b5e4e-b0bb-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "https://lcd.or.jp/code/",
+              "code": "G10007",
+              "display": "感染症検査"
+            }
+          ],
+          "text": "感染症"
+        },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+        "component":[
+          
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "58452-4",
+                    "display": "Hepatitis B virus surface Ag [Units/volume] in Serum"
+                  }
+                ],
+                "text": "HBs抗原"
+              },
+              "valueString": "COI"
+  
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "16128-1",
+                    "display": "Hepatitis C virus Ab [Presence] in Serum"
+                  }
+                ],
+                "text": "HCV抗体"
+              },
+              "valueString": "COI"
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "21333-0",
+                    "display": "HIV 1 RNA [#/volume] in Serum"
+                  }
+                ],
+                "text": "HIV抗体"
+              },
+              "valueString": "COI"
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "20507-0",
+                    "display": "Reagin Ab [Presence] in Serum by RPR"
+                  }
+                ],
+                "text": "RPR定性"
+              },
+              "valueString": "cOI"
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "22587-0",
+                    "display": "Treponema pallidum Ab [Presence] in Serum"
+                  }
+                ],
+                "text": "TP抗体"
+              },
+              "valueString": "COI"
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "40732-0",
+                    "display": "HIV 1 IgG Ab [Presence] in Serum by Immunoblot"
+                  }
+                ],
+                "text": "HTLV-Ⅰ抗体"
+              },
+              "valueString": "COI"
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "22497-2",
+                    "display": "Rubella virus Ab [Titer] in Serum"
+                  }
+                ],
+                "text": "風疹抗体価"
+              },
+              "valueString": "8倍"
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "11266-4",
+                    "display": "Streptococcus agalactiae Ag [Presence] in Specimen"
+                  }
+                ],
+                "text": "B群溶血性レンサ球菌"
+              },
+              "valueString": "陰性"
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "21613-5",
+                    "display": "Chlamydia trachomatis DNA [Presence] in Specimen by NAA with probe detection"
+                  }
+                ],
+                "text": "クラミジア抗原PCR"
+              },
+              "valueString": "陰性"
+            }
+          
+        ]
+
+      }
+    
+    },
+    {
+      "fullUrl": "urn:uuid:c0a78308-b73d-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id": "c0a78308-b73d-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "http://loinc.org",
+              "code": "24364-2",
+              "display": "Obstetric 1996 panel - Serum and Blood"
+            }
+          ],
+          "text": "血液検査"
+        },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+        "component":[
+          
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "718-7",
+                  "display": "Hemoglobin [Mass/volume] in Blood"
+                }
+              ],
+              "text": "ヘモグロビン"
+            },
+            "valueQuantity":{  
+               "value":43,
+               "unit":"g/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"g/dL"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "26515-7",
+                  "display": "Platelets [#/volume] in Blood"
+                }
+              ],
+              "text": "血小板数"
+            },
+            "valueQuantity":{  
+               "value":24,
+               "unit":"10*4/uL",
+               "system":"http://unitsofmeasure.org",
+               "code":"10*4/uL"
+            }
+          },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "883-9",
+                    "display": "ABO group [Type] in Blood"
+                  }
+                ],
+                "text": "血液型 (ABO)"
+              },
+              "valueString": "A"
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "10331-7",
+                    "display": "Rh [Type] in Blood"
+                  }
+                ],
+                "text": "血液型 (Rh)"
+              },
+              "valueString": "Rh(+)"
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "890-4",
+                    "display": "Blood group antibody screen [Presence] in Serum or Plasma"
+                  }
+                ],
+                "text": "不規則抗体"
+              },
+              "valueString": "xx.xx"
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2885-2",
+                    "display": "Protein [Mass/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "TP"
+              },
+              "valueQuantity":{  
+               "value":1.3,
+               "unit":"g/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"g/dL"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "1751-7",
+                    "display": "Albumin [Mass/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "AlB"
+              },
+              "valueQuantity":{  
+               "value":1.5,
+               "unit":"g/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"g/dL"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2160-0",
+                    "display": "Creatinine [Mass/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "Cre"
+              },
+              "valueQuantity":{  
+               "value":1.1,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "3094-0",
+                    "display": "Urea nitrogen [Mass/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "BUN"
+              },
+              "valueQuantity":{  
+               "value":1,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "69405-9",
+                    "display": "Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum, Plasma or Blood"
+                  }
+                ],
+                "text": "eGFR"
+              },
+              "valueQuantity":{  
+               "value":0.24,
+               "unit":"mL/min",
+               "system":"http://unitsofmeasure.org",
+               "code":"mL/min"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "1920-8",
+                    "display": "Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "AST"
+              },
+              "valueQuantity":{  
+               "value":3.4,
+               "unit":"U/L",
+               "system":"http://unitsofmeasure.org",
+               "code":"U/L"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "1742-6",
+                    "display": "Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "ALT"
+              },
+              "valueQuantity":{  
+               "value":2.3,
+               "unit":"U/L",
+               "system":"http://unitsofmeasure.org",
+               "code":"U/L"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "3084-1",
+                    "display": "Urate [Mass/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "UA"
+              },
+              "valueQuantity":{  
+               "value":1.7,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2093-3",
+                    "display": "Cholesterol [Mass/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "総コレステロール"
+              },
+              "valueQuantity":{  
+               "value":0.4,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2089-1",
+                    "display": "Cholesterol in LDL [Mass/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "LDL-C"
+              },
+              "valueQuantity":{  
+               "value":0.2,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2085-9",
+                    "display": "Cholesterol in HDL [Mass/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "HDL-C"
+              },
+              "valueQuantity":{  
+               "value":0.7,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2571-8",
+                    "display": "Triglyceride [Mass/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "中性脂肪"
+              },
+              "valueQuantity":{  
+               "value":0.8,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "valueQuantity":{  
+               "value":0.2,
+               "unit":"%",
+               "system":"http://unitsofmeasure.org",
+               "code":"%"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "13873-5",
+                    "display": "Albumin.glycated/Albumin.total in Serum or Plasma"
+                  }
+                ],
+                "text": "GA"
+              },
+              "valueQuantity":{  
+               "value":12,
+               "unit":"%",
+               "system":"http://unitsofmeasure.org",
+               "code":"%"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "13926-1",
+                    "display": "Glutamate decarboxylase 65 Ab [Units/volume] in Serum"
+                  }
+                ],
+                "text": "GADAb"
+              },
+              "valueQuantity":{  
+               "value":1.2,
+               "unit":"U/mL",
+               "system":"http://unitsofmeasure.org",
+               "code":"U/mL"
+            }
+            },  
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "1986-9",
+                    "display": "C peptide [Mass/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "CPR"
+              },
+              "valueQuantity":{  
+               "value":4.5,
+               "unit":"ng/mL",
+               "system":"http://unitsofmeasure.org",
+               "code":"ng/mL"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "41652-9",
+                    "display": "Glucose [Mass/volume] in Venous blood"
+                  }
+                ],
+                "text": "血糖"
+              },
+              "valueQuantity":{  
+               "value":7,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "14979-9",
+                    "display": "aPTT in Platelet poor plasma by Coagulation assay"
+                  }
+                ],
+                "text": "APTT"
+              },
+              "valueQuantity":{  
+               "value":3.9,
+               "unit":"s",
+               "system":"http://unitsofmeasure.org",
+               "code":"s"
+            }
+            },
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "3016-3",
+                    "display": "Thyrotropin [Units/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "TSH"
+              },
+              "valueQuantity":{  
+                 "value":3.2,
+                 "unit":"uU/mL",
+                 "system":"http://unitsofmeasure.org",
+                 "code":"uU/mL"
+              }
+            },  
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "3051-0",
+                    "display": "Triiodothyronine (T3) Free [Mass/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "ft3"
+              },
+              "valueQuantity":{  
+                 "value":2.2,
+                 "unit":"pg/mL",
+                 "system":"http://unitsofmeasure.org",
+                 "code":"pg/mL"
+              }
+            },  
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "3024-7",
+                    "display": "Thyroxine (T4) free [Mass/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "ft4"
+              },
+              "valueQuantity":{  
+                 "value":2.7,
+                 "unit":"ng/mL",
+                 "system":"http://unitsofmeasure.org",
+                 "code":"ng/mL"
+              }
+            },    
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "18332-7",
+                    "display": "Thyroperoxidase IgG Ab [Units/volume] in Serum or Plasma"
+                  }
+                ],
+                "text": "TPOAb"
+              },
+              "valueQuantity":{  
+               "value":21,
+               "unit":"U/mL",
+               "system":"http://unitsofmeasure.org",
+               "code":"U/mL"
+            }
+            },   
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "56635-6",
+                    "display": "Thyroglobulin IgG Ab [Units/volume] in Serum"
+                  }
+                ],
+                "text": "TgAb"
+              },
+              "valueQuantity":{  
+                "value":14,
+                "unit":"U/mL",
+                "system":"http://unitsofmeasure.org",
+                "code":"U/mL"
+             }
+            },    
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "5385-0",
+                    "display": "Thyrotropin receptor Ab [Units/volume] in Serum"
+                  }
+                ],
+                "text": "TRAb"
+              },
+              "valueQuantity":{  
+                "value":13,
+                "unit":"U/mL",
+                "system":"http://unitsofmeasure.org",
+                "code":"U/mL"
+             }
+            },  
+            {
+              "code":{
+                "coding":[
+                  {
+                    "system": "http://loinc.org",
+                    "code": "30166-3",
+                    "display": "Thyroid stimulating immunoglobulins actual/normal in Serum"
+                  }
+                ],
+                "text": "TSAb" 
+              },
+              "valueQuantity":{  
+                "value":17,
+                "unit":"%",
+                "system":"http://unitsofmeasure.org",
+                "code":"%"
+             }
+            }      
+                                                      
+        ]
+
+      }
+   
+    },
+    
+
+
+    {
+      "fullUrl": "urn:uuid:d62b6132-b0bb-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id":"d62b6132-b0bb-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "https://lcd.or.jp/code/",
+              "code": "93794-6",
+              "display": "Glucose tolerance and insulin sensitivity 2 hour panel - Serum or Plasma"
+            }
+          ],
+          "text": "負荷試験"
+        },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        "encounter":
+          {
+            "reference": "Encounter/d62b567e-b0bb-11ed-afa1-0242ac120002",
+            "type": "Encounter"
+          },
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+  
+        "component":[
+          
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "1547-9",
+                  "display": "Glucose [Mass/volume] in Serum or Plasma --baseline"
+                }
+              ],
+              "text": "血糖0分値 (75g)"
+            },
+            "valueQuantity":{  
+               "value":13,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "1527-1",
+                  "display": "Glucose [Mass/volume] in Serum or Plasma --30 minutes post 75 g glucose PO"
+                }
+              ],
+              "text": "血糖30分値 (75g)"
+            },
+            "valueQuantity":{  
+               "value":26,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "1507-3",
+                  "display": "Glucose [Mass/volume] in Serum or Plasma --1 hour post 75 g glucose PO"
+                }
+              ],
+              "text": "血糖60分値 75g"
+            },
+            "valueQuantity":{  
+               "value":40,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "1518-0",
+                  "display": "Glucose [Mass/volume] in Serum or Plasma --2 hours post 75 g glucose PO"
+                }
+              ],
+              "text": "血糖120分値 75g"
+            },
+            "valueQuantity":{  
+               "value":34,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "1570-1",
+                  "display": "Insulin [Mass/volume] in Serum or Plasma --baseline"
+                }
+              ],
+              "text": "インスリン0分値 75g"
+            },
+            "valueQuantity":{  
+               "value":16,
+               "unit":"uU/mL",
+               "system":"http://unitsofmeasure.org",
+               "code":"uU/mL"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "9307-0",
+                  "display": "Insulin [Mass/volume] in Serum or Plasma --30 minutes post 75 g glucose PO"
+                }
+              ],
+              "text": "インスリン30分値 75g"
+            },
+            "valueQuantity":{  
+               "value":29,
+               "unit":"uU/mL",
+               "system":"http://unitsofmeasure.org",
+               "code":"uU/mL"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "1561-0",
+                  "display": "Insulin [Mass/volume] in Serum or Plasma --1 hour post 75 g glucose PO"
+                }
+              ],
+              "text": "インスリン60分値 75g"
+            },
+            "valueQuantity":{  
+               "value":20,
+               "unit":"uU/mL",
+               "system":"http://unitsofmeasure.org",
+               "code":"uU/mL"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "1564-4",
+                  "display": "Insulin [Mass/volume] in Serum or Plasma --2 hours post 75 g glucose PO"
+                }
+              ],
+              "text": "インスリン120分値 75g"
+            },
+            "valueQuantity":{  
+               "value":28,
+               "unit":"uU/mL",
+               "system":"http://unitsofmeasure.org",
+               "code":"uU/mL"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "20441-2",
+                  "display": "Glucose [Mass/volume] in Serum or Plasma --post 50 g glucose"
+                }
+              ],
+              "text": "血糖0分値 50g"
+            },
+            "valueQuantity":{  
+               "value":45,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "1504-0",
+                  "display": "Glucose [Mass/volume] in Serum or Plasma --1 hour post 50 g glucose PO"
+                }
+              ],
+              "text": "血糖60分値 50g"
+            },
+            "valueQuantity":{  
+               "value":31,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "41024-1",
+                  "display": "Glucose [Mass/volume] in Serum or Plasma --2 hours post 50 g glucose PO"
+                }
+              ],
+              "text": "血糖120分値 50g"
+            },
+            "valueQuantity":{  
+               "value":32,
+               "unit":"mg/dL",
+               "system":"http://unitsofmeasure.org",
+               "code":"mg/dL"
+            }
+          }                                            
+        ]
+
+      }
+
+    },
+    {
+      "fullUrl": "urn:uuid:d62b625e-b0bb-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+      "id": "d62b625e-b0bb-11ed-afa1-0242ac120002",
+      "status": "final",
+      "code":{
+        "coding":[
+          {
+            "system": "http://loinc.org",
+            "code": "33717-0",
+            "display": "Cervical AndOr vaginal cytology study"
+          }
+        ],
+        "text": "子宮頸部細胞診"
+        
+      },
+      "subject":{
+        "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+      },
+     
+      "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+      "valueString": "Text"
+
+      }
+      
+    },
+
+
+
+    {
+      "fullUrl": "urn:uuid:d62b654c-b0bb-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id":"d62b654c-b0bb-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "http://loinc.org",
+              "code": "15508-5",
+              "display": "Labor and delivery records"
+            }
+          ],
+          "text": "分娩情報"
+        },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+       
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+  
+        "component":[
+          
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "73813-8",
+                  "display": "Characteristics of labor and delivery [US Standard Certificate of Live Birth]"
+                }
+              ],
+              "text": "無痛分娩"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "69461-2",
+                  "display": "Mother's body weight --at delivery"
+                }
+              ],
+              "text": "分娩時母体体重"
+            },
+            "valueQuantity":{
+              "value": 57 ,
+              "unit": "kg",
+              "system": "http://unitsofmeasure.org",
+              "code": "kg"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "55103-6",
+                  "display": "Estimated blood loss"
+                }
+              ],
+              "text": "分娩時出血量"
+            },
+            "valueQuantity":{
+              "value": 21 ,
+              "unit": "ml",
+              "system": "http://unitsofmeasure.org",
+              "code": "ml"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "1322-7",
+                  "display": "Transfusion volume"
+                }
+              ],
+              "text": "輸血"
+            },
+            "valueQuantity":{
+              "value": 0.7 ,
+              "unit": "ml",
+              "system": "http://unitsofmeasure.org",
+              "code": "ml"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "73760-1",
+                  "display": "If cesarean, a trial of labor was attempted [US Standard Certificate of Live Birth]"
+                }
+              ],
+              "text": "陣痛誘発・促進"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "80565-5",
+                  "display": "Medication administration record"
+                }
+              ],
+              "text": "使用薬剤"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "73781-7",
+                  "display": "Maternal morbidity [US Standard Certificate of Live Birth]"
+                }
+              ],
+              "text": "分娩異常"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "89223-2",
+                  "display": "Gynecology procedure note"
+                }
+              ],
+              "text": "母処置"
+            },
+            "valueString": "Text"
+          }
+                                                    
+        ]
+
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d62b68c6-b0bb-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id":"d62b68c6-b0bb-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "https://lcd.or.jp/code/",
+              "code": "54089-8",
+              "display": "Newborn screening panel American Health Information Community (AHIC)"
+            }
+          ],
+          "text": "胎児"
+        },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+  
+        "component":[
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "55281-0",
+                  "display": "Number of fetuses"
+                }
+              ],
+              "text": "胎数"
+            },
+            "valueQuantity":{
+              "value": 12 ,
+              "unit": "{#}",
+              "system": "http://unitsofmeasure.org",
+              "code": "{#}"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "73771-8",
+                  "display": "Birth order"
+                }
+              ],
+              "text": "多胎の場合の順位"
+            },
+            "valueQuantity":{  
+              "value":1,
+              "unit":"{#}",
+              "system":"http://unitsofmeasure.org",
+              "code":"{#}"
+           }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "97103-6",
+                  "display": "Zygosity [Type] in Fetuses by Molecular genetics method"
+                }
+              ],
+              "text": "双胎の種類"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "57071-3",
+                  "display": "Obstetric delivery method"
+                }
+              ],
+              "text": "分娩方法"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "https://www.phenxtoolkit.org",
+                  "code": "PX241301060100",
+                  "display": "Mode_Delivery_Induce_Labor_Reason"
+                }
+              ],
+              "text": "自然分娩以外はその理由"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "72155-5",
+                  "display": "Position in womb Fetus [RHEA]"
+                }
+              ],
+              "text": "分娩胎位"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code": {
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "32396-4",
+                  "display": "Labor duration"
+                }
+              ]
+            },
+            "component": [
+              {
+                "code":{
+                  "coding":[
+                    {
+                      "system": "http://loinc.org",
+                      "code": "32396-4",
+                      "display": "Labor duration"
+                    }
+                  ],
+                  "text": "分娩所要時間-1期"
+                },
+                "valueQuantity":{
+                  "value": 10.5 ,
+                  "unit": "h",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "hour"
+                }
+
+              },
+              {
+                "code":{
+                  "coding":[
+                    {
+                      "system": "http://loinc.org",
+                      "code": "32396-4",
+                      "display": "Labor duration"
+                    }
+                  ],
+                  "text": "分娩所要時間-2期"
+                },
+                "valueQuantity":{
+                  "value": 1.25 ,
+                  "unit": "h",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "hour"
+                }
+              },
+              {
+                "code":{
+                  "coding":[
+                    {
+                      "system": "http://loinc.org",
+                      "code": "32396-4",
+                      "display": "Labor duration"
+                    }
+                  ],
+                  "text": "分娩所要時間-3期"
+                },
+                "valueQuantity":{
+                  "value": 0.3 ,
+                  "unit": "h",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "hour"
+                }
+
+              },
+              {
+                "code":{
+                  "coding":[
+                    {
+                      "system": "http://loinc.org",
+                      "code": "32396-4",
+                      "display": "Labor duration"
+                    }
+                  ],
+                  "text": "分娩所要時間-合計"
+                },
+                "valueQuantity":{
+                  "value": 12.05 ,
+                  "unit": "h",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "hour"
+                }
+
+              }
+            ]
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "28646-8",
+                  "display": "pH of Arterial cord blood"
+                }
+              ],
+              "text": "臍帯動脈血pH"
+            },
+            "valueQuantity":{
+              "value": 7.4 ,
+              "unit": "[pH]",
+              "system": "http://unitsofmeasure.org",
+              "code": "pH"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "47995-6",
+                  "display": "Glucose [Moles/volume] in Cord blood"
+                }
+              ],
+              "text": "臍帯動脈血Glu"
+            },
+            "valueQuantity":{
+              "value": 13 ,
+              "unit": "mg/dL",
+              "system": "http://unitsofmeasure.org",
+              "code": "mg/dL"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "28638-5",
+                  "display": "Base excess in Arterial cord blood by calculation"
+                }
+              ],
+              "text": "臍帯動脈血BE"
+            },
+            "valueQuantity":{
+              "value": 11 ,
+              "unit": "nmol/L",
+              "system": "http://unitsofmeasure.org",
+              "code": "nmol/L"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "28644-3",
+                  "display": "Carbon dioxide [Partial pressure] in Arterial cord blood"
+                }
+              ],
+              "text": "臍帯動脈血pCO2"
+            },
+            "valueQuantity":{
+              "value": 3 ,
+              "unit": "mm[Hg]",
+              "system": "http://unitsofmeasure.org",
+              "code": "mm[Hg]"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "28648-4",
+                  "display": "Oxygen [Partial pressure] in Arterial cord blood"
+                }
+              ],
+              "text": "臍帯動脈血pO2"
+            },
+            "valueQuantity":{
+              "value": 3 ,
+              "unit": "mm[Hg]",
+              "system": "http://unitsofmeasure.org",
+              "code": "mm[Hg]"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "76689-9",
+                  "display": "Sex assigned at birth"
+                }
+              ],
+              "text": "性別"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "89269-5",
+                  "display": "Body height Measured --at birt"
+                }
+              ],
+              "text": "身長"
+            },
+            "valueQuantity":{
+              "value": 27 ,
+              "unit": "cm",
+              "system": "http://unitsofmeasure.org",
+              "code": "cm"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "8339-4",
+                  "display": "Birth weight Measured"
+                }
+              ],
+              "text": "出生時体重"
+            },
+            "valueQuantity":{
+              "value": 4350 ,
+              "unit": "g",
+              "system": "http://unitsofmeasure.org",
+              "code": "g"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "8290-9",
+                  "display": "Head Occipital-frontal circumference --at birth- by Tape measure"
+                }
+              ],
+              "text": "頭囲"
+            },
+            "valueQuantity":{
+              "value": 32 ,
+              "unit": "cm",
+              "system": "http://unitsofmeasure.org",
+              "code": "cm"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "8279-2",
+                  "display": "Chest Circumference at nipple line"
+                }
+              ],
+              "text": "胸囲"
+            },
+            "valueQuantity":{
+              "value": 25 ,
+              "unit": "cm",
+              "system": "http://unitsofmeasure.org",
+              "code": "cm"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "9272-6",
+                  "display": "1 minute Apgar Score"
+                }
+              ],
+              "text": "アプガースコア 1分"
+            },
+            "valueQuantity":{
+              "value": 8 ,
+              "unit": "{score}",
+              "system": "http://unitsofmeasure.org",
+              "code": "score"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "9274-2",
+                  "display": "5 minute Apgar Score"
+                }
+              ],
+              "text": "アプガースコア 5分"
+            },
+            "valueQuantity":{
+              "value": 10 ,
+              "unit": "{score}",
+              "system": "http://unitsofmeasure.org",
+              "code": "score"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "92272-4",
+                  "display": "Stayed in intensive care unit from Newborn"
+                }
+              ],
+              "text": "NICU入院"
+            },
+            "valueString": "あり"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "73812-0",
+                  "display": "Abnormal conditions of the newborn [US Standard Certificate of Live Birth]"
+                }
+              ],
+              "text": "診断・所見"
+            },
+            "valueString": "児生死（生）、児診断有（胎児水腫）"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "57075-4",
+                  "display": "Newborn delivery information"
+                }
+              ],
+              "text": "処置・治療"
+            },
+            "valueString": "児処置（蘇生術）あり（酸素投与）、胎児治療あり（胎児鏡下レーザー手術）"
+          }
+          
+         
+          
+                                                    
+        ]
+
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d62b69c0-b0bb-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id":"d62b69c0-b0bb-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "https://lcd.or.jp/code/",
+              "code": "G10008",
+              "display": "産後（母体）"
+            }
+          ],
+          "text": "産後（母体）"
+        },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        "encounter":
+          {
+            "reference": "Encounter/d62b567e-b0bb-11ed-afa1-0242ac120002",
+            "type": "Encounter"
+          }
+        ,
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+  
+        "component":[
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "76427-4",
+                  "display": "Visit date"
+                }
+              ],
+              "text": "分娩日時"
+            },
+            "valueDateTime": "2023-02-12"
+          },
+          
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "32486-3",
+                  "display": "Physical findings of Uterus"
+                }
+              ],
+              "text": "子宮復古"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "LP7269-6",
+                  "display": "Genital lochia"
+                }
+              ],
+              "text": "悪露"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "32422-8",
+                  "display": "Physical findings of Breast"
+                }
+              ],
+              "text": "乳房の状態"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code": {
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "35094-2",
+                  "display": "Blood pressure panel"
+                }
+              ]
+            },
+            "component": [
+              {
+                "code":{
+                  "coding":[
+                    {
+                      "system": "http://loinc.org",
+                      "code": "8480-6",
+                      "display": "Systolic blood pressure"
+                    }
+                  ],
+                  "text": "血圧①"
+                },
+                "valueQuantity":{
+                  "value": 120,
+                  "unit": "mmHg",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "mm[Hg]"
+                }
+
+              },
+              {
+                "code":{
+                  "coding":[
+                    {
+                      "system": "http://loinc.org",
+                      "code": "8462-4",
+                      "display": "Diastolic blood pressure"
+                    }
+                  ],
+                  "text": "血圧②"
+                },
+                "valueQuantity":{
+                  "value": 80,
+                  "unit": "mmHg",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "mm[Hg]"
+                }
+              }
+            ]
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "2887-8",
+                  "display": "Protein [Presence] in Urine"
+                }
+              ],
+              "text": "尿蛋白"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "2349-9",
+                  "display": "Glucose [Presence] in Urine"
+                }
+              ],
+              "text": "尿糖"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "3141-9",
+                  "display": "Body weight Measured"
+                }
+              ],
+              "text": "体重"
+            },
+            "valueQuantity":{
+              "value": 23 ,
+              "unit": "kg",
+              "system": "http://unitsofmeasure.org",
+              "code": "kg"
+            }
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "57076-2",
+                  "display": "Postpartum hospitalization treatment Narrative"
+                }
+              ],
+              "text": "所見・備考"
+            },
+            "valueString": "Text"
+          },
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "99046-5",
+                  "display": "Total score [EPDS]"
+                }
+              ],
+              "text": "EPDS"
+            },
+            "valueQuantity":{
+              "value": 4 ,
+              "unit": "{score}",
+              "system": "http://unitsofmeasure.org",
+              "code": "score"
+            }
+          }
+          
+                                                    
+        ]
+
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c0a787a4-b73d-11ed-afa1-0242ac120002", 
+      "resource":{
+        "resourceType": "Observation",
+        "id":"c0a787a4-b73d-11ed-afa1-0242ac120002",
+        "status": "final",
+        "code":{
+          "coding":[
+            {
+              "system": "https://lcd.or.jp/code/",
+              "code": "G10009",
+              "display": "産後（新生児）"
+            }
+          ],
+          "text": "産後（母体）"
+        },
+        "subject":{
+          "reference": "Patient/d62b6b00-b0bb-11ed-afa1-0242ac120002"
+        },
+        
+        "effectiveDateTime": "2023-02-02T09:30:10+01:00",
+  
+        "component":[
+         
+          {
+            "code":{
+              "coding":[
+                {
+                  "system": "http://loinc.org",
+                  "code": "69969-4",
+                  "display": "Newborn screening report overall laboratory comment"
+                }
+              ],
+              "text": "先天性代謝異常検査"
+            },
+            "valueString": "異常なし(2023/2/14)"
+          }                                          
+        ]
+
+      }
+    }
+
+  ]
+}
