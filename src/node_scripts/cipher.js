@@ -89,8 +89,7 @@ function main () {
         console.log(encode(result));
     } else {
         const enc = decode(payload);
-        console.log(enc);
-        // console.log(AESCrypt.decrypt(Buffer.from(enc, 'hex'), cryptKey, iv).toString());
+        console.log(AESCrypt.decrypt(Buffer.from(enc, 'hex'), cryptKey, iv).toString());
     }
 }
 
