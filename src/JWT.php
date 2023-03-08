@@ -86,7 +86,7 @@ class JWT {
    * 
    * @return Token extracted value.
    */
-    protected function extract($segment, $as_binary = false) {
+    public function extract($segment, $as_binary = false) {
         $stringified = URLSafeBase64::decode($segment);
         if ($as_binary) {
             $extracted = $stringified;
