@@ -87,8 +87,7 @@ class FHIRParser
 		if (gettype($string) !== "string") {
 			$string = strval($string);
 		}
-
-		if (gettype($string) === "string" && strlen($string) > $length) {
+		if (gettype($string) === "string" && mb_strlen($string) > (int)$length) {
 			return mb_substr($string, 0, $length, 'UTF-8');
 		}
 		return $string;
@@ -270,7 +269,6 @@ class FHIRParser
 				// }
 				// $this->jsonFormattedValues->$idKey = $resource->getIdentifier()[0]->getValue()->getValue()->getValue();
 
-				$group = "health_checkup";
 				if ($this->CheckFuncExists(["getName[0]", "getExtension[0]", "getValueCodeableConcept", "getCoding[0]", "getCode", "getValue", "getValue"], $resource)) {
 					$name_code = $resource->getName()[0]->getExtension()[0]->getValueCodeableConcept()->getCoding()[0]->getCode()->getValue()->getValue();
 					$nameKey = NULL;
@@ -280,19 +278,24 @@ class FHIRParser
 								$nameKey = "attending_physician_name";
 								$resourceCode =  $resource->getCode()->getCoding()[0]->getCode()->getValue()->getValue();
 								$concat = "_hc";
+								$group = "health_checkup";
 								if ($resourceCode == "15508-5") {
 									$concat = "_dp";
+									$group = "delivery_postpartum";
 								}
+
 								$nameKey = $nameKey . $concat;
 								$maxLength = 20;
 							}
 							break;
 						case "PX161601010400":
 							$nameKey = "midwife_name";
-							$maxLength = 0;
+							$group = "delivery_postpartum";
+							$maxLength = 20;
 							break;
 						case "18774-0":
 							$nameKey = "staff_practitioner_name";
+							$group = "delivery_postpartum";
 							$maxLength = 20;
 							break;
 						default:
@@ -302,8 +305,8 @@ class FHIRParser
 					}
 					if ($nameKey != NULL) {
 						if ($this->CheckFuncExists(["getName[0]", "getText", "getValue", "getValue"], $resource)) {
+							
 							$value = $this->cutString($resource->getName()[0]->getText()->getValue()->getValue(), $maxLength);
-
 							$this->jsonFormattedValues->$group->$nameKey =  $value;
 						}
 					}
