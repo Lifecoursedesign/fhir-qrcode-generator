@@ -82,9 +82,12 @@ class FHIRParser
 	 * 
 	 * @return String the cutted string 
 	 */
-	private function cutString ($string,$length)
+	private function cutString($string, $length)
 	{
-		if (strlen($string) > $length) {
+		if (gettype($string) !== "string") {
+			$string = strval($string);
+		}
+		if (gettype($string) === "string" && mb_strlen($string) > (int)$length) {
 			return mb_substr($string, 0, $length, 'UTF-8');
 		}
 		return $string;
@@ -118,15 +121,16 @@ class FHIRParser
 								$key = "partner_name_furi";
 								$maxLength = 20;
 							}
-							
-							$value = $this->cutString($name->getText()->getValue()->getValue(),$maxLength);
+
+							$value = $this->cutString($name->getText()->getValue()->getValue(), $maxLength);
 							$this->jsonFormattedValues->$group->$key = $value;
 						}
 					}
 				}
 
 				if ($this->CheckFuncExists(["getAgeAge", "getValue", "getValue", "getValue"], $resource)) {
-					$this->jsonFormattedValues->$group->partner_age = $resource->getAgeAge()->getValue()->getValue()->getValue();
+					$maxLength = 2;
+					$this->jsonFormattedValues->$group->partner_age = $this->cutString($resource->getAgeAge()->getValue()->getValue()->getValue(), $maxLength);
 				}
 
 				if ($this->CheckFuncExists(["getExtension"], $resource)) {
@@ -159,10 +163,14 @@ class FHIRParser
 										if (array_key_exists(3, $exploded)) {
 											$maxLength = $exploded[3];
 										}
-										$this->jsonFormattedValues->$group->$key =$this->cutString( $value,$maxLength);
-
+										$this->jsonFormattedValues->$group->$key = $this->cutString($value, $maxLength);
 									} else {
-										$this->jsonFormattedValues->$group->$key = $code->{$identifier}()->getValue()->getValue()->getValue();
+										$value = $code->{$identifier}()->getValue()->getValue()->getValue();
+										$maxLength = strlen($value);
+										if (array_key_exists(3, $exploded)) {
+											$maxLength = $exploded[3];
+										}
+										$this->jsonFormattedValues->$group->$key = $this->cutString($value, $maxLength);
 									}
 								}
 							}
@@ -170,8 +178,10 @@ class FHIRParser
 					}
 				}
 
-				if ($this->CheckFuncExists(["getBornDate", "getValue","getValue"], $resource)) {
-					$this->jsonFormattedValues->$group->partner_birthdate = $resource->getBornDate()->getValue()->getValue();
+				if ($this->CheckFuncExists(["getBornDate", "getValue", "getValue"], $resource)) {
+					$value = $resource->getBornDate()->getValue()->getValue();
+					$maxLength = 30;
+					$this->jsonFormattedValues->$group->partner_birthdate = $this->cutString($value, $maxLength);
 				}
 				break;
 			case "Patient":
@@ -179,9 +189,9 @@ class FHIRParser
 
 				// get medical card _id
 				// echo $this->CheckFuncExists(["getId"],$resource);
-				if ($this->CheckFuncExists(["getId","getValue"], $resource)) {
+				if ($this->CheckFuncExists(["getId", "getValue"], $resource)) {
 					$maxLength = 15;
-					$value = $this->cutString($resource->getId()->getValue(),$maxLength);
+					$value = $this->cutString($resource->getId()->getValue(), $maxLength);
 					$this->jsonFormattedValues->$group->medical_card_id = $value;
 				}
 
@@ -196,8 +206,8 @@ class FHIRParser
 								$key = "patient_name_furi";
 								$maxLength = 30;
 							}
-							
-							$value = $this->cutString($name->getText()->getValue()->getValue(),$maxLength);
+
+							$value = $this->cutString($name->getText()->getValue()->getValue(), $maxLength);
 							$this->jsonFormattedValues->$group->$key = $value;
 						}
 					}
@@ -209,7 +219,7 @@ class FHIRParser
 					$code = $resource->getExtension()[0]->getExtension()[0]->getValueCoding()->getCode()->getValue()->getValue();
 					if ($code == "74164-5") {
 						$maxLength = 40;
-						$value = $this->cutString($resource->getExtension()[0]->getExtension()[1]->getValueString()->getValue(),$maxLength);
+						$value = $this->cutString($resource->getExtension()[0]->getExtension()[1]->getValueString()->getValue(), $maxLength);
 						$this->jsonFormattedValues->$group->patient_occupation = $value;
 					}
 				}
@@ -217,8 +227,8 @@ class FHIRParser
 				// get marital status
 				if ($this->CheckFuncExists(["getMaritalStatus", "getText", "getValue", "getValue"], $resource)) {
 					$maxLength = 65;
-					$value = $this->cutString($resource->getMaritalStatus()->getText()->getValue()->getValue(),$maxLength);
-					
+					$value = $this->cutString($resource->getMaritalStatus()->getText()->getValue()->getValue(), $maxLength);
+
 					$this->jsonFormattedValues->$group->patient_marital_status = $value;
 				}
 
@@ -231,14 +241,14 @@ class FHIRParser
 					if ($this->CheckFuncExists(["getValueCodeableConcept", "getCoding[0]", "getCode", "getValue", "getValue"], $extension)) {
 						if ($extension->getValueCodeableConcept()->getCoding()[0]->getCode()->getValue()->getValue() === "58237-9") {
 							$maxLength = 100;
-							$value = $this->cutString($resource->getName()->getValue()->getValue(),$maxLength);
-					
+							$value = $this->cutString($resource->getName()->getValue()->getValue(), $maxLength);
+
 							$this->jsonFormattedValues->$group->hospital_name = $value;
 						}
 					} else if ($this->CheckFuncExists(["getValueCode", "getValue"], $extension)) {
 						if ($extension->getValueCode()->getValue() === "62330-6") {
 							$maxLength = 100;
-							$value = $this->cutString($resource->getName()->getValue()->getValue(),$maxLength);
+							$value = $this->cutString($resource->getName()->getValue()->getValue(), $maxLength);
 							$this->jsonFormattedValues->birth_hospital_facility_name = $value;
 						}
 					}
@@ -259,7 +269,6 @@ class FHIRParser
 				// }
 				// $this->jsonFormattedValues->$idKey = $resource->getIdentifier()[0]->getValue()->getValue()->getValue();
 
-				$group = "health_checkup";
 				if ($this->CheckFuncExists(["getName[0]", "getExtension[0]", "getValueCodeableConcept", "getCoding[0]", "getCode", "getValue", "getValue"], $resource)) {
 					$name_code = $resource->getName()[0]->getExtension()[0]->getValueCodeableConcept()->getCoding()[0]->getCode()->getValue()->getValue();
 					$nameKey = NULL;
@@ -269,19 +278,24 @@ class FHIRParser
 								$nameKey = "attending_physician_name";
 								$resourceCode =  $resource->getCode()->getCoding()[0]->getCode()->getValue()->getValue();
 								$concat = "_hc";
+								$group = "health_checkup";
 								if ($resourceCode == "15508-5") {
 									$concat = "_dp";
+									$group = "delivery_postpartum";
 								}
+
 								$nameKey = $nameKey . $concat;
 								$maxLength = 20;
 							}
 							break;
 						case "PX161601010400":
 							$nameKey = "midwife_name";
-							$maxLength = 0;
+							$group = "delivery_postpartum";
+							$maxLength = 20;
 							break;
 						case "18774-0":
 							$nameKey = "staff_practitioner_name";
+							$group = "delivery_postpartum";
 							$maxLength = 20;
 							break;
 						default:
@@ -291,8 +305,8 @@ class FHIRParser
 					}
 					if ($nameKey != NULL) {
 						if ($this->CheckFuncExists(["getName[0]", "getText", "getValue", "getValue"], $resource)) {
-							$value = $this->cutString($resource->getName()[0]->getText()->getValue()->getValue(),$maxLength);
-
+							
+							$value = $this->cutString($resource->getName()[0]->getText()->getValue()->getValue(), $maxLength);
 							$this->jsonFormattedValues->$group->$nameKey =  $value;
 						}
 					}
@@ -308,8 +322,8 @@ class FHIRParser
 						if (method_exists($resource, "getEffectiveDateTime") && $resource->getEffectiveDateTime() != NULL) {
 							$group = "health_checkup";
 							$maxLength = 25;
-							$value = $this->cutString($resource->getEffectiveDateTime()->getValue()->getValue(),$maxLength);
-							
+							$value = $this->cutString($resource->getEffectiveDateTime()->getValue()->getValue(), $maxLength);
+
 							$this->jsonFormattedValues->$group->visit_date_hc = $value;
 						}
 					}
@@ -349,11 +363,15 @@ class FHIRParser
 												$maxLength = strlen($value);
 												if (array_key_exists(3, $exploded)) {
 													$maxLength = $exploded[3];
-													// echo "maxLength: ".$maxLength."\n";
 												}
-												$this->jsonFormattedValues->$group->$key =$this->cutString( $value,$maxLength);
+												$this->jsonFormattedValues->$group->$key = $this->cutString($value, $maxLength);
 											} else {
-												$this->jsonFormattedValues->$group->$key = $code->{$identifier}()->getValue()->getValue()->getValue();
+												$value = $code->{$identifier}()->getValue()->getValue()->getValue();
+												$maxLength = strlen($value);
+												if (array_key_exists(3, $exploded)) {
+													$maxLength = $exploded[3];
+												}
+												$this->jsonFormattedValues->$group->$key = $this->cutString($value, $maxLength);
 											}
 
 											// $prefix = chr(0) . '*' . chr(0);
@@ -456,9 +474,14 @@ class FHIRParser
 										if (array_key_exists(3, $exploded)) {
 											$maxLength = $exploded[3];
 										}
-										$this->jsonFormattedValues->$group->$key =$this->cutString($value,$maxLength);
+										$this->jsonFormattedValues->$group->$key = $this->cutString($value, $maxLength);
 									} else {
-										$this->jsonFormattedValues->$group->$key = $resource->{$identifier}()->getValue()->getValue()->getValue();
+										$value = $resource->{$identifier}()->getValue()->getValue()->getValue();
+										$maxLength = strlen($value);
+										if (array_key_exists(3, $exploded)) {
+											$maxLength = $exploded[3];
+										}
+										$this->jsonFormattedValues->$group->$key = $this->cutString($value, $maxLength);
 									}
 
 									// $prefix = chr(0) . '*' . chr(0);
