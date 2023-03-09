@@ -38,6 +38,16 @@ class JWE extends JWT {
     }
 
     /**
+     * The constructor function initializes the class variables and creates instances of the other classes
+     * 
+     * @return string for slash according to OS.
+     */
+    private function _getDirSlash()
+    {
+        return stripos(PHP_OS, 'win') === 0 ? "\\" : "/";
+    }
+
+    /**
     * The function decrypt the token with the private key or secret, copied from gree/jose package.
     * @param public_key_or_secret a pem file or secret string
     * @param algorithm a string of supported algorithm
@@ -327,13 +337,21 @@ class JWE extends JWT {
      * @return None 
      */
     private function encryptCipherText() {
-        $cipher = $this->cipher();
-        $cipher->setKey($this->encryption_key);
-        $cipher->setIV($this->iv);
-        $this->cipher_text = $cipher->encrypt($this->plain_text);
-        if (!$this->cipher_text) {
-            throw new Exception('Payload encryption failed');
+        $dirSlash = $this->_getDirSlash();
+        $hexIV = substr(bin2hex($this->iv), 0, 16);
+        $hexEK = substr(bin2hex($this->encryption_key), 0, 32);
+
+        $enc_output = null;
+        $enc_retval = null;
+        $script_path = __DIR__ . $dirSlash . "node_scripts" . $dirSlash . "cipher.js";
+        exec("node {$script_path} -enc -p {$this->plain_text} -K {$hexEK} -iv {$hexIV}", $enc_output, $enc_retval);
+        if ($enc_retval != 0) {
+            throw new Exception("Payload encryption failed");
         }
+        if(count($enc_output) > 0) {
+            $this->cipher_text = $enc_output[0];
+        }
+
     }
 
     /**
@@ -342,12 +360,20 @@ class JWE extends JWT {
      * @return None 
      */
     private function decryptCipherText() {
-        $cipher = $this->cipher();
-        $cipher->setKey($this->encryption_key);
-        $cipher->setIV($this->iv);
-        $this->plain_text = $cipher->decrypt($this->cipher_text);
-        if (!$this->plain_text) {
-            throw new Exception('Payload decryption failed');
+        $dirSlash = $this->_getDirSlash();
+        $hexIV = substr(bin2hex($this->iv), 0, 16);
+        $hexEK = substr(bin2hex($this->encryption_key), 0, 32);
+
+        $dec_output = null;
+        $dec_retval = null;
+        $dec_script_path = __DIR__ . $dirSlash . "node_scripts" . $dirSlash . "cipher.js";
+        
+        exec("node {$dec_script_path} -dec -p {$this->cipher_text} -K {$hexEK} -iv {$hexIV}", $dec_output, $dec_retval);
+        if ($dec_retval != 0) {
+            throw new Exception("Payload decryption failed");
+        }
+        if(count($dec_output) > 0) {
+            $this->plain_text = $dec_output[0];
         }
     }
 
