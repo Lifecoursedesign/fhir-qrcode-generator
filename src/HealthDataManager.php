@@ -73,12 +73,12 @@ class HealthDataManager
   public function simulateJWSKeys()
   {
     $dir_slash = $this->_getDirSlash();
-    $user_path = $this->base_path . $dir_slash . "simulate_jws";
-    if (!file_exists($user_path)) {
-      mkdir($user_path, 0700, true);
+    $simulate_path = $this->base_path . $dir_slash . "simulate_jws";
+    if (!file_exists($simulate_path)) {
+      mkdir($simulate_path, 0700, true);
     }
-    $private_key_file = $user_path . $dir_slash . "private_key.pem";
-    $public_key_file = $user_path . $dir_slash . "public_key.pem";
+    $private_key_file = $simulate_path . $dir_slash . "private_key.pem";
+    $public_key_file = $simulate_path . $dir_slash . "public_key.pem";
     exec("openssl genrsa -out {$private_key_file} 2048");
     exec("openssl rsa -in {$private_key_file} -pubout -out {$public_key_file}");
     chmod($private_key_file, 0600);
@@ -100,6 +100,38 @@ class HealthDataManager
     // echo $jws_token;
 
     return $res;
+  }
+
+  /**
+   * It fetches the generated private and public keys for simulated JWS and returns them as an array
+   * 
+   * @return An array of the private and public keys.
+   */
+  public function getSimulateJWSKeys()
+  {
+    try {
+      $dir_slash = $this->_getDirSlash();
+      $keys = array();
+      $simulate_path = $this->base_path . $dir_slash . "simulate_jws";
+      if (file_exists($simulate_path)) {
+        if ($dh = opendir($simulate_path)) {
+          while (($file = readdir($dh)) !== false) {
+            if ($file === "private_key.pem") {
+              $content = file_get_contents($simulate_path . $dir_slash . $file, true);
+              $keys["private_key"] = $content;
+            }
+            if ($file === "public_key.pem") {
+              $content = file_get_contents($simulate_path . $dir_slash . $file, true);
+              $keys["public_key"] = $content;
+            }
+          }
+          closedir($dh);
+        }
+      }
+      return $keys;
+    } catch (Exception $e) {
+      throw new Exception($e->getMessage());
+    }
   }
   
   /**
