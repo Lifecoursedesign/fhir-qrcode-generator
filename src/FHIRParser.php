@@ -32,10 +32,6 @@ class FHIRParser
 	{
 		$this->jsonFormattedValues = new JsonFormattedValues();
 		$this->parser = new PHPFHIRResponseParser();
-		// $this->department_id = array("Obstetrics" => 1, "Internal Medicine" => 2, "Nutritional Guidance" => 3, "Diabetes Internal Medicine" => 4);
-		// $insts = array("埼玉医大総合医療センター"=>1, "愛和病院"=>2, "恵愛病院"=>3, "瀬戸病院"=>4);
-		// $department = array("産科"=>1, "内科"=>2, "栄養指導"=>3, "糖尿病内科"=>4);
-		// $this->institution_id = array("Saitama Medical University General Medical Center" => 1, "Aiwa Hospital" => 2, "Keiai Hospital" => 3, "Seto Hospital" => 4);
 		$this->loinc = new LOINC();
 		$this->loincObsList = $this->loinc->loincObsList;
 		$this->loincGroupTypes = $this->loinc->obsGroupTypes;
@@ -87,6 +83,7 @@ class FHIRParser
 		if (gettype($string) !== "string") {
 			$string = strval($string);
 		}
+
 		if (gettype($string) === "string" && mb_strlen($string) > (int)$length) {
 			return mb_substr($string, 0, $length, 'UTF-8');
 		}
@@ -107,8 +104,7 @@ class FHIRParser
 	{
 		switch ($type) {
 			case "FamilyMemberHistory":
-				// get names
-				// var_dump($resource->getName());
+
 				$group = "patient_profile";
 
 				if ($this->CheckFuncExists(["getName"], $resource)) {
@@ -188,7 +184,6 @@ class FHIRParser
 				$group = "patient_profile";
 
 				// get medical card _id
-				// echo $this->CheckFuncExists(["getId"],$resource);
 				if ($this->CheckFuncExists(["getId", "getValue"], $resource)) {
 					$maxLength = 15;
 					$value = $this->cutString($resource->getId()->getValue(), $maxLength);
@@ -305,7 +300,7 @@ class FHIRParser
 					}
 					if ($nameKey != NULL) {
 						if ($this->CheckFuncExists(["getName[0]", "getText", "getValue", "getValue"], $resource)) {
-							
+
 							$value = $this->cutString($resource->getName()[0]->getText()->getValue()->getValue(), $maxLength);
 							$this->jsonFormattedValues->$group->$nameKey =  $value;
 						}
@@ -336,26 +331,17 @@ class FHIRParser
 					if ($this->CheckFuncExists(["getCode", "getCoding[0]", "getCode", "getValue", "getValue"], $resource)) {
 						$resourceCode = $resource->getCode()->getCoding()[0]->getCode()->getValue()->getValue();
 						if (sizeof($arrOfCoding)) {
-							// var_dump($arrOfCoding);
 							if (array_key_exists($resourceCode, $this->loincGroupTypes)) {
 								$groupType = $this->loincGroupTypes[$resourceCode];
 								foreach ($arrOfCoding as $code) {
 									$componentCode = $code->getCode()->getCoding()[0]->getCode()->getValue()->getValue();
-									// check if code is supported
-									// echo $componentCode . "\n";
 
+									// check if code is supported
 									if (array_key_exists($componentCode, $groupType)) {
 										$exploded = explode("~", $groupType[$componentCode]);
 										$identifier = "get" . $exploded[0];
 										$key = $exploded[1];
 										$group = $exploded[2];
-										// $txt = "Code: " . $componentCode . " - " . $identifier . " - " . $key;
-										// file_put_contents($qr_user_path.$dir_slash."arrOfComponentCode.txt", $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
-										// echo "Code: " . $componentCode . " - " . $identifier . " - " . $key . "\n";
-
-										// clone to dismantle protected prop
-										// $testArr = (array) $code->{$identifier}();
-										// var_dump($code->{$identifier}());
 
 										if (method_exists($code, $identifier) && $code->{$identifier}() != NULL) {
 											if ($identifier === "getValueDateTime" || $identifier === "getValueString") {
@@ -373,91 +359,8 @@ class FHIRParser
 												}
 												$this->jsonFormattedValues->$group->$key = $this->cutString($value, $maxLength);
 											}
-
-											// $prefix = chr(0) . '*' . chr(0);
-											// file_put_contents($qr_user_path.$dir_slash."testArr_".$componentCode.".txt", json_encode($testArr));
-											// if ($identifier === "getValueQuantity") {
-											// 	if (array_key_exists($prefix . "value", $testArr) && array_key_exists($prefix . "unit", $testArr)) {
-											// 		$this->jsonFormattedValues->$key = $testArr[$prefix . "value"]->getValue()->getValue() . $testArr[$prefix . "unit"]->getValue()->getValue();
-											// 	} else {
-											// 		echo "Identifier Function does not exist for - " . $identifier . " - " . $key . "\n";
-											// 	}
-											// } else if ($identifier === "getValueCodeableConcept") {
-											// 	if (array_key_exists($prefix . "text", $testArr)) {
-											// 		$this->jsonFormattedValues->$key = $testArr[$prefix . "text"]->getValue()->getValue();
-											// 	} else {
-											// 		echo "Identifier Function does not exist for - " . $identifier . " - " . $key . "\n";
-											// 	}
-											// } else if ($identifier === "getValueDateTime" || $identifier === "getValueString") {
-											// 	if (array_key_exists($prefix . "value", $testArr)) {
-											// 		$this->jsonFormattedValues->$key = $testArr[$prefix . "value"]->getValue();
-											// 	} else {
-											// 		echo "Identifier Function does not exist for - " . $identifier . " - " . $key . "\n";
-											// 	}
-											// }
 										}
 									}
-									// else if ($componentCode == "35094-2"){
-									// 	echo "nyehehe".$resourceCode." - ".$componentCode."\n";
-
-									// 	if ($resourceCode == "100230-2"){
-									// 		// var_dump($code);
-									// 		echo json_encode($code)."\n";
-									// 		print_r(get_class_methods($code));
-									// 	}
-									// 	if ($this->CheckFuncExists(["getComponent"], $code)){
-									// 		$NewArrOfCoding = $code->getComponent();
-
-									// 		foreach ($NewArrOfCoding as $newCode) {
-									// 			$newComponentCode = $newCode->getCode()->getCoding()[0]->getCode()->getValue()->getValue();
-									// 			// check if code is supported
-									// 			echo $componentCode."\n";
-									// 			if (array_key_exists($newComponentCode, $groupType)) {
-									// 				$exploded = explode("~", $groupType[$newComponentCode]);
-									// 				$identifier = "get" . $exploded[0];
-									// 				$key = $exploded[1];
-									// 				$group = $exploded[2];
-									// 				// $txt = "Code: " . $componentCode . " - " . $identifier . " - " . $key;
-									// 				// file_put_contents($qr_user_path.$dir_slash."arrOfComponentCode.txt", $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
-									// 				// echo "Code: " . $componentCode . " - " . $identifier . " - " . $key . "\n";
-
-									// 				// clone to dismantle protected prop
-									// 				// $testArr = (array) $code->{$identifier}();
-									// 				// var_dump($code->{$identifier}());
-
-									// 				if (method_exists($newCode, $identifier) && $newCode->{$identifier}() != NULL) {
-									// 					if ($identifier === "getValueDateTime" || $identifier === "getValueString") {
-									// 						$this->jsonFormattedValues->$group->$key = $newCode->{$identifier}()->getValue();
-									// 					} else {
-									// 						$this->jsonFormattedValues->$group->$key = $newCode->{$identifier}()->getValue()->getValue();
-									// 					}
-
-									// 					// $prefix = chr(0) . '*' . chr(0);
-									// 					// file_put_contents($qr_user_path.$dir_slash."testArr_".$componentCode.".txt", json_encode($testArr));
-									// 					// if ($identifier === "getValueQuantity") {
-									// 					// 	if (array_key_exists($prefix . "value", $testArr) && array_key_exists($prefix . "unit", $testArr)) {
-									// 					// 		$this->jsonFormattedValues->$key = $testArr[$prefix . "value"]->getValue()->getValue() . $testArr[$prefix . "unit"]->getValue()->getValue();
-									// 					// 	} else {
-									// 					// 		echo "Identifier Function does not exist for - " . $identifier . " - " . $key . "\n";
-									// 					// 	}
-									// 					// } else if ($identifier === "getValueCodeableConcept") {
-									// 					// 	if (array_key_exists($prefix . "text", $testArr)) {
-									// 					// 		$this->jsonFormattedValues->$key = $testArr[$prefix . "text"]->getValue()->getValue();
-									// 					// 	} else {
-									// 					// 		echo "Identifier Function does not exist for - " . $identifier . " - " . $key . "\n";
-									// 					// 	}
-									// 					// } else if ($identifier === "getValueDateTime" || $identifier === "getValueString") {
-									// 					// 	if (array_key_exists($prefix . "value", $testArr)) {
-									// 					// 		$this->jsonFormattedValues->$key = $testArr[$prefix . "value"]->getValue();
-									// 					// 	} else {
-									// 					// 		echo "Identifier Function does not exist for - " . $identifier . " - " . $key . "\n";
-									// 					// 	}
-									// 					// }
-									// 				}
-									// 			} 
-									// 		}
-									// 	}
-									// }
 								}
 							}
 						} else {
@@ -483,28 +386,6 @@ class FHIRParser
 										}
 										$this->jsonFormattedValues->$group->$key = $this->cutString($value, $maxLength);
 									}
-
-									// $prefix = chr(0) . '*' . chr(0);
-									// file_put_contents($qr_user_path.$dir_slash."testArr_".$componentCode.".txt", json_encode($testArr));
-									// if ($identifier === "getValueQuantity") {
-									// 	if (array_key_exists($prefix . "value", $testArr) && array_key_exists($prefix . "unit", $testArr)) {
-									// 		$this->jsonFormattedValues->$key = $testArr[$prefix . "value"]->getValue()->getValue() . $testArr[$prefix . "unit"]->getValue()->getValue();
-									// 	} else {
-									// 		echo "Identifier Function does not exist for - " . $identifier . " - " . $key . "\n";
-									// 	}
-									// } else if ($identifier === "getValueCodeableConcept") {
-									// 	if (array_key_exists($prefix . "text", $testArr)) {
-									// 		$this->jsonFormattedValues->$key = $testArr[$prefix . "text"]->getValue()->getValue();
-									// 	} else {
-									// 		echo "Identifier Function does not exist for - " . $identifier . " - " . $key . "\n";
-									// 	}
-									// } else if ($identifier === "getValueDateTime" || $identifier === "getValueString") {
-									// 	if (array_key_exists($prefix . "value", $testArr)) {
-									// 		$this->jsonFormattedValues->$key = $testArr[$prefix . "value"]->getValue();
-									// 	} else {
-									// 		echo "Identifier Function does not exist for - " . $identifier . " - " . $key . "\n";
-									// 	}
-									// }
 								}
 							}
 						}
@@ -535,16 +416,8 @@ class FHIRParser
 			if (property_exists($entries[$x], 'resource')) {
 				$resource = $this->parser->parse(json_encode($entries[$x]->resource));
 				$fhirType = $resource->_getFHIRTypeName();
-				// echo $fhirType."\n";
-				// if ($fhirType == "Observation"){
 				$this->getData($fhirType, $resource);
-				// }
 			}
-			// else {
-			// 	$resource = $this->parser->parse(json_encode($entries[$x]));
-			// 	$fhirType = $resource->_getFHIRTypeName();
-			// 	$this->getData($fhirType, $resource);
-			// }
 		}
 		return $this->jsonFormattedValues->toArray();
 	}
