@@ -114,7 +114,7 @@ extension=mbstring
 <br>&nbsp;&nbsp;    $user_id : User ID used for QR
  <br> &nbsp;&nbsp; $storage->path = the folder where you want it to output the QR
  <br> &nbsp;&nbsp; $filename = the name of the json file and it **must** be placed inside **/fhir_json** folder within the project
->
+
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File location is on src/HealthDataManager.php, this part of the code is at the bottom of the file.
   ```
 // For testing purposes in PHP, you can change the path to your current environment.
