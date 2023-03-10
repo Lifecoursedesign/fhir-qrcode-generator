@@ -343,7 +343,7 @@ class JWE extends JWT {
 
         $enc_output = null;
         $enc_retval = null;
-        $script_path = __DIR__ . $dirSlash . "node_scripts" . $dirSlash . "cipher.js";
+        $script_path = "src". $dirSlash . "node_scripts" . $dirSlash . "cipher.js";
         exec("node {$script_path} -enc -p {$this->plain_text} -K {$hexEK} -iv {$hexIV}", $enc_output, $enc_retval);
         if ($enc_retval != 0) {
             throw new Exception("Payload encryption failed");
@@ -366,7 +366,7 @@ class JWE extends JWT {
 
         $dec_output = null;
         $dec_retval = null;
-        $dec_script_path = __DIR__ . $dirSlash . "node_scripts" . $dirSlash . "cipher.js";
+        $dec_script_path = "src". $dirSlash . "node_scripts" . $dirSlash . "cipher.js";
         
         exec("node {$dec_script_path} -dec -p {$this->cipher_text} -K {$hexEK} -iv {$hexIV}", $dec_output, $dec_retval);
         if ($dec_retval != 0) {
