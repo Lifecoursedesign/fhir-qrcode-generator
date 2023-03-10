@@ -110,10 +110,10 @@ extension=mbstring
 1. Clone whole project.
 
 2. Navigate to src/HealthDataManager.php and change the variables listed below to your own data.
-	&nbsp;&nbsp; ***Variables:*** 
-&nbsp;&nbsp;    $user_id : User ID used for QR
-  &nbsp;&nbsp; $storage->path = the folder where you want it to output the QR
-  &nbsp;&nbsp; $filename = the name of the json file and it **must** be placed inside **/fhir_json** folder within the project
+	<br>&nbsp;&nbsp; ***Variables:*** 
+<br>&nbsp;&nbsp;    $user_id : User ID used for QR
+ <br> &nbsp;&nbsp; $storage->path = the folder where you want it to output the QR
+ <br> &nbsp;&nbsp; $filename = the name of the json file and it **must** be placed inside **/fhir_json** folder within the project
 >
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; File location is on src/HealthDataManager.php, this part of the code is at the bottom of the file.
   ```
