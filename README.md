@@ -134,8 +134,8 @@ extension=mbstring
 // print_r($results);
 ```
 
-3.  Uncomment or remove **//** from the code
- Now it should look like this
+3.  Uncomment or remove **//** from the code.
+ <br>Now it should look like this
   ```
 // For testing purposes in PHP, you can change the path to your current environment.
 $storage = new stdClass;
@@ -155,4 +155,4 @@ print_r($results);
 ```
 4. After doing all the changes to HealthDataManager.php.
  Open a terminal and cd into the project folder and run the edited file using command below.
- `php src/HealthDataManager.php`
+<br> `php src/HealthDataManager.php`
